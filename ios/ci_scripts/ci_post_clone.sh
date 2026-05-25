@@ -20,11 +20,14 @@ flutter --version
 # Navigate to repository root
 cd $CI_PRIMARY_REPOSITORY_PATH
 
+# Navigate to Flutter project directory
+cd mobile-app
+
 echo "Running flutter pub get..."
 flutter pub get
 
 echo "Installing CocoaPods dependencies..."
-cd ios
+cd ../ios
 pod install --repo-update
 
 echo "=== ci_post_clone.sh completed successfully ==="
