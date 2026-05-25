@@ -1,0 +1,13 @@
+{
+    "name": "Music",
+    "alias": "music",
+    "description": "Spotify-style music streaming module",
+    "keywords": ["music", "audio", "tracks", "albums", "artists", "playlists"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Music\\Providers\\MusicServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
