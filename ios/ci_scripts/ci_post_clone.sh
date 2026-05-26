@@ -23,9 +23,14 @@ cd $CI_PRIMARY_REPOSITORY_PATH/mobile-app
 echo "Running flutter pub get..."
 flutter pub get
 
-echo "Copying Generated.xcconfig to root ios/Flutter..."
-mkdir -p $CI_PRIMARY_REPOSITORY_PATH/ios/Flutter
-cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/Flutter/Generated.xcconfig $CI_PRIMARY_REPOSITORY_PATH/ios/Flutter/Generated.xcconfig
+echo "Copying Flutter generated files to root ios..."
+cp -r $CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/Flutter/ $CI_PRIMARY_REPOSITORY_PATH/ios/Flutter/
+
+echo "Copying GeneratedPluginRegistrant to root ios/Runner..."
+if [ -f "$CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/Runner/GeneratedPluginRegistrant.h" ]; then
+    cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/Runner/GeneratedPluginRegistrant.h $CI_PRIMARY_REPOSITORY_PATH/ios/Runner/GeneratedPluginRegistrant.h
+    cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/Runner/GeneratedPluginRegistrant.m $CI_PRIMARY_REPOSITORY_PATH/ios/Runner/GeneratedPluginRegistrant.m
+fi
 
 echo "Installing CocoaPods dependencies..."
 cd $CI_PRIMARY_REPOSITORY_PATH/ios
