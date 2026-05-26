@@ -16,6 +16,11 @@ flutter precache --ios
 echo "Flutter version:"
 flutter --version
 
+# Disable Swift Package Manager - force all plugins to use CocoaPods
+# (google_mobile_ads depends on webview_flutter_wkwebview as a CocoaPods pod,
+#  but Flutter 3.24+ enables SPM by default which skips it as a pod)
+flutter config --no-enable-swift-package-manager
+
 # Run flutter pub get in the Flutter project directory
 cd $CI_PRIMARY_REPOSITORY_PATH/mobile-app
 echo "Running flutter pub get..."
