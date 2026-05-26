@@ -136,7 +136,7 @@ class SignInController extends BaseController {
     
     // Validate phone number
     final String phoneNumber = phoneCont.text.trim().replaceAll(RegExp(r'[^0-9]'), '');
-    if (phoneNumber.isEmpty || phoneNumber.length < 10) {
+    if (phoneNumber.isEmpty || phoneNumber.length < 5) {
       errorSnackBar(error: locale.value.pleaseEnterAValidMobileNo);
       return;
     }
