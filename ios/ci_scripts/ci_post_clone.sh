@@ -58,6 +58,8 @@ if [ -d "$CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/.symlinks" ]; then
 fi
 
 echo "=== Installing CocoaPods dependencies ==="
+# Delete stale Podfile.lock - it locks to old Firebase versions incompatible with current firebase_core
+rm -f $CI_PRIMARY_REPOSITORY_PATH/ios/Podfile.lock
 # Set PWD_FALLBACK for media_kit as additional fallback to find pubspec.lock
 export PWD_FALLBACK=$CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios
 cd $CI_PRIMARY_REPOSITORY_PATH/ios
