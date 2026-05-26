@@ -17,17 +17,18 @@ flutter precache --ios
 echo "Flutter version:"
 flutter --version
 
-# Navigate to repository root
-cd $CI_PRIMARY_REPOSITORY_PATH
-
 # Navigate to Flutter project directory
-cd mobile-app
+cd $CI_PRIMARY_REPOSITORY_PATH/mobile-app
 
 echo "Running flutter pub get..."
 flutter pub get
 
+echo "Copying Generated.xcconfig to root ios/Flutter..."
+mkdir -p $CI_PRIMARY_REPOSITORY_PATH/ios/Flutter
+cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/Flutter/Generated.xcconfig $CI_PRIMARY_REPOSITORY_PATH/ios/Flutter/Generated.xcconfig
+
 echo "Installing CocoaPods dependencies..."
-cd ../ios
+cd $CI_PRIMARY_REPOSITORY_PATH/ios
 pod install --repo-update
 
 echo "=== ci_post_clone.sh completed successfully ==="
