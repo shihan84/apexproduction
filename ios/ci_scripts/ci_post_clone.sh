@@ -32,6 +32,10 @@ if [ -f "$CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/Runner/GeneratedPluginRegist
     cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/Runner/GeneratedPluginRegistrant.m $CI_PRIMARY_REPOSITORY_PATH/ios/Runner/GeneratedPluginRegistrant.m
 fi
 
+echo "Copying pubspec files to repo root for media_kit..."
+cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/pubspec.yaml $CI_PRIMARY_REPOSITORY_PATH/pubspec.yaml
+cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/pubspec.lock $CI_PRIMARY_REPOSITORY_PATH/pubspec.lock
+
 echo "Installing CocoaPods dependencies..."
 cd $CI_PRIMARY_REPOSITORY_PATH/ios
 pod install --repo-update
