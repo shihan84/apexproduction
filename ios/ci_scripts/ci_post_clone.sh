@@ -37,12 +37,19 @@ fi
 cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/pubspec.yaml $CI_PRIMARY_REPOSITORY_PATH/pubspec.yaml
 cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/pubspec.lock $CI_PRIMARY_REPOSITORY_PATH/pubspec.lock
 
-# Copy Flutter plugin registry files to repo root (some pod hooks look here)
+# Copy Flutter plugin registry files to repo root
+# flutter_install_all_ios_pods reads .flutter-plugins-dependencies from parent of ios/ = repo root
 if [ -f "$CI_PRIMARY_REPOSITORY_PATH/mobile-app/.flutter-plugins" ]; then
     cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/.flutter-plugins $CI_PRIMARY_REPOSITORY_PATH/.flutter-plugins
 fi
 if [ -f "$CI_PRIMARY_REPOSITORY_PATH/mobile-app/.flutter-plugins-dependencies" ]; then
     cp $CI_PRIMARY_REPOSITORY_PATH/mobile-app/.flutter-plugins-dependencies $CI_PRIMARY_REPOSITORY_PATH/.flutter-plugins-dependencies
+fi
+
+# Copy plugin symlinks to root ios/ so flutter_install_all_ios_pods finds them
+# This makes ios/ look like a standard Flutter ios/ directory to CocoaPods
+if [ -d "$CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/.symlinks" ]; then
+    cp -r $CI_PRIMARY_REPOSITORY_PATH/mobile-app/ios/.symlinks $CI_PRIMARY_REPOSITORY_PATH/ios/.symlinks
 fi
 
 echo "=== Installing CocoaPods dependencies ==="
