@@ -41,14 +41,24 @@ Route::group(['prefix' => 'app', 'as' => 'backend.', 'middleware' => ['auth','ad
             Route::get('/trending', [Modules\Music\Http\Controllers\Backend\MusicController::class, 'trending'])->name('trending');
         });
 
-        // Music Albums
+        // Music Albums - full CRUD
         Route::group(['prefix' => 'albums', 'as' => 'albums.'], function () {
-            Route::get('/', [Modules\Music\Http\Controllers\Backend\MusicController::class, 'albums'])->name('index');
+            Route::get('/',                [Modules\Music\Http\Controllers\Backend\MusicController::class, 'albums'])->name('index');
+            Route::get('/create',          [Modules\Music\Http\Controllers\Backend\MusicController::class, 'createAlbum'])->name('create');
+            Route::post('/',               [Modules\Music\Http\Controllers\Backend\MusicController::class, 'storeAlbum'])->name('store');
+            Route::get('/{album}/edit',    [Modules\Music\Http\Controllers\Backend\MusicController::class, 'editAlbum'])->name('edit');
+            Route::put('/{album}',         [Modules\Music\Http\Controllers\Backend\MusicController::class, 'updateAlbum'])->name('update');
+            Route::delete('/{album}',      [Modules\Music\Http\Controllers\Backend\MusicController::class, 'destroyAlbum'])->name('destroy');
         });
 
-        // Music Playlists
+        // Music Playlists - full CRUD
         Route::group(['prefix' => 'playlists', 'as' => 'playlists.'], function () {
-            Route::get('/', [Modules\Music\Http\Controllers\Backend\MusicController::class, 'playlists'])->name('index');
+            Route::get('/',                   [Modules\Music\Http\Controllers\Backend\MusicController::class, 'playlists'])->name('index');
+            Route::get('/create',             [Modules\Music\Http\Controllers\Backend\MusicController::class, 'createPlaylist'])->name('create');
+            Route::post('/',                  [Modules\Music\Http\Controllers\Backend\MusicController::class, 'storePlaylist'])->name('store');
+            Route::get('/{playlist}/edit',    [Modules\Music\Http\Controllers\Backend\MusicController::class, 'editPlaylist'])->name('edit');
+            Route::put('/{playlist}',         [Modules\Music\Http\Controllers\Backend\MusicController::class, 'updatePlaylist'])->name('update');
+            Route::delete('/{playlist}',      [Modules\Music\Http\Controllers\Backend\MusicController::class, 'destroyPlaylist'])->name('destroy');
         });
     });
 

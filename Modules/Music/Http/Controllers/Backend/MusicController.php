@@ -233,28 +233,179 @@ class MusicController extends Controller
             ->with('success', 'Music track deleted successfully!');
     }
 
-    /**
-     * Display music albums.
-     */
     public function albums()
     {
-        $albums = MusicAlbum::with(['user', 'category', 'tracks'])
-            ->latest()
-            ->paginate(20);
-
+        $albums = MusicAlbum::with(['user', 'category', 'tracks'])->latest()->get();
         return view('music::backend.albums.index', compact('albums'));
     }
 
-    /**
-     * Display music playlists.
-     */
+    public function createAlbum()
+    {
+        $categories = MusicCategory::orderBy('name')->get();
+        $tracks = MusicTrack::active()->orderBy('title')->get();
+        return view('music::backend.albums.create', compact('categories', 'tracks'));
+    }
+
+    public function storeAlbum(Request $request)
+    {
+        $request->validate([
+            'title'        => 'required|string|max:255',
+            'artist_name'  => 'required|string|max:255',
+            'genre'        => 'nullable|string|max:100',
+            'release_date' => 'nullable|date',
+            'cover_art_url'=> 'nullable|string|max:500',
+            'description'  => 'nullable|string|max:2000',
+            'category_id'  => 'nullable|exists:music_categories,id',
+            'track_ids'    => 'nullable|array',
+            'track_ids.*'  => 'exists:music_tracks,id',
+        ]);
+        $album = MusicAlbum::create([
+            'title'        => $request->title,
+            'artist_name'  => $request->artist_name,
+            'slug'         => Str::slug($request->title) . '-' . time(),
+            'genre'        => $request->genre,
+            'release_date' => $request->release_date,
+            'cover_art_url'=> $request->cover_art_url,
+            'description'  => $request->description,
+            'category_id'  => $request->category_id,
+            'status'       => $request->boolean('status'),
+            'is_featured'  => $request->boolean('is_featured'),
+            'is_trending'  => $request->boolean('is_trending'),
+            'user_id'      => auth()->id(),
+            'created_by'   => auth()->id(),
+        ]);
+        if ($request->filled('track_ids')) {
+            MusicTrack::whereIn('id', $request->track_ids)->update(['album_id' => $album->id]);
+        }
+        return redirect()->route('backend.music.albums.index')->with('success', 'Album created successfully!');
+    }
+
+    public function editAlbum(MusicAlbum $album)
+    {
+        $categories = MusicCategory::orderBy('name')->get();
+        $tracks = MusicTrack::active()->orderBy('title')->get();
+        $selectedTrackIds = $album->tracks->pluck('id')->toArray();
+        return view('music::backend.albums.edit', compact('album', 'categories', 'tracks', 'selectedTrackIds'));
+    }
+
+    public function updateAlbum(Request $request, MusicAlbum $album)
+    {
+        $request->validate([
+            'title'        => 'required|string|max:255',
+            'artist_name'  => 'required|string|max:255',
+            'genre'        => 'nullable|string|max:100',
+            'release_date' => 'nullable|date',
+            'cover_art_url'=> 'nullable|string|max:500',
+            'description'  => 'nullable|string|max:2000',
+            'category_id'  => 'nullable|exists:music_categories,id',
+            'track_ids'    => 'nullable|array',
+            'track_ids.*'  => 'exists:music_tracks,id',
+        ]);
+        $album->update([
+            'title'        => $request->title,
+            'artist_name'  => $request->artist_name,
+            'genre'        => $request->genre,
+            'release_date' => $request->release_date,
+            'cover_art_url'=> $request->cover_art_url,
+            'description'  => $request->description,
+            'category_id'  => $request->category_id,
+            'status'       => $request->boolean('status'),
+            'is_featured'  => $request->boolean('is_featured'),
+            'is_trending'  => $request->boolean('is_trending'),
+            'updated_by'   => auth()->id(),
+        ]);
+        MusicTrack::where('album_id', $album->id)->update(['album_id' => null]);
+        if ($request->filled('track_ids')) {
+            MusicTrack::whereIn('id', $request->track_ids)->update(['album_id' => $album->id]);
+        }
+        return redirect()->route('backend.music.albums.index')->with('success', 'Album updated successfully!');
+    }
+
+    public function destroyAlbum(MusicAlbum $album)
+    {
+        MusicTrack::where('album_id', $album->id)->update(['album_id' => null]);
+        $album->delete();
+        return redirect()->route('backend.music.albums.index')->with('success', 'Album deleted successfully!');
+    }
+
     public function playlists()
     {
-        $playlists = MusicPlaylist::with(['user', 'tracks'])
-            ->latest()
-            ->paginate(20);
-
+        $playlists = MusicPlaylist::with(['user', 'tracks'])->latest()->get();
         return view('music::backend.playlists.index', compact('playlists'));
+    }
+
+    public function createPlaylist()
+    {
+        $tracks = MusicTrack::active()->orderBy('title')->get();
+        return view('music::backend.playlists.create', compact('tracks'));
+    }
+
+    public function storePlaylist(Request $request)
+    {
+        $request->validate([
+            'name'         => 'required|string|max:255',
+            'description'  => 'nullable|string|max:2000',
+            'cover_art_url'=> 'nullable|string|max:500',
+            'track_ids'    => 'nullable|array',
+            'track_ids.*'  => 'exists:music_tracks,id',
+        ]);
+        $playlist = MusicPlaylist::create([
+            'name'         => $request->name,
+            'slug'         => Str::slug($request->name) . '-' . time(),
+            'description'  => $request->description,
+            'cover_art_url'=> $request->cover_art_url,
+            'is_public'    => $request->boolean('is_public'),
+            'is_featured'  => $request->boolean('is_featured'),
+            'user_id'      => auth()->id(),
+            'created_by'   => auth()->id(),
+        ]);
+        if ($request->filled('track_ids')) {
+            $sync = [];
+            foreach ($request->track_ids as $pos => $id) {
+                $sync[$id] = ['position' => $pos];
+            }
+            $playlist->tracks()->sync($sync);
+        }
+        return redirect()->route('backend.music.playlists.index')->with('success', 'Playlist created successfully!');
+    }
+
+    public function editPlaylist(MusicPlaylist $playlist)
+    {
+        $tracks = MusicTrack::active()->orderBy('title')->get();
+        $selectedTrackIds = $playlist->tracks->pluck('id')->toArray();
+        return view('music::backend.playlists.edit', compact('playlist', 'tracks', 'selectedTrackIds'));
+    }
+
+    public function updatePlaylist(Request $request, MusicPlaylist $playlist)
+    {
+        $request->validate([
+            'name'         => 'required|string|max:255',
+            'description'  => 'nullable|string|max:2000',
+            'cover_art_url'=> 'nullable|string|max:500',
+            'track_ids'    => 'nullable|array',
+            'track_ids.*'  => 'exists:music_tracks,id',
+        ]);
+        $playlist->update([
+            'name'         => $request->name,
+            'description'  => $request->description,
+            'cover_art_url'=> $request->cover_art_url,
+            'is_public'    => $request->boolean('is_public'),
+            'is_featured'  => $request->boolean('is_featured'),
+            'updated_by'   => auth()->id(),
+        ]);
+        $sync = [];
+        foreach ($request->input('track_ids', []) as $pos => $id) {
+            $sync[$id] = ['position' => $pos];
+        }
+        $playlist->tracks()->sync($sync);
+        return redirect()->route('backend.music.playlists.index')->with('success', 'Playlist updated successfully!');
+    }
+
+    public function destroyPlaylist(MusicPlaylist $playlist)
+    {
+        $playlist->tracks()->detach();
+        $playlist->delete();
+        return redirect()->route('backend.music.playlists.index')->with('success', 'Playlist deleted successfully!');
     }
 
     /**
