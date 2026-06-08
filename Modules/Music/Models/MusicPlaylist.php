@@ -14,15 +14,20 @@ class MusicPlaylist extends BaseModel
     protected $table = 'music_playlists';
 
     protected $fillable = [
-        'title',
+        'name',
+        'slug',
         'description',
         'cover_art_url',
-        'status',
+        'is_public',
+        'is_featured',
         'user_id',
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [
-        'status' => 'boolean',
+        'is_public'   => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     public function user()
@@ -32,7 +37,7 @@ class MusicPlaylist extends BaseModel
 
     public function tracks()
     {
-        return $this->belongsToMany(MusicTrack::class, 'music_playlist_tracks');
+        return $this->belongsToMany(MusicTrack::class, 'music_playlist_track');
     }
 
     public function albums()

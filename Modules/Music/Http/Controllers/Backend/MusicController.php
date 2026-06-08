@@ -21,7 +21,7 @@ class MusicController extends Controller
         $tracks = MusicTrack::with(['user', 'category', 'album'])
             ->when($request->search, function ($query, $search) {
                 return $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('artist', 'like', "%{$search}%")
+                    ->orWhere('artist_name', 'like', "%{$search}%")
                     ->orWhere('album', 'like', "%{$search}%");
             })
             ->when($request->category_id, function ($query, $categoryId) {
@@ -31,14 +31,14 @@ class MusicController extends Controller
                 return $query->where('genre', $genre);
             })
             ->when($request->artist, function ($query, $artist) {
-                return $query->where('artist', 'like', "%{$artist}%");
+                return $query->where('artist_name', 'like', "%{$artist}%");
             })
             ->latest()
             ->paginate(20);
 
         $categories = MusicCategory::where('status', true)->get();
         $genres = MusicTrack::distinct()->pluck('genre')->filter();
-        $artists = MusicTrack::distinct()->pluck('artist')->filter();
+        $artists = MusicTrack::distinct()->pluck('artist_name')->filter();
 
         return view('music::backend.tracks.index', compact('tracks', 'categories', 'genres', 'artists'));
     }
