@@ -12,7 +12,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'app_name', // unique name for field
                 'label' => 'Bussiness Name', // you know what label it is
-                'rules' => 'required|min:2', // validation rule of laravel
+                'rules' => 'nullable|min:2', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => config('app.name'), // default value if you want
                 'datatype' => 'bussiness',
@@ -22,7 +22,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'user_app_name', // unique name for field
                 'label' => 'User App Name', // you know what label it is
-                'rules' => 'required|min:2|max:50', // validation rule of laravel
+                'rules' => 'nullable|min:2|max:50', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'Streamit', // default value if you want
                 'datatype' => 'bussiness',
@@ -32,7 +32,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'user_app_name', // unique name for field
                 'label' => 'User App Name', // you know what label it is
-                'rules' => 'required|min:2', // validation rule of laravel
+                'rules' => 'nullable|min:2', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'Streamit', // default value if you want
                 'datatype' => 'bussiness',
@@ -43,7 +43,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'helpline_number', // unique name for field
                 'label' => 'Contact Number', // you know what label it is
-                'rules' => 'required|min:2', // validation rule of laravel
+                'rules' => 'nullable|min:2', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '1234567890', // default value if you want
                 'datatype' => 'bussiness',
@@ -54,7 +54,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'inquriy_email', // unique name for field
                 'label' => 'Email', // you know what label it is
-                'rules' => 'required|min:2', // validation rule of laravel
+                'rules' => 'nullable|min:2', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'admin@streamit.com', // default value if you want
                 'datatype' => 'bussiness',
@@ -64,7 +64,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'short_description', // unique name for field
                 'label' => 'Short Description', // you know what label it is
-                'rules' => 'required|min:2', // validation rule of laravel
+                'rules' => 'nullable|min:2', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'Dummy Text ', // default value if you want
                 'datatype' => 'bussiness',
@@ -74,7 +74,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'facebook_url', // unique name for field
                 'label' => 'Facebook URL', // you know what label it is
-                'rules' => 'required|url|max:191', // validation rule of laravel
+                'rules' => 'nullable|string|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' =>  'https://www.facebook.com/iqonicdesign', // default value if you want
                 'datatype' => 'bussiness',
@@ -84,7 +84,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'x_url', // unique name for field
                 'label' => 'X (Twitter) URL', // you know what label it is
-                'rules' => 'required|url|max:191', // validation rule of laravel
+                'rules' => 'nullable|string|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'https://twitter.com/iqonicdesign', // default value if you want
                 'datatype' => 'bussiness',
@@ -93,7 +93,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'instagram_url', // unique name for field
                 'label' => 'Instagram URL', // you know what label it is
-                'rules' => 'required|url|max:191', // validation rule of laravel
+                'rules' => 'nullable|string|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'https://www.instagram.com/iqonicdesign', // default value if you want
                 'datatype' => 'bussiness',
@@ -102,7 +102,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'youtube_url', // unique name for field
                 'label' => 'YouTube URL', // you know what label it is
-                'rules' => 'required|url|max:191', // validation rule of laravel  max:191   url
+                'rules' => 'nullable|string|max:191', // validation rule of laravel  max:191   url
                 'class' => '', // any class for input
                 'value' => 'https://www.youtube.com/c/IqonicDesign', // default value if you want
                 'datatype' => 'bussiness',
@@ -112,7 +112,7 @@ return [
                 'data' => 'bussiness', // data type, string, int, boolean
                 'name' => 'google_analytics', // unique name for field
                 'label' => 'Google Analytics', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'datatype' => 'misc',
@@ -352,7 +352,7 @@ return [
                 'data' => 'misc', // data type, string, int, boolean
                 'name' => 'default_language', // unique name for field
                 'label' => 'Language', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'en', // default value if you want
                 'datatype' => 'misc',
@@ -363,7 +363,7 @@ return [
                 'data' => 'misc', // data type, string, int, boolean
                 'name' => 'default_time_zone', // unique name for field
                 'label' => 'Time Zone', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'Asia/Kolkata', // default value if you want
                 'datatype' => 'misc',
@@ -404,7 +404,7 @@ return [
                 'data' => 'misc', // data type, string, int, boolean
                 'name' => 'forward_seconds', // unique name for field
                 'label' => 'Forward Seconds', // you know what label it is
-                'rules' => 'required|integer|min:1|max:60', // validation rule of laravel
+                'rules' => 'nullable|integer|min:1|max:60', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'datatype' => 'misc',
@@ -414,7 +414,7 @@ return [
                 'data' => 'misc', // data type, string, int, boolean
                 'name' => 'backward_seconds', // unique name for field
                 'label' => 'Backward Seconds', // you know what label it is
-                'rules' => 'required|integer|min:1|max:60', // validation rule of laravel
+                'rules' => 'nullable|integer|min:1|max:60', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'datatype' => 'misc',
@@ -451,7 +451,7 @@ return [
             'data' => 'notificationconfig', // data type, string, int, boolean
             'name' => 'expiry_plan', // unique name for field
             'label' => 'Expiry Plan', // you know what label it is
-            'rules' => 'required|integer|min:0', // validation rule of laravel
+            'rules' => 'nullable|integer|min:0', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '1', // default value if you want
             'datatype' => 'notificationconfig',
@@ -462,7 +462,7 @@ return [
             'data' => 'notificationconfig', // data type, string, int, boolean
             'name' => 'upcoming', // unique name for field
             'label' => 'Upcoming', // you know what label it is
-            'rules' => 'required|integer|min:0', // validation rule of laravel
+            'rules' => 'nullable|integer|min:0', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '1', // default value if you want
             'datatype' => 'notificationconfig',
@@ -473,7 +473,7 @@ return [
             'data' => 'notificationconfig', // data type, string, int, boolean
             'name' => 'continue_watch', // unique name for field
             'label' => 'Continue Watch', // you know what label it is
-            'rules' => 'required|integer|min:0', // validation rule of laravel
+            'rules' => 'nullable|integer|min:0', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '1', // default value if you want
             'datatype' => 'notificationconfig',
@@ -532,7 +532,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'google_client_id',
                 'label' => 'Google Client ID',
-                'rules' => 'required_if:appconfig.is_google_login,1|nullable|string|max:255',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the Google Client ID for Google Login.',
@@ -542,7 +542,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'google_client_secret',
                 'label' => 'Google Client Secret',
-                'rules' => 'required_if:appconfig.is_google_login,1|nullable|string|max:255',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the Google Client Secret for Google Login.',
@@ -552,7 +552,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'google_redirect_uri',
                 'label' => 'Google Redirect URI',
-                'rules' => 'required_if:appconfig.is_google_login,1|nullable|url',
+                'rules' => 'nullable|string|max:500',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the Redirect URI for Google Login.',
@@ -582,7 +582,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'authDomain',
                 'label' => 'OTP Auth Domain',
-                'rules' => 'required_if:appconfig.is_otp_login,1|nullable|string|max:255',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the Auth Domain for OTP login.',
@@ -592,7 +592,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'databaseURL',
                 'label' => 'OTP Database URL',
-                'rules' => 'required_if:appconfig.is_otp_login,1|nullable|url',
+                'rules' => 'nullable|string|max:500',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the Database URL for OTP login.',
@@ -602,7 +602,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'projectId',
                 'label' => 'OTP Project ID',
-                'rules' => 'required_if:appconfig.is_otp_login,1|nullable|string|max:255',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the Project ID for OTP login.',
@@ -612,7 +612,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'storageBucket',
                 'label' => 'OTP Storage Bucket',
-                'rules' => 'required_if:appconfig.is_otp_login,1|nullable|string|max:255',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the Storage Bucket for OTP login.',
@@ -622,7 +622,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'messagingSenderId',
                 'label' => 'OTP Messaging Sender ID',
-                'rules' => 'required_if:appconfig.is_otp_login,1|nullable|string|max:255',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the Messaging Sender ID for OTP login.',
@@ -632,7 +632,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'appId',
                 'label' => 'OTP App ID',
-                'rules' => 'required_if:appconfig.is_otp_login,1|nullable|string|max:255',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the App ID for OTP login.',
@@ -642,7 +642,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'measurementId',
                 'label' => 'OTP Measurement ID',
-                'rules' => 'required_if:appconfig.is_otp_login,1|nullable|string|max:255',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the Measurement ID for OTP login.',
@@ -672,7 +672,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'firebase_key',
                 'label' => 'Firebase Key',
-                'rules' => 'required_if:is_firebase_notification,1 |nullable|string|max:255',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Paste your Firebase server key here.',
@@ -713,7 +713,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'ios_url',
                 'label' => 'iOS App URL',
-                'rules' => 'nullable|url',
+                'rules' => 'nullable|string|max:500',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter URL for iOS app if applicable.',
@@ -723,7 +723,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'android_url',
                 'label' => 'Android App URL',
-                'rules' => 'nullable|url',
+                'rules' => 'nullable|string|max:500',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter URL for Android app if applicable.',
@@ -733,7 +733,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'android_tv_url',
                 'label' => 'Android tv URL',
-                'rules' => 'nullable|url',
+                'rules' => 'nullable|string|max:500',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter URL for Android tv if applicable.',
@@ -753,7 +753,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'enter_app_version',
                 'label' => 'Enter App Version',
-                'rules' => 'required_if:force_update,1',
+                'rules' => 'nullable|string|max:50',
                 'class' => '',
                 'value' => '0',
                 'help' => 'Force users to update the app.',
@@ -763,7 +763,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'app_version',
                 'label' => 'App Version',
-                'rules' => 'required_if:force_update,1',
+                'rules' => 'nullable|string|max:50',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the current version of the app.',
@@ -784,7 +784,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'ChatGPT_key',
                 'label' => 'ChatGPT Key',
-                'rules' => 'required_if:is_ChatGPT_integration,1',
+                'rules' => 'nullable|string|max:255',
                 'class' => '',
                 'value' => '',
                 'help' => 'Paste your ChatGPT server key here.',
@@ -855,7 +855,7 @@ return [
                 'data'  => 'appconfig',
                 'name'  => 'android_minimum_required_version',
                 'label' => 'Android App Minimum Version',
-                'rules' => 'required_if:mobile_app,1',
+                'rules' => 'nullable|string|max:50',
                 'class' => '',
                 'value' => '',
                 'help'  => 'Enter the minimum Android app version required to continue using the app.',
@@ -864,7 +864,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'android_latest_version',
                 'label' => 'Android App Latest Version',
-                'rules' => 'required_if:mobile_app,1',
+                'rules' => 'nullable|string|max:50',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the latest available Android app version on the Play Store.',
@@ -875,7 +875,7 @@ return [
                 'data'  => 'appconfig',
                 'name'  => 'ios_minimum_required_version',
                 'label' => 'ios App Minimum Version',
-                'rules' => 'required_if:mobile_app,1',
+                'rules' => 'nullable|string|max:50',
                 'class' => '',
                 'value' => '',
                 'help'  => 'Enter the minimum ios app version required to continue using the app.',
@@ -884,7 +884,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'ios_latest_version',
                 'label' => 'ios App Latest Version',
-                'rules' => 'required_if:mobile_app,1',
+                'rules' => 'nullable|string|max:50',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the latest available ios app version on the apple Store.',
@@ -904,7 +904,7 @@ return [
                 'data'  => 'appconfig',
                 'name'  => 'android_tv_minimum_required_version',
                 'label' => 'Android TV App Mininum Version',
-                'rules' => 'required_if:tv_app,1',
+                'rules' => 'nullable|string|max:50',
                 'class' => '',
                 'value' => '',
                 'help'  => 'Enter the minimum Android tv app version required to continue using the app.',
@@ -913,7 +913,7 @@ return [
                 'data' => 'appconfig',
                 'name' => 'android_tv_latest_version',
                 'label' => 'Android TV App Latest Version',
-                'rules' => 'required_if:tv_app,1',
+                'rules' => 'nullable|string|max:50',
                 'class' => '',
                 'value' => '',
                 'help' => 'Enter the latest available Android tv app version on continue using the app.',
@@ -1025,7 +1025,7 @@ return [
                 'data' => 'mail_config', // data type, string, int, boolean
                 'name' => 'email', // unique name for field
                 'label' => 'Email', // you know what label it is
-                'rules' => 'required|email', // validation rule of laravel
+                'rules' => 'nullable|email', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'info@example.com', // default value if you want
             ],
@@ -1034,7 +1034,7 @@ return [
                 'data' => 'mail_config', // data type, string, int, boolean
                 'name' => 'mail_driver', // unique name for field
                 'label' => 'Mail Driver', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'smtp', // default value if you want
             ],
@@ -1043,7 +1043,7 @@ return [
                 'data' => 'mail_config', // data type, string, int, boolean
                 'name' => 'mail_host', // unique name for field
                 'label' => 'Mail Host', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'smtp.gmail.com', // default value if you want
             ],
@@ -1052,7 +1052,7 @@ return [
                 'data' => 'mail_config', // data type, string, int, boolean
                 'name' => 'mail_port', // unique name for field
                 'label' => 'Mail Port', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '587', // default value if you want
             ],
@@ -1061,7 +1061,7 @@ return [
                 'data' => 'mail_config', // data type, string, int, boolean
                 'name' => 'mail_encryption', // unique name for field
                 'label' => 'Mail Encryption', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'tls', // default value if you want
             ],
@@ -1070,7 +1070,7 @@ return [
                 'data' => 'mail_config', // data type, string, int, boolean
                 'name' => 'mail_username', // unique name for field
                 'label' => 'Mail Username', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'youremail@gmail.com', // default value if you want
             ],
@@ -1079,7 +1079,7 @@ return [
                 'data' => 'mail_config', // data type, string, int, boolean
                 'name' => 'mail_password', // unique name for field
                 'label' => 'Mail Password', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'Password', // default value if you want
             ],
@@ -1088,7 +1088,7 @@ return [
                 'data' => 'mail_config', // data type, string, int, boolean
                 'name' => 'mail_from', // unique name for field
                 'label' => 'Mail From', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'youremail@gmail.com', // default value if you wantPassword
             ],
@@ -1097,7 +1097,7 @@ return [
                 'data' => 'mail_config', // data type, string, int, boolean
                 'name' => 'from_name', // unique name for field
                 'label' => 'From Name', // you know what label it is
-                'rules' => 'required', // validation rule of laravel
+                'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'Streamit-Laravel', // default value if you wantPassword
             ],
@@ -1125,7 +1125,7 @@ return [
                 'data' => 'cash_payment_method', // data type, string, int, boolean
                 'name' => 'cash_secretkey', // unique name for field
                 'label' => 'cashpayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1135,7 +1135,7 @@ return [
                 'data' => 'cash_payment_method', // data type, string, int, boolean
                 'name' => 'cash_publickey', // unique name for field
                 'label' => 'cashpayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1155,7 +1155,7 @@ return [
                 'data' => 'razor_payment_method', // data type, string, int, boolean
                 'name' => 'razorpay_secretkey', // unique name for field
                 'label' => 'razorpayPayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1165,7 +1165,7 @@ return [
                 'data' => 'razor_payment_method', // data type, string, int, boolean
                 'name' => 'razorpay_publickey', // unique name for field
                 'label' => 'razorpayPayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1185,7 +1185,7 @@ return [
                 'data' => 'str_payment_method', // data type, string, int, boolean
                 'name' => 'stripe_secretkey', // unique name for field
                 'label' => 'stripePayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1195,7 +1195,7 @@ return [
                 'data' => 'str_payment_method', // data type, string, int, boolean
                 'name' => 'stripe_publickey', // unique name for field
                 'label' => 'stripePayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1215,7 +1215,7 @@ return [
                 'data' => 'paystack_payment_method', // data type, string, int, boolean
                 'name' => 'paystack_secretkey', // unique name for field
                 'label' => 'paystackPayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1225,7 +1225,7 @@ return [
                 'data' => 'paystack_payment_method', // data type, string, int, boolean
                 'name' => 'paystack_publickey', // unique name for field
                 'label' => 'paystackPayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1245,7 +1245,7 @@ return [
                 'data' => 'paypal_payment_method', // data type, string, int, boolean
                 'name' => 'paypal_secretkey', // unique name for field
                 'label' => 'paypalPayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1255,7 +1255,7 @@ return [
                 'data' => 'paypal_payment_method', // data type, string, int, boolean
                 'name' => 'paypal_clientid', // unique name for field
                 'label' => 'paypalPayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1275,7 +1275,7 @@ return [
                 'data' => 'flutterwave_payment_method', // data type, string, int, boolean
                 'name' => 'flutterwave_secretkey', // unique name for field
                 'label' => 'flutterwavePayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1285,7 +1285,7 @@ return [
                 'data' => 'flutterwave_payment_method', // data type, string, int, boolean
                 'name' => 'flutterwave_publickey', // unique name for field
                 'label' => 'flutterwavePayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1306,7 +1306,7 @@ return [
                 'data' => 'cinet_payment_method', // data type, string, int, boolean
                 'name' => 'cinet_siteid', // unique name for field
                 'label' => 'paymentcinet', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1316,7 +1316,7 @@ return [
                 'data' => 'cinet_payment_method', // data type, string, int, boolean
                 'name' => 'cinet_api_key', // unique name for field
                 'label' => 'paymentcinet', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1326,7 +1326,7 @@ return [
                 'data' => 'cinet_payment_method', // data type, string, int, boolean
                 'name' => 'cinet_Secret_key', // unique name for field
                 'label' => 'paymentcinet', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1347,7 +1347,7 @@ return [
                 'data' => 'sadad_payment_method', // data type, string, int, boolean
                 'name' => 'sadad_Sadadkey', // unique name for field
                 'label' => 'paymentsadad', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1357,7 +1357,7 @@ return [
                 'data' => 'sadad_payment_method', // data type, string, int, boolean
                 'name' => 'sadad_id_key', // unique name for field
                 'label' => 'paymentsadad', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1367,7 +1367,7 @@ return [
                 'data' => 'sadad_payment_method', // data type, string, int, boolean
                 'name' => 'sadad_Domain', // unique name for field
                 'label' => 'paymentsadad', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1388,7 +1388,7 @@ return [
                 'data' => 'airtel_payment_method', // data type, string, int, boolean
                 'name' => 'airtel_money_secretkey', // unique name for field
                 'label' => 'airtelpayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1398,7 +1398,7 @@ return [
                 'data' => 'airtel_payment_method', // data type, string, int, boolean
                 'name' => 'airtel_money_client_id', // unique name for field
                 'label' => 'airtelpayment', // you know what label it is
-                'rules' => 'required|max:191', // validation rule of laravel
+                'rules' => 'nullable|max:191', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => '', // default value if you want
                 'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1420,7 +1420,7 @@ return [
             'data' => 'phonepe_payment_method', // data type, string, int, boolean
             'name' => 'phonepe_App_id', // unique name for field
             'label' => 'phonepepayment', // you know what label it is
-            'rules' => 'required|max:191', // validation rule of laravel
+            'rules' => 'nullable|max:191', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '', // default value if you want
             'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1430,7 +1430,7 @@ return [
             'data' => 'phonepe_payment_method', // data type, string, int, boolean
             'name' => 'phonepe_Merchant_id', // unique name for field
             'label' => 'phonepepayment', // you know what label it is
-            'rules' => 'required|max:191', // validation rule of laravel
+            'rules' => 'nullable|max:191', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '', // default value if you want
             'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1440,7 +1440,7 @@ return [
             'data' => 'phonepe_payment_method', // data type, string, int, boolean
             'name' => 'phonepe_salt_key', // unique name for field
             'label' => 'phonepepayment', // you know what label it is
-            'rules' => 'required|max:191', // validation rule of laravel
+            'rules' => 'nullable|max:191', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '', // default value if you want
             'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1450,7 +1450,7 @@ return [
             'data' => 'phonepe_payment_method', // data type, string, int, boolean
             'name' => 'phonepe_salt_index', // unique name for field
             'label' => 'phonepepayment', // you know what label it is
-            'rules' => 'required|max:191', // validation rule of laravel
+            'rules' => 'nullable|max:191', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '', // default value if you want
             'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1471,7 +1471,7 @@ return [
             'data' => 'midtrans_payment_method', // data type, string, int, boolean
             'name' => 'midtrans_client_id', // unique name for field
             'label' => 'midtranspayment', // you know what label it is
-            'rules' => 'required|max:191', // validation rule of laravel
+            'rules' => 'nullable|max:191', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '', // default value if you want
             'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1481,7 +1481,7 @@ return [
             'data' => 'midtrans_payment_method', // data type, string, int, boolean
             'name' => 'midtrans_server_key', // unique name for field
             'label' => 'midtranspayment', // you know what label it is
-            'rules' => 'required|max:191', // validation rule of laravel
+            'rules' => 'nullable|max:191', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '', // default value if you want
             'help' => 'Paste the only the Measurement Id of Google Analytics stream.', // Help text for the input field.
@@ -1500,7 +1500,7 @@ return [
             'data' => 'iap_entitlement_id', // data type, string, int, boolean
             'name' => 'iap_entitlement_id', // unique name for field
             'label' => 'Entertainment ID', // label for the field
-            'rules' => 'required|max:191', // validation rule of laravel
+            'rules' => 'nullable|max:191', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '', // default value if you want
             'help' => 'Enter the Entitlement ID for the In App Purchase.', // Help text for the input field
@@ -1510,7 +1510,7 @@ return [
             'data' => 'iap_apple_api_key', // data type, string, int, boolean
             'name' => 'iap_apple_api_key', // unique name for field
             'label' => 'Apple API Key', // label for the field
-            'rules' => 'required|max:191', // validation rule of laravel
+            'rules' => 'nullable|max:191', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '', // default value if you want
             'help' => 'Enter the Apple API Key for the In App Purchase.', // Help text for the input field
@@ -1520,7 +1520,7 @@ return [
             'data' => 'iap_google_api_key', // data type, string, int, boolean
             'name' => 'iap_google_api_key', // unique name for field
             'label' => 'Google API Key', // label for the field
-            'rules' => 'required|max:191', // validation rule of laravel
+            'rules' => 'nullable|max:191', // validation rule of laravel
             'class' => '', // any class for input
             'value' => '', // default value if you want
             'help' => 'Enter the Google API Key for the In App Purchase.', // Help text for the input field
