@@ -37,7 +37,7 @@ class MusicPlaylist extends BaseModel
 
     public function tracks()
     {
-        return $this->belongsToMany(MusicTrack::class, 'music_playlist_track');
+        return $this->belongsToMany(MusicTrack::class, 'music_playlist_track', 'playlist_id', 'track_id')->withPivot('position')->withTimestamps();
     }
 
     public function albums()
