@@ -361,4 +361,24 @@ class AudioController extends Controller
             'completion_rate' => $audio->fresh()->completion_rate,
         ]);
     }
+
+    public function albums($request)
+    {
+        return app(\Modules\Music\Http\Controllers\API\MusicController::class)->albums(request());
+    }
+
+    public function playlists($request)
+    {
+        return app(\Modules\Music\Http\Controllers\API\MusicController::class)->playlists(request());
+    }
+
+    public function search($request)
+    {
+        return app(\Modules\Music\Http\Controllers\API\MusicController::class)->search(request());
+    }
+
+    public function categories()
+    {
+        return app(\Modules\Music\Http\Controllers\API\MusicController::class)->categories();
+    }
 }
