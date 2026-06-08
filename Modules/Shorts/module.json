@@ -1,0 +1,13 @@
+{
+    "name": "Shorts",
+    "alias": "shorts",
+    "description": "TikTok-style short video management module",
+    "keywords": ["shorts", "reels", "videos", "tiktok", "social"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Shorts\\Providers\\ShortsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

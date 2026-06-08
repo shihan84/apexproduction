@@ -1,0 +1,91 @@
+SPOTIFY-LIKE FEATURES IMPLEMENTATION
+
+=== COMPLETED ===
+✅ Migrations: music_listening_sessions, user_music_preferences
+✅ Models: MusicListeningSession.php, UserMusicPreference.php
+
+=== CREATE FILE 1: app/Http/Controllers/API/V3/MusicApiController.php ===
+
+<?php
+namespace App\Http\Controllers\Api\V3;
+use App\Http\Controllers\Controller;
+use App\Models\MusicListeningSession;
+use Illuminate\Http\Request;
+use Modules\Music\Entities\MusicTrack;
+use Modules\Music\Entities\MusicAlbum;
+
+class MusicApiController extends Controller
+{
+    public function homeFeed(Request $request)
+    {
+        $user = auth()->user();
+        return response()->json([
+            'status' => 'success',
+            'sections' => [
+                ['title' => 'Recently Played', 'type' => 'tracks', 'data' => $this->getRecentlyPlayed($user)],
+                ['title' => 'Recommended', 'type' => 'tracks', 'data' => $this->getRecommendations($user)],
+                ['title' => 'Trending', 'type' => 'tracks', 'data' => $this->getTrending()],
+            ],
+        ]);
+    }
+    
+    public function trackPlay(Request $request)
+    {
+        $track = MusicTrack::findOrFail($request->track_id);
+        $track->increment('play_count');
+        MusicListeningSession::create([
+            'user_id' => auth()->id(),
+            'track_id' => $track->id,
+            'started_at' => $request->started_at,
+            'device_type' => $request->device_type ?? 'mobile',
+        ]);
+        return response()->json(['status' => 'success']);
+    }
+    
+    public function search(Request $request)
+    {
+        $q = $request->query('q');
+        return response()->json([
+            'status' => 'success',
+            'tracks' => MusicTrack::where('title', 'LIKE', "%{$q}%")->take(20)->get(),
+            'albums' => MusicAlbum::where('title', 'LIKE', "%{$q}%")->take(10)->get(),
+        ]);
+    }
+    
+    private function getRecentlyPlayed($user)
+    {
+        return MusicListeningSession::where('user_id', $user->id)->with('track')->latest()->take(10)->get()->pluck('track');
+    }
+    
+    private function getRecommendations($user)
+    {
+        $listened = MusicListeningSession::where('user_id', $user->id)->pluck('track_id');
+        return MusicTrack::whereNotIn('id', $listened)->orderBy('play_count', 'desc')->take(10)->get();
+    }
+    
+    private function getTrending()
+    {
+        return MusicTrack::where('is_trending', true)->orderBy('play_count', 'desc')->take(10)->get();
+    }
+}
+
+=== ADD TO routes/api.php ===
+
+Route::prefix('v3/music')->middleware('auth:sanctum')->group(function () {
+    Route::get('home-feed', [App\Http\Controllers\Api\V3\MusicApiController::class, 'homeFeed']);
+    Route::post('track-play', [App\Http\Controllers\Api\V3\MusicApiController::class, 'trackPlay']);
+    Route::get('search', [App\Http\Controllers\Api\V3\MusicApiController::class, 'search']);
+});
+
+=== DEPLOY TO PRODUCTION ===
+
+ssh -p 65002 u894221422@217.21.94.159
+cd /home/u894221422/domains/apexprimetv.com/public_html
+/opt/alt/php84/usr/bin/php artisan migrate
+/opt/alt/php84/usr/bin/php artisan cache:clear
+
+=== API ENDPOINTS ===
+GET  /api/v3/music/home-feed
+POST /api/v3/music/track-play
+GET  /api/v3/music/search?q=query
+
