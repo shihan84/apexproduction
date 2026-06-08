@@ -490,15 +490,57 @@ class MusicController extends Controller
     {
         $playlists = MusicPlaylist::with(['user', 'tracks'])
             ->when($request->search, function ($query, $search) {
-                return $query->where('title', 'like', "%{$search}%");
+                return $query->where('name', 'like', "%{$search}%");
             })
-            ->where('status', true)
+            ->where('is_public', true)
             ->latest()
             ->paginate(20);
 
         return response()->json([
             'success' => true,
             'data' => $playlists,
+        ]);
+    }
+
+    public function showAlbum(MusicAlbum $album): JsonResponse
+    {
+        $album->load(['category', 'tracks']);
+        return response()->json(['success' => true, 'data' => $album]);
+    }
+
+    public function showPlaylist(MusicPlaylist $playlist): JsonResponse
+    {
+        $playlist->load(['user', 'tracks']);
+        return response()->json(['success' => true, 'data' => $playlist]);
+    }
+
+    public function search(Request $request): JsonResponse
+    {
+        $query = $request->get('q', '');
+        $tracks = MusicTrack::with(['category'])
+            ->where('status', true)
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                  ->orWhere('artist_name', 'like', "%{$query}%")
+                  ->orWhere('album_name', 'like', "%{$query}%")
+                  ->orWhere('genre', 'like', "%{$query}%");
+            })
+            ->limit(30)->get();
+
+        $albums = MusicAlbum::where('status', true)
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                  ->orWhere('artist_name', 'like', "%{$query}%");
+            })
+            ->limit(10)->get();
+
+        $playlists = MusicPlaylist::where('is_public', true)
+            ->where('name', 'like', "%{$query}%")
+            ->limit(10)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => compact('tracks', 'albums', 'playlists'),
         ]);
     }
 
