@@ -79,6 +79,9 @@ class MusicController extends Controller
                 'play_count'    => (int) $track->play_count,
                 'like_count'    => (int) $track->like_count,
                 'is_liked'      => false,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => optional($track->created_at)->toISOString() ?? now()->toISOString(),
+                'updated_at'    => optional($track->updated_at)->toISOString() ?? now()->toISOString(),
                 'category'      => $track->category ? ['id' => $track->category->id, 'name' => $track->category->name] : null,
             ];
         });
@@ -144,6 +147,9 @@ class MusicController extends Controller
                 'is_liked'      => false,
                 'release_date'  => $track->release_date,
                 'label'         => $track->label,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => $track->created_at?->toISOString() ?? now()->toISOString(),
+                'updated_at'    => $track->updated_at?->toISOString() ?? now()->toISOString(),
                 'category'      => $track->category ? ['id' => $track->category->id, 'name' => $track->category->name] : null,
             ],
         ]);
@@ -304,6 +310,9 @@ class MusicController extends Controller
                 'play_count'    => (int) $track->play_count,
                 'like_count'    => (int) $track->like_count,
                 'is_liked'      => false,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => optional($track->created_at)->toISOString() ?? now()->toISOString(),
+                'updated_at'    => optional($track->updated_at)->toISOString() ?? now()->toISOString(),
             ];
         });
 
@@ -339,6 +348,9 @@ class MusicController extends Controller
                 'play_count'    => (int) $track->play_count,
                 'like_count'    => (int) $track->like_count,
                 'is_liked'      => false,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => optional($track->created_at)->toISOString() ?? now()->toISOString(),
+                'updated_at'    => optional($track->updated_at)->toISOString() ?? now()->toISOString(),
             ];
         });
 
@@ -374,6 +386,9 @@ class MusicController extends Controller
                 'play_count'    => (int) $track->play_count,
                 'like_count'    => (int) $track->like_count,
                 'is_liked'      => false,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => optional($track->created_at)->toISOString() ?? now()->toISOString(),
+                'updated_at'    => optional($track->updated_at)->toISOString() ?? now()->toISOString(),
             ];
         });
 
