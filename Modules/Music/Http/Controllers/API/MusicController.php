@@ -42,7 +42,7 @@ class MusicController extends Controller
                 return $query->where('is_trending', true);
             })
             ->when($request->explicit, function ($query) {
-                return $query->where('explicit_content', true);
+                return $query->where('is_explicit', true);
             })
             ->where('status', true)
             ->latest()
@@ -50,8 +50,8 @@ class MusicController extends Controller
 
         // Convert relative paths to full URLs
         $query->getCollection()->transform(function ($track) {
-            if ($track->audio_url && !filter_var($track->audio_url, FILTER_VALIDATE_URL)) {
-                $track->audio_url = asset('storage/' . ltrim($track->audio_url, '/'));
+            if ($track->file_url && !filter_var($track->file_url, FILTER_VALIDATE_URL)) {
+                $track->file_url = asset('storage/' . ltrim($track->file_url, '/'));
             }
             
             if ($track->cover_art_url && !filter_var($track->cover_art_url, FILTER_VALIDATE_URL)) {
@@ -85,8 +85,8 @@ class MusicController extends Controller
         $track->incrementPlays();
 
         // Convert relative paths to full URLs
-        if ($track->audio_url && !filter_var($track->audio_url, FILTER_VALIDATE_URL)) {
-            $track->audio_url = asset('storage/' . ltrim($track->audio_url, '/'));
+        if ($track->file_url && !filter_var($track->file_url, FILTER_VALIDATE_URL)) {
+            $track->file_url = asset('storage/' . ltrim($track->file_url, '/'));
         }
         
         if ($track->cover_art_url && !filter_var($track->cover_art_url, FILTER_VALIDATE_URL)) {
@@ -114,7 +114,7 @@ class MusicController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'audio_url' => 'required|string',
+            'file_url' => 'required|string',
             'cover_art_url' => 'nullable|string',
             'duration' => 'required|integer|min:1',
             'artist' => 'required|string|max:255',
@@ -133,13 +133,13 @@ class MusicController extends Controller
             'waveform_data' => 'nullable|array',
             'tags' => 'nullable|array',
             'allow_download' => 'boolean',
-            'explicit_content' => 'boolean',
+            'is_explicit' => 'boolean',
         ]);
 
         $track = MusicTrack::create([
             'title' => $request->title,
             'description' => $request->description,
-            'audio_url' => $request->audio_url,
+            'file_url' => $request->file_url,
             'cover_art_url' => $request->cover_art_url,
             'duration' => $request->duration,
             'artist' => $request->artist,
@@ -158,7 +158,7 @@ class MusicController extends Controller
             'waveform_data' => $request->waveform_data,
             'tags' => $request->tags,
             'allow_download' => $request->boolean('allow_download', false),
-            'explicit_content' => $request->boolean('explicit_content', false),
+            'is_explicit' => $request->boolean('is_explicit', false),
             'user_id' => auth()->id(),
             'status' => true,
         ]);
@@ -193,7 +193,7 @@ class MusicController extends Controller
             'lyrics_timestamps' => 'sometimes|array',
             'tags' => 'sometimes|array',
             'allow_download' => 'boolean',
-            'explicit_content' => 'boolean',
+            'is_explicit' => 'boolean',
             'is_featured' => 'boolean',
             'is_trending' => 'boolean',
         ]);
@@ -201,7 +201,7 @@ class MusicController extends Controller
         $track->update($request->only([
             'title', 'description', 'artist', 'album', 'genre', 'category_id', 'album_id',
             'release_date', 'lyrics', 'lyrics_timestamps', 'tags', 'allow_download',
-            'explicit_content', 'is_featured', 'is_trending'
+            'is_explicit', 'is_featured', 'is_trending'
         ]));
 
         return response()->json($track);
