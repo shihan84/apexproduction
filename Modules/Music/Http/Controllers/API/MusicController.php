@@ -61,9 +61,37 @@ class MusicController extends Controller
             return $track;
         });
 
+        $tracks = $query->getCollection()->map(function ($track) {
+            return [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+                'category'      => $track->category ? ['id' => $track->category->id, 'name' => $track->category->name] : null,
+            ];
+        });
+
         return response()->json([
-            'success' => true,
-            'data' => $query,
+            'status' => true,
+            'data'   => [
+                'data'         => $tracks,
+                'current_page' => $query->currentPage(),
+                'last_page'    => $query->lastPage(),
+                'per_page'     => $query->perPage(),
+                'total'        => $query->total(),
+            ],
         ]);
     }
 
@@ -94,8 +122,30 @@ class MusicController extends Controller
         }
 
         return response()->json([
-            'success' => true,
-            'data' => $track,
+            'status' => true,
+            'data' => [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'description'   => $track->description,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'allow_download'=> (bool) $track->allow_download,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+                'release_date'  => $track->release_date,
+                'label'         => $track->label,
+                'category'      => $track->category ? ['id' => $track->category->id, 'name' => $track->category->name] : null,
+            ],
         ]);
     }
 
@@ -236,10 +286,28 @@ class MusicController extends Controller
             ->limit(20)
             ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $tracks,
-        ]);
+        $mapped = $tracks->map(function ($track) {
+            return [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+            ];
+        });
+
+        return response()->json(['status' => true, 'data' => $mapped]);
     }
 
     /**
@@ -253,10 +321,28 @@ class MusicController extends Controller
             ->latest()
             ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $tracks,
-        ]);
+        $mapped = $tracks->map(function ($track) {
+            return [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+            ];
+        });
+
+        return response()->json(['status' => true, 'data' => $mapped]);
     }
 
     /**
@@ -270,10 +356,28 @@ class MusicController extends Controller
             ->latest()
             ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $tracks,
-        ]);
+        $mapped = $tracks->map(function ($track) {
+            return [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+            ];
+        });
+
+        return response()->json(['status' => true, 'data' => $mapped]);
     }
 
     /**
