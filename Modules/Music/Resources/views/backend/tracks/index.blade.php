@@ -278,8 +278,74 @@
             <h5 class="offcanvas-title fw-700">Add New Track</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="offcanvas-body">
-            <!-- Form content will be loaded here -->
+        <div class="offcanvas-body p-0">
+            <form action="{{ route('backend.music.tracks.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="px-4 py-3">
+                    @if(isset($errors) && $errors->any())
+                    <div class="alert alert-danger py-2"><ul class="mb-0 ps-3 small">@foreach($errors->all() as $err)<li>{{ $err }}</li>@endforeach</ul></div>
+                    @endif
+                    <div class="mb-3"><label class="form-label fw-semibold small">Title <span class="text-danger">*</span></label>
+                    <input type="text" name="title" class="form-control form-control-sm" value="{{ old('title') }}" required placeholder="Track title"></div>
+                    <div class="mb-3"><label class="form-label fw-semibold small">Artist Name <span class="text-danger">*</span></label>
+                    <input type="text" name="artist_name" class="form-control form-control-sm" value="{{ old('artist_name') }}" required placeholder="Artist name"></div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-8"><label class="form-label fw-semibold small">Genre <span class="text-danger">*</span></label>
+                        <input type="text" name="genre" class="form-control form-control-sm" value="{{ old('genre') }}" required placeholder="Rock, Pop, Jazz"></div>
+                        <div class="col-4"><label class="form-label fw-semibold small">Duration (s)</label>
+                        <input type="number" name="duration" class="form-control form-control-sm" value="{{ old('duration') }}" min="1" required placeholder="210"></div>
+                    </div>
+                    <div class="mb-3"><label class="form-label fw-semibold small">Audio URL</label>
+                    <input type="url" name="file_url" class="form-control form-control-sm" value="{{ old('file_url') }}" placeholder="https://...mp3">
+                    <div class="form-text">Paste a direct link or upload below</div></div>
+                    <div class="mb-3"><label class="form-label fw-semibold small">Upload Audio (MP3/AAC/WAV max 50MB)</label>
+                    <input type="file" name="audio_file" class="form-control form-control-sm" accept=".mp3,.aac,.flac,.wav"></div>
+                    <div class="mb-3"><label class="form-label fw-semibold small">Cover Art URL</label>
+                    <input type="url" name="cover_art_url" class="form-control form-control-sm" value="{{ old('cover_art_url') }}" placeholder="https://...jpg"></div>
+                    <div class="mb-3"><label class="form-label fw-semibold small">Upload Cover Image</label>
+                    <input type="file" name="cover_art_file" class="form-control form-control-sm" accept=".jpg,.jpeg,.png,.webp"></div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6"><label class="form-label fw-semibold small">Album</label>
+                        <select name="album_id" class="form-select form-select-sm"><option value="">-- None --</option>
+                        @foreach($albums as $a)<option value="{{ $a->id }}" {{ old('album_id')==$a->id ? 'selected' : '' }}>{{ $a->title }}</option>@endforeach
+                        </select></div>
+                        <div class="col-6"><label class="form-label fw-semibold small">Category</label>
+                        <select name="category_id" class="form-select form-select-sm"><option value="">-- None --</option>
+                        @foreach($categories as $cat)<option value="{{ $cat->id }}" {{ old('category_id')==$cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>@endforeach
+                        </select></div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6"><label class="form-label fw-semibold small">Album Name (override)</label>
+                        <input type="text" name="album_name" class="form-control form-control-sm" value="{{ old('album_name') }}" placeholder="Optional"></div>
+                        <div class="col-6"><label class="form-label fw-semibold small">Release Date</label>
+                        <input type="date" name="release_date" class="form-control form-control-sm" value="{{ old('release_date') }}"></div>
+                    </div>
+                    <div class="mb-3"><label class="form-label fw-semibold small">Lyrics</label>
+                    <textarea name="lyrics" class="form-control form-control-sm" rows="4" placeholder="Paste lyrics here...">{{ old('lyrics') }}</textarea></div>
+                    <div class="mb-3"><label class="form-label fw-semibold small">Description</label>
+                    <textarea name="description" class="form-control form-control-sm" rows="2" placeholder="Short description...">{{ old('description') }}</textarea></div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6"><label class="form-label fw-semibold small">Label</label>
+                        <input type="text" name="label" class="form-control form-control-sm" value="{{ old('label') }}" placeholder="Record label"></div>
+                        <div class="col-6"><label class="form-label fw-semibold small">Copyright Info</label>
+                        <input type="text" name="copyright_info" class="form-control form-control-sm" value="{{ old('copyright_info') }}" placeholder="2025 Artist"></div>
+                    </div>
+                    <div class="mb-3"><label class="form-label fw-semibold small">Tags <small class="text-muted">(comma separated)</small></label>
+                    <input type="text" name="tags" class="form-control form-control-sm" value="{{ old('tags') }}" placeholder="rock, guitar, indie"></div>
+                    <div class="d-flex flex-wrap gap-3 mb-2">
+                        <div class="form-check"><input class="form-check-input" type="checkbox" name="status" value="1" id="oc_status" checked><label class="form-check-label small" for="oc_status">Active</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" name="is_featured" value="1" id="oc_feat"><label class="form-check-label small" for="oc_feat">Featured</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" name="is_trending" value="1" id="oc_trend"><label class="form-check-label small" for="oc_trend">Trending</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" name="is_explicit" value="1" id="oc_exp"><label class="form-check-label small" for="oc_exp">Explicit</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" name="is_premium" value="1" id="oc_prem"><label class="form-check-label small" for="oc_prem">Premium</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" name="allow_download" value="1" id="oc_dl"><label class="form-check-label small" for="oc_dl">Allow Download</label></div>
+                    </div>
+                </div>
+                <div class="border-top p-3 d-flex gap-2 bg-light">
+                    <button type="submit" class="btn btn-primary btn-sm px-4"><i class="ph ph-floppy-disk me-1"></i>Save Track</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="offcanvas">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 @endsection
@@ -292,6 +358,11 @@
     .bg-gradient-info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
 </style>
 <script>
+        // Auto-open offcanvas on validation errors
+        @if(isset($errors) && $errors->any())
+        var el = document.getElementById("form-offcanvas"); if(el) new bootstrap.Offcanvas(el).show();
+        @endif
+
     $(document).ready(function() {
         $('#datatable').DataTable({
             responsive: true,

@@ -28,9 +28,10 @@ class MusicController extends Controller
             ->latest()->paginate(20);
 
         $categories = MusicCategory::where('status', true)->orderBy('name')->get();
+        $albums     = MusicAlbum::where('status', true)->orderBy('title')->get();
         $genres     = MusicTrack::distinct()->pluck('genre')->filter()->values();
 
-        return view('music::backend.tracks.index', compact('tracks', 'categories', 'genres'));
+        return view('music::backend.tracks.index', compact('tracks', 'categories', 'albums', 'genres'));
     }
 
     public function create()
