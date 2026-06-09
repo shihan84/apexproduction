@@ -492,10 +492,11 @@ Route::controller(AudioController::class)->group(function () {
     Route::get('music/categories', 'categories');
     Route::get('music/genre/{genre}', 'byGenre');
     Route::get('music/artist/{artist}', 'byArtist');
-    Route::get('music/{audio}', 'show');
+    Route::get('music/tracks/{id}/lyrics', 'getLyrics');
+    Route::get('music/{id}', 'show');
+    Route::post('music/{id}/play', 'play');
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('music/{audio}/like', 'toggleLike');
-        Route::post('music/{audio}/play', 'play');
+        Route::post('music/{id}/like', 'toggleLike');
     });
 });
 
