@@ -13,77 +13,43 @@ class MusicTrack extends BaseModel
     protected $table = 'music_tracks';
 
     protected $fillable = [
-        'title',
-        'description',
-        'slug',
-        'content_type',
-        'audio_upload_type',
-        'audio_url',
-        'cover_art_url',
-        'duration',
-        'file_size',
-        'format',
-        'bitrate',
-        'language',
-        'audio_quality',
-        'artist',
-        'album',
-        'genre',
-        'release_date',
-        'lyrics',
-        'lyrics_timestamps',
-        'video_preview_url',
-        'video_preview_duration',
-        'music_video_url',
-        'music_video_duration',
-        'spotify_id',
-        'youtube_id',
-        'external_urls',
-        'waveform_data',
-        'copyright_info',
-        'allow_download',
-        'explicit_content',
-        'play_count',
-        'like_count',
-        'download_count',
-        'skip_count',
-        'completion_rate',
-        'play_history',
-        'content_source',
-        'external_metadata',
-        'user_id',
-        'category_id',
-        'album_id',
-        'tags',
-        'is_featured',
-        'is_trending',
-        'status',
-        'created_by',
-        'updated_by',
-        'deleted_by',
+        'title', 'slug', 'isrc',
+        'artist_name', 'album_name', 'album_id', 'artist_id',
+        'description', 'genre', 'sub_genres',
+        'duration', 'track_number', 'release_date',
+        'file_url', 'file_format', 'file_size', 'bitrate', 'sample_rate',
+        'cover_art_url', 'lyrics', 'credits',
+        'copyright_info', 'label', 'price', 'tags',
+        'is_explicit', 'is_featured', 'is_trending', 'is_premium',
+        'allow_download', 'allow_sharing',
+        'play_count', 'like_count', 'share_count', 'download_count',
+        'rating', 'rating_count',
+        'category_id', 'user_id', 'status',
+        'created_by', 'updated_by',
     ];
 
     protected $casts = [
-        'tags' => 'array',
-        'external_metadata' => 'json',
-        'lyrics_timestamps' => 'array',
-        'external_urls' => 'array',
-        'waveform_data' => 'array',
-        'play_history' => 'array',
-        'allow_download' => 'boolean',
-        'explicit_content' => 'boolean',
-        'is_featured' => 'boolean',
-        'is_trending' => 'boolean',
-        'status' => 'boolean',
-        'release_date' => 'date',
-        'play_count' => 'integer',
-        'like_count' => 'integer',
-        'download_count' => 'integer',
-        'skip_count' => 'integer',
-        'completion_rate' => 'decimal:5,2',
-        'file_size' => 'integer',
-        'format' => 'string',
-        'bitrate' => 'integer',
+        'tags'          => 'array',
+        'sub_genres'    => 'array',
+        'credits'       => 'array',
+        'allow_download'=> 'boolean',
+        'allow_sharing' => 'boolean',
+        'is_explicit'   => 'boolean',
+        'is_featured'   => 'boolean',
+        'is_trending'   => 'boolean',
+        'is_premium'    => 'boolean',
+        'status'        => 'boolean',
+        'release_date'  => 'date',
+        'play_count'    => 'integer',
+        'like_count'    => 'integer',
+        'share_count'   => 'integer',
+        'download_count'=> 'integer',
+        'rating_count'  => 'integer',
+        'file_size'     => 'integer',
+        'duration'      => 'integer',
+        'track_number'  => 'integer',
+        'price'         => 'decimal:2',
+        'rating'        => 'decimal:2',
     ];
 
     // Relationships
@@ -102,26 +68,6 @@ class MusicTrack extends BaseModel
         return $this->belongsTo(MusicAlbum::class, 'album_id');
     }
 
-    public function engagements()
-    {
-        return $this->hasMany(MusicEngagementSimple::class, 'track_id');
-    }
-
-    public function likes()
-    {
-        return $this->hasMany(MusicEngagementSimple::class, 'track_id')->where('engagement_type', 'like');
-    }
-
-    public function plays()
-    {
-        return $this->hasMany(MusicEngagementSimple::class, 'track_id')->where('engagement_type', 'play');
-    }
-
-    public function downloads()
-    {
-        return $this->hasMany(MusicEngagementSimple::class, 'track_id')->where('engagement_type', 'download');
-    }
-
     public function playlists()
     {
         return $this->belongsToMany(MusicPlaylist::class, 'music_playlist_track', 'track_id', 'playlist_id')
@@ -130,189 +76,38 @@ class MusicTrack extends BaseModel
     }
 
     // Scopes
-    public function scopeActive($query)
-    {
-        return $query->where('status', true);
-    }
+    public function scopeActive($query)   { return $query->where('status', true); }
+    public function scopeFeatured($query) { return $query->where('is_featured', true); }
+    public function scopeTrending($query) { return $query->where('is_trending', true); }
+    public function scopeByGenre($query, $genre)   { return $query->where('genre', $genre); }
+    public function scopeByArtist($query, $artist) { return $query->where('artist_name', 'like', "%{$artist}%"); }
+    public function scopeByAlbum($query, $albumId) { return $query->where('album_id', $albumId); }
+    public function scopeByCategory($query, $id)   { return $query->where('category_id', $id); }
 
-    public function scopeFeatured($query)
-    {
-        return $query->where('is_featured', true);
-    }
-
-    public function scopeTrending($query)
-    {
-        return $query->where('is_trending', true);
-    }
-
-    public function scopeByCategory($query, $categoryId)
-    {
-        return $query->where('category_id', $categoryId);
-    }
-
-    public function scopeByGenre($query, $genre)
-    {
-        return $query->where('genre', $genre);
-    }
-
-    public function scopeByArtist($query, $artist)
-    {
-        return $query->where('artist_name', $artist);
-    }
-
-    public function scopeByAlbum($query, $albumId)
-    {
-        return $query->where('album_id', $albumId);
-    }
-
-    public function scopeExplicit($query, $explicit = false)
-    {
-        return $query->where('explicit_content', $explicit);
-    }
-
-    // Methods
-    public function incrementPlays()
-    {
-        $this->increment('play_count');
-    }
-
-    public function incrementLikes()
-    {
-        $this->increment('like_count');
-    }
-
-    public function incrementDownloads()
-    {
-        $this->increment('download_count');
-    }
-
-    public function getCoverArtUrlAttribute($value)
-    {
-        return $value ?: asset('images/default-album-art.jpg');
-    }
-
-    public function getAudioUrlAttribute($value)
-    {
-        return $value ?: '';
-    }
+    // Helpers
+    public function incrementPlays()     { $this->increment('play_count'); }
+    public function incrementLikes()     { $this->increment('like_count'); }
+    public function incrementDownloads() { $this->increment('download_count'); }
 
     public function getFormattedDurationAttribute()
     {
-        $duration = $this->duration;
-        if ($duration < 60) {
-            return "0:{$duration}";
-        } else {
-            $minutes = floor($duration / 60);
-            $seconds = $duration % 60;
-            return "{$minutes}:{$seconds}";
-        }
-    }
-
-    public function getEngagementRateAttribute()
-    {
-        $totalEngagement = $this->like_count + $this->download_count;
-        return $this->play_count > 0 ? ($totalEngagement / $this->play_count) * 100 : 0;
-    }
-
-    public function isLikedByUser($userId)
-    {
-        return $this->likes()->where('user_id', $userId)->exists();
-    }
-
-    // Ott Platform inspired methods
-    public function hasSynchronizedLyrics()
-    {
-        return !empty($this->lyrics_timestamps);
-    }
-
-    public function getLyricsAtTime($timestamp)
-    {
-        if (!$this->hasSynchronizedLyrics()) {
-            return $this->lyrics;
-        }
-
-        $timestamps = $this->lyrics_timestamps;
-        $currentLyrics = '';
-
-        foreach ($timestamps as $lyric) {
-            if ($lyric['start'] <= $timestamp && $timestamp <= $lyric['end']) {
-                $currentLyrics = $lyric['text'];
-                break;
-            }
-        }
-
-        return $currentLyrics;
-    }
-
-    public function getWaveformData()
-    {
-        return $this->waveform_data ?? [];
-    }
-
-    public function hasVideoPreview()
-    {
-        return !empty($this->video_preview_url);
-    }
-
-    public function hasMusicVideo()
-    {
-        return !empty($this->music_video_url);
-    }
-
-    public function getExternalUrls()
-    {
-        return $this->external_urls ?? [];
-    }
-
-    public function getSpotifyUrl()
-    {
-        $urls = $this->getExternalUrls();
-        return $urls['spotify'] ?? null;
-    }
-
-    public function getYouTubeUrl()
-    {
-        $urls = $this->getExternalUrls();
-        return $urls['youtube'] ?? null;
-    }
-
-    public function getAppleMusicUrl()
-    {
-        $urls = $this->getExternalUrls();
-        return $urls['apple_music'] ?? null;
+        $d = (int) $this->duration;
+        return sprintf('%d:%02d', floor($d / 60), $d % 60);
     }
 
     public function getFileSizeFormattedAttribute()
     {
         if (!$this->file_size) return null;
-        
-        $bytes = $this->file_size;
-        $units = ['B', 'KB', 'MB', 'GB'];
-        
-        for ($i = 0; $bytes > 1024 && $i < count($units) - 1; $i++) {
-            $bytes /= 1024;
+        $b = $this->file_size;
+        foreach (['B','KB','MB','GB'] as $u) {
+            if ($b < 1024) return round($b, 2) . ' ' . $u;
+            $b /= 1024;
         }
-        
-        return round($bytes, 2) . ' ' . $units[$i];
+        return round($b, 2) . ' TB';
     }
 
-    public function getVideoPreviewDurationFormattedAttribute()
+    public function isLikedByUser($userId)
     {
-        if (!$this->video_preview_duration) return null;
-        
-        $minutes = floor($this->video_preview_duration / 60);
-        $seconds = $this->video_preview_duration % 60;
-        
-        return sprintf('%d:%02d', $minutes, $seconds);
-    }
-
-    public function getMusicVideoDurationFormattedAttribute()
-    {
-        if (!$this->music_video_duration) return null;
-        
-        $minutes = floor($this->music_video_duration / 60);
-        $seconds = $this->music_video_duration % 60;
-        
-        return sprintf('%d:%02d', $minutes, $seconds);
+        return false; // engagement table lookup can be added later
     }
 }

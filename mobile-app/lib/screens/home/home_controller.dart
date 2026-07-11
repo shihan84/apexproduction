@@ -16,6 +16,7 @@ import '../../main.dart';
 import '../../network/core_api.dart';
 import '../../utils/common_base.dart';
 import '../../utils/common_functions.dart';
+import '../dashboard/dashboard_controller.dart';
 
 class HomeController extends BaseController {
   RxBool showCategoryShimmer = false.obs;
@@ -38,6 +39,9 @@ class HomeController extends BaseController {
     initScrollListener(onNextPage: onNextPage);
     showAppUpdateDialog(Get.context!);
     super.onInit();
+    try {
+      Get.find<DashboardController>().scrollControllers['home'] = scrollController;
+    } catch (_) {}
   }
 
   Future<void> init({
@@ -97,7 +101,20 @@ class HomeController extends BaseController {
       () {
         showCategoryShimmer(false);
       },
-    ).catchError((e) {
+    ).catchError((e) async {
+      log('Dashboard API error: $e');
+      // Load cached dashboard data if API fails
+      final cachedJson = await getJsonFromLocal(SharedPreferenceConst.CACHE_DASHBOARD_RESPONSE);
+      if (cachedJson != null) {
+        try {
+          final cachedData = DashboardModel.fromJson(cachedJson);
+          cachedDashboardDetailResponse = DashboardDetailResponse(data: cachedData);
+          await createCategorySections(cachedData, isFirstPage: true);
+          log('Loaded cached dashboard data');
+        } catch (cacheError) {
+          log('Error loading cached dashboard: $cacheError');
+        }
+      }
       showCategoryShimmer(false);
     });
   }
@@ -135,6 +152,7 @@ class HomeController extends BaseController {
         })
         .whenComplete(() => showCategoryShimmer(false))
         .catchError((e) {
+          log('Other dashboard API error: $e');
           isLastPage(false);
           showCategoryShimmer(false);
         });

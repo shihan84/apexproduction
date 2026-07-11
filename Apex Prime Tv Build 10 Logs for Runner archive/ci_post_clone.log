@@ -1,0 +1,582 @@
+2026-05-15T22:43:39.016915939Z	=== Xcode Cloud: ci_post_clone.sh ===
+2026-05-15T22:43:39.017395256Z	Installing Flutter 3.41.6...
+2026-05-15T22:43:39.017744823Z	Cloning into 'flutter_sdk'...
+2026-05-15T22:43:44.051729310Z	Updating files:  27% (4190/15361)
+2026-05-15T22:43:44.052106582Z	Updating files:  28% (4302/15361)
+2026-05-15T22:43:44.052681144Z	Updating files:  29% (4455/15361)
+2026-05-15T22:43:44.052817120Z	Updating files:  30% (4609/15361)
+2026-05-15T22:43:44.052918808Z	Updating files:  31% (4762/15361)
+2026-05-15T22:43:44.052980691Z	Updating files:  32% (4916/15361)
+2026-05-15T22:43:44.053183411Z	Updating files:  33% (5070/15361)
+2026-05-15T22:43:44.053238631Z	Updating files:  34% (5223/15361)
+2026-05-15T22:43:44.053431697Z	Updating files:  35% (5377/15361)
+2026-05-15T22:43:44.053596183Z	Updating files:  36% (5530/15361)
+2026-05-15T22:43:44.053651161Z	Updating files:  37% (5684/15361)
+2026-05-15T22:43:44.053723877Z	Updating files:  38% (5838/15361)
+2026-05-15T22:43:44.053760956Z	Updating files:  39% (5991/15361)
+2026-05-15T22:43:44.053853398Z	Updating files:  40% (6145/15361)
+2026-05-15T22:43:44.053893969Z	Updating files:  41% (6299/15361)
+2026-05-15T22:43:44.053976510Z	Updating files:  42% (6452/15361)
+2026-05-15T22:43:44.054015333Z	Updating files:  43% (6606/15361)
+2026-05-15T22:43:44.054204521Z	Updating files:  44% (6759/15361)
+2026-05-15T22:43:44.054351712Z	Updating files:  45% (6913/15361)
+2026-05-15T22:43:44.054499823Z	Updating files:  46% (7067/15361)
+2026-05-15T22:43:44.067214190Z	Updating files:  47% (7220/15361)
+2026-05-15T22:43:44.100751805Z	Updating files:  48% (7374/15361)
+2026-05-15T22:43:44.133869003Z	Updating files:  49% (7527/15361)
+2026-05-15T22:43:44.168603968Z	Updating files:  50% (7681/15361)
+2026-05-15T22:43:44.201725336Z	Updating files:  51% (7835/15361)
+2026-05-15T22:43:44.235179610Z	Updating files:  52% (7988/15361)
+2026-05-15T22:43:44.269873570Z	Updating files:  53% (8142/15361)
+2026-05-15T22:43:44.303025185Z	Updating files:  54% (8295/15361)
+2026-05-15T22:43:44.336455466Z	Updating files:  55% (8449/15361)
+2026-05-15T22:43:44.368943941Z	Updating files:  56% (8603/15361)
+2026-05-15T22:43:44.401152828Z	Updating files:  57% (8756/15361)
+2026-05-15T22:43:44.435620536Z	Updating files:  58% (8910/15361)
+2026-05-15T22:43:44.435868690Z	Updating files:  58% (8941/15361)
+2026-05-15T22:43:44.468889918Z	Updating files:  59% (9063/15361)
+2026-05-15T22:43:44.504122260Z	Updating files:  60% (9217/15361)
+2026-05-15T22:43:44.536719765Z	Updating files:  61% (9371/15361)
+2026-05-15T22:43:44.552538036Z	Updating files:  62% (9524/15361)
+2026-05-15T22:43:44.620718767Z	Updating files:  63% (9678/15361)
+2026-05-15T22:43:44.655397997Z	Updating files:  64% (9832/15361)
+2026-05-15T22:43:44.721371661Z	Updating files:  65% (9985/15361)
+2026-05-15T22:43:44.738557434Z	Updating files:  66% (10139/15361)
+2026-05-15T22:43:44.805040314Z	Updating files:  67% (10292/15361)
+2026-05-15T22:43:44.812448209Z	Updating files:  68% (10446/15361)
+2026-05-15T22:43:44.878181138Z	Updating files:  69% (10600/15361)
+2026-05-15T22:43:44.886033812Z	Updating files:  70% (10753/15361)
+2026-05-15T22:43:44.921006636Z	Updating files:  71% (10907/15361)
+2026-05-15T22:43:44.985494856Z	Updating files:  72% (11060/15361)
+2026-05-15T22:43:44.993305821Z	Updating files:  73% (11214/15361)
+2026-05-15T22:43:45.059961288Z	Updating files:  74% (11368/15361)
+2026-05-15T22:43:45.068157277Z	Updating files:  75% (11521/15361)
+2026-05-15T22:43:45.134721655Z	Updating files:  76% (11675/15361)
+2026-05-15T22:43:45.172867761Z	Updating files:  77% (11828/15361)
+2026-05-15T22:43:45.236927159Z	Updating files:  78% (11982/15361)
+2026-05-15T22:43:45.284733121Z	Updating files:  79% (12136/15361)
+2026-05-15T22:43:45.336322035Z	Updating files:  80% (12289/15361)
+2026-05-15T22:43:45.370224243Z	Updating files:  81% (12443/15361)
+2026-05-15T22:43:45.403162344Z	Updating files:  82% (12597/15361)
+2026-05-15T22:43:45.436973170Z	Updating files:  83% (12750/15361)
+2026-05-15T22:43:45.437194547Z	Updating files:  83% (12754/15361)
+2026-05-15T22:43:45.469511607Z	Updating files:  84% (12904/15361)
+2026-05-15T22:43:45.534112742Z	Updating files:  85% (13057/15361)
+2026-05-15T22:43:45.537115899Z	Updating files:  86% (13211/15361)
+2026-05-15T22:43:45.570008202Z	Updating files:  87% (13365/15361)
+2026-05-15T22:43:45.636250083Z	Updating files:  88% (13518/15361)
+2026-05-15T22:43:45.636568146Z	Updating files:  89% (13672/15361)
+2026-05-15T22:43:45.703744091Z	Updating files:  90% (13825/15361)
+2026-05-15T22:43:45.836226704Z	Updating files:  91% (13979/15361)
+2026-05-15T22:43:45.870419520Z	Updating files:  92% (14133/15361)
+2026-05-15T22:43:45.903040081Z	Updating files:  93% (14286/15361)
+2026-05-15T22:43:45.935993742Z	Updating files:  94% (14440/15361)
+2026-05-15T22:43:45.970631978Z	Updating files:  95% (14593/15361)
+2026-05-15T22:43:46.034379823Z	Updating files:  96% (14747/15361)
+2026-05-15T22:43:46.050323864Z	Updating files:  97% (14901/15361)
+2026-05-15T22:43:46.084698416Z	Updating files:  98% (15054/15361)
+2026-05-15T22:43:46.118003149Z	Updating files:  99% (15208/15361)
+2026-05-15T22:43:46.151017643Z	Updating files: 100% (15361/15361)
+2026-05-15T22:43:46.151259954Z	Updating files: 100% (15361/15361), done.
+2026-05-15T22:43:46.185388656Z	Precaching Flutter iOS artifacts...
+2026-05-15T22:43:48.217990282Z	Downloading Darwin x64 Dart SDK from Flutter engine 42d3d75a56efe1a2e9902f52dc8006099c45d937...
+2026-05-15T22:43:48.218330382Z	  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-05-15T22:43:48.218751566Z	                                 Dload  Upload   Total   Spent    Left  Speed
+2026-05-15T22:43:48.218882173Z	
+2026-05-15T22:43:48.219864946Z	  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-05-15T22:43:49.247753564Z	  0  204M    0  380k    0     0   637k      0  0:05:28 --:--:--  0:05:28  636k
+2026-05-15T22:43:50.275819715Z	 18  204M   18 36.9M    0     0  24.0M      0  0:00:08  0:00:01  0:00:07 24.0M
+2026-05-15T22:43:51.300972649Z	 31  204M   31 64.5M    0     0  25.4M      0  0:00:08  0:00:02  0:00:06 25.4M
+2026-05-15T22:43:51.819005293Z	 48  204M   48 99.2M    0     0  28.0M      0  0:00:07  0:00:03  0:00:04 28.0M
+2026-05-15T22:43:52.845768153Z	 63  204M   63  130M    0     0  28.7M      0  0:00:07  0:00:04  0:00:03 28.7M
+2026-05-15T22:43:53.872104491Z	 78  204M   78  160M    0     0  29.0M      0  0:00:07  0:00:05  0:00:02 32.4M
+2026-05-15T22:43:53.872324224Z	100  204M  100  204M    0     0  31.1M      0  0:00:06  0:00:06 --:--:-- 33.3M
+2026-05-15T22:43:53.872613311Z	100  204M  100  204M    0     0  31.1M      0  0:00:06  0:00:06 --:--:-- 34.8M
+2026-05-15T22:43:59.907987195Z	Building flutter tool...
+2026-05-15T22:44:00.942141116Z	Resolving dependencies...
+2026-05-15T22:44:01.458589250Z	Downloading packages...
+2026-05-15T22:44:07.491244128Z	Got dependencies.
+2026-05-15T22:44:31.069117724Z	Downloading Material fonts...                                      836ms
+2026-05-15T22:44:32.097558937Z	Downloading Gradle Wrapper...                                       81ms
+2026-05-15T22:44:36.126713072Z	Downloading ios tools...                                            3.8s
+2026-05-15T22:44:45.225817626Z	Downloading ios-profile tools...                                    3.8s
+2026-05-15T22:44:56.267791468Z	Downloading ios-release tools...                                    6.3s
+2026-05-15T22:45:04.310842123Z	Downloading package sky_engine...                                  150ms
+2026-05-15T22:45:04.830056335Z	Downloading package flutter_gpu...                                  75ms
+2026-05-15T22:45:05.128481651Z	Downloading flutter_patched_sdk tools...                           252ms
+2026-05-15T22:45:07.170316478Z	Downloading flutter_patched_sdk_product tools...                   267ms
+2026-05-15T22:45:10.241214112Z	Downloading darwin-x64 tools...                                  1,348ms
+2026-05-15T22:45:13.286395589Z	Downloading libimobiledevice...                                     80ms
+2026-05-15T22:45:13.286936124Z	Downloading libusbmuxd...                                          386ms
+2026-05-15T22:45:13.287025292Z	Downloading libplist...                                             74ms
+2026-05-15T22:45:13.581677649Z	Downloading openssl...                                             189ms
+2026-05-15T22:45:13.917295515Z	Downloading libimobiledeviceglue...                                 73ms
+2026-05-15T22:45:14.088616419Z	Downloading ios-deploy...                                           77ms
+2026-05-15T22:45:14.490409190Z	Downloading darwin-x64/font-subset tools...                        177ms
+2026-05-15T22:45:15.011447132Z	Flutter version:
+2026-05-15T22:45:15.529418119Z	Flutter 3.41.9 • channel stable • http://github.com/flutter/flutter.git
+2026-05-15T22:45:15.530053745Z	Framework • revision 00b0c91f06 (2 weeks ago) • 2026-04-29 10:03:19 -0700
+2026-05-15T22:45:15.530558274Z	Engine • hash 9161402dc0e134b3fb5adee5046b6e84b1a5e1c1 (revision 42d3d75a56) (17 days ago) • 2026-04-28 17:31:55.000Z
+2026-05-15T22:45:15.530970808Z	Tools • Dart 3.11.5 • DevTools 2.54.2
+2026-05-15T22:45:15.531168108Z	Running flutter pub get...
+2026-05-15T22:45:16.049838483Z	Resolving dependencies...
+2026-05-15T22:45:25.098935285Z	Downloading packages...
+2026-05-15T22:45:56.165824607Z	  _fe_analyzer_shared 67.0.0 (100.0.0 available)
+2026-05-15T22:45:56.166172930Z	  _flutterfire_internals 1.3.66 (1.3.71 available)
+2026-05-15T22:45:56.166388240Z	  analyzer 6.4.1 (13.0.0 available)
+2026-05-15T22:45:56.166457510Z	  archive 4.0.7 (4.0.9 available)
+2026-05-15T22:45:56.166551278Z	  async 2.13.0 (2.13.1 available)
+2026-05-15T22:45:56.166621411Z	  audio_session 0.1.25 (0.2.3 available)
+2026-05-15T22:45:56.166663281Z	  build 2.4.1 (4.0.6 available)
+2026-05-15T22:45:56.166956343Z	> characters 1.4.1 (was 1.4.0)
+2026-05-15T22:45:56.167057944Z	  cli_util 0.4.2 (0.5.1 available)
+2026-05-15T22:45:56.167268933Z	  connectivity_plus 6.1.5 (7.1.1 available)
+2026-05-15T22:45:56.167373756Z	  connectivity_plus_platform_interface 2.0.1 (2.1.0 available)
+2026-05-15T22:45:56.167581732Z	  dart_style 2.3.6 (3.1.9 available)
+2026-05-15T22:45:56.167668148Z	  device_info_plus 12.3.0 (13.1.0 available)
+2026-05-15T22:45:56.167835671Z	  device_info_plus_platform_interface 7.0.3 (8.1.0 available)
+2026-05-15T22:45:56.167948748Z	  dio 5.9.1 (5.9.2 available)
+2026-05-15T22:45:56.168139081Z	  dio_web_adapter 2.1.1 (2.1.2 available)
+2026-05-15T22:45:56.168200645Z	  firebase_auth 6.1.4 (6.5.1 available)
+2026-05-15T22:45:56.168308907Z	  firebase_auth_platform_interface 8.1.6 (9.0.1 available)
+2026-05-15T22:45:56.168358511Z	  firebase_auth_web 6.1.2 (6.2.1 available)
+2026-05-15T22:45:56.169392979Z	  firebase_core 4.4.0 (4.9.0 available)
+2026-05-15T22:45:56.169566306Z	  firebase_core_platform_interface 6.0.2 (7.0.1 available)
+2026-05-15T22:45:56.170371480Z	  firebase_core_web 3.4.0 (3.7.0 available)
+2026-05-15T22:45:56.170433662Z	  firebase_crashlytics 5.0.7 (5.2.2 available)
+2026-05-15T22:45:56.170512071Z	  firebase_crashlytics_platform_interface 3.8.17 (3.8.22 available)
+2026-05-15T22:45:56.170547947Z	  firebase_messaging 16.1.1 (16.2.2 available)
+2026-05-15T22:45:56.170661612Z	  firebase_messaging_platform_interface 4.7.6 (4.7.11 available)
+2026-05-15T22:45:56.170764280Z	  firebase_messaging_web 4.1.2 (4.1.7 available)
+2026-05-15T22:45:56.170838082Z	  flutter_chrome_cast 1.4.1 (1.4.6 available)
+2026-05-15T22:45:56.170898559Z	  flutter_custom_tabs 2.4.1 (2.5.0 available)
+2026-05-15T22:45:56.171309837Z	  flutter_custom_tabs_android 2.3.1 (2.4.0 available)
+2026-05-15T22:45:56.171405910Z	  flutter_custom_tabs_ios 2.4.1 (2.5.0 available)
+2026-05-15T22:45:56.171536197Z	  flutter_custom_tabs_platform_interface 2.3.0 (2.4.0 available)
+2026-05-15T22:45:56.171682392Z	  flutter_custom_tabs_web 2.3.0 (2.4.0 available)
+2026-05-15T22:45:56.171972128Z	  flutter_dotenv 6.0.0 (6.0.1 available)
+2026-05-15T22:45:56.172055606Z	  flutter_local_notifications 19.5.0 (21.0.0 available)
+2026-05-15T22:45:56.172195015Z	  flutter_local_notifications_linux 6.0.0 (8.0.0 available)
+2026-05-15T22:45:56.172278122Z	  flutter_local_notifications_platform_interface 9.1.0 (11.0.0 available)
+2026-05-15T22:45:56.172473762Z	  flutter_local_notifications_windows 1.0.3 (3.0.0 available)
+2026-05-15T22:45:56.172588294Z	  flutter_plugin_android_lifecycle 2.0.33 (2.0.34 available)
+2026-05-15T22:45:56.172746073Z	  flutter_secure_storage 9.2.4 (10.2.0 available)
+2026-05-15T22:45:56.172801510Z	  flutter_secure_storage_linux 1.2.3 (3.0.0 available)
+2026-05-15T22:45:56.173000374Z	  flutter_secure_storage_macos 3.1.3 (4.0.0 available)
+2026-05-15T22:45:56.173109935Z	  flutter_secure_storage_platform_interface 1.1.2 (2.0.1 available)
+2026-05-15T22:45:56.173396691Z	  flutter_secure_storage_web 1.2.1 (2.1.1 available)
+2026-05-15T22:45:56.173487399Z	  flutter_secure_storage_windows 3.1.2 (4.2.1 available)
+2026-05-15T22:45:56.173760198Z	  flutter_stripe 12.2.0 (12.6.0 available)
+2026-05-15T22:45:56.173831295Z	  flutter_svg 2.2.3 (2.3.0 available)
+2026-05-15T22:45:56.174152618Z	  fluttertoast 8.2.14 (9.0.0 available)
+2026-05-15T22:45:56.174256197Z	  get_it 9.2.0 (9.2.1 available)
+2026-05-15T22:45:56.174489835Z	  google_mobile_ads 7.0.0 (8.0.0 available)
+2026-05-15T22:45:56.174611981Z	  google_sign_in_android 7.2.7 (7.2.10 available)
+2026-05-15T22:45:56.174748580Z	  google_sign_in_ios 6.2.5 (6.3.0 available)
+2026-05-15T22:45:56.174905511Z	  google_sign_in_web 1.1.0 (1.1.3 available)
+2026-05-15T22:45:56.175134625Z	  image 4.7.2 (4.8.0 available)
+2026-05-15T22:45:56.175222928Z	  image_picker 1.2.1 (1.2.2 available)
+2026-05-15T22:45:56.175424256Z	  image_picker_android 0.8.13+13 (0.8.13+17 available)
+2026-05-15T22:45:56.175521117Z	  image_picker_ios 0.8.13+3 (0.8.13+6 available)
+2026-05-15T22:45:56.175800085Z	  js 0.6.7 (0.7.2 available)
+2026-05-15T22:45:56.175889520Z	  json_annotation 4.10.0 (4.12.0 available)
+2026-05-15T22:45:56.176041544Z	  just_audio 0.9.46 (0.10.5 available)
+2026-05-15T22:45:56.176236356Z	  lottie 3.3.2 (3.3.3 available)
+2026-05-15T22:45:56.176346534Z	> matcher 0.12.19 (was 0.12.17) (0.12.20 available)
+2026-05-15T22:45:56.176494631Z	> material_color_utilities 0.13.0 (was 0.11.1)
+2026-05-15T22:45:56.176635841Z	> meta 1.17.0 (was 1.16.0) (1.18.2 available)
+2026-05-15T22:45:56.176726593Z	  mobile_scanner 7.1.4 (7.2.0 available)
+2026-05-15T22:45:56.176867069Z	  nb_utils 7.1.8 (7.2.0 available)
+2026-05-15T22:45:56.176934221Z	  package_info_plus 9.0.0 (10.1.0 available)
+2026-05-15T22:45:56.176969426Z	  package_info_plus_platform_interface 3.2.1 (4.1.0 available)
+2026-05-15T22:45:56.177039339Z	  path_provider_android 2.2.22 (2.3.1 available)
+2026-05-15T22:45:56.177097023Z	  path_provider_foundation 2.5.1 (2.6.0 available)
+2026-05-15T22:45:56.177135267Z	  petitparser 7.0.1 (7.0.2 available)
+2026-05-15T22:45:56.177199160Z	  playx_core 0.7.4 (1.0.0 available)
+2026-05-15T22:45:56.177237087Z	  playx_network 0.6.0 (1.0.0 available)
+2026-05-15T22:45:56.177322901Z	  playx_version_update 1.0.1 (1.1.0 available)
+2026-05-15T22:45:56.177362713Z	  pointycastle 3.9.1 (4.0.0 available)
+2026-05-15T22:45:56.177499709Z	  posix 6.0.3 (6.5.0 available)
+2026-05-15T22:45:56.177532876Z	  purchases_flutter 9.11.0 (10.1.0 available)
+2026-05-15T22:45:56.177652226Z	  razorpay_flutter 1.4.1 (1.4.5 available)
+2026-05-15T22:45:56.177706938Z	  sentry 9.12.0 (9.20.0 available)
+2026-05-15T22:45:56.177812900Z	  sentry_dio 9.12.0 (9.20.0 available)
+2026-05-15T22:45:56.177921851Z	  share_plus 12.0.1 (13.1.0 available)
+2026-05-15T22:45:56.177986201Z	  share_plus_platform_interface 6.1.0 (7.1.0 available)
+2026-05-15T22:45:56.178194171Z	  shared_preferences 2.5.4 (2.5.5 available)
+2026-05-15T22:45:56.178263168Z	  shared_preferences_android 2.4.20 (2.4.23 available)
+2026-05-15T22:45:56.178387725Z	  shared_preferences_platform_interface 2.4.1 (2.4.2 available)
+2026-05-15T22:45:56.178446373Z	  source_gen 1.5.0 (4.2.3 available)
+2026-05-15T22:45:56.178599626Z	  source_helper 1.3.5 (1.3.12 available)
+2026-05-15T22:45:56.178640419Z	  sqflite 2.4.2 (2.4.2+1 available)
+2026-05-15T22:45:56.178702167Z	  sqflite_android 2.4.2+2 (2.4.2+3 available)
+2026-05-15T22:45:56.178739952Z	  sqflite_common 2.5.6 (2.5.7 available)
+2026-05-15T22:45:56.178806162Z	  stripe_android 12.2.0 (12.6.0 available)
+2026-05-15T22:45:56.178847751Z	  stripe_ios 12.2.0 (12.6.0 available)
+2026-05-15T22:45:56.178959591Z	  stripe_platform_interface 12.2.0 (12.6.0 available)
+2026-05-15T22:45:56.179005930Z	  subtitle 0.1.4 (0.2.0 available)
+2026-05-15T22:45:56.179170543Z	  synchronized 3.4.0 (3.4.0+1 available)
+2026-05-15T22:45:56.179307874Z	  talker 5.1.13 (5.1.17 available)
+2026-05-15T22:45:56.179368446Z	  talker_dio_logger 5.1.13 (5.1.17 available)
+2026-05-15T22:45:56.179491112Z	  talker_logger 5.1.13 (5.1.17 available)
+2026-05-15T22:45:56.179547706Z	> test_api 0.7.10 (was 0.7.6) (0.7.12 available)
+2026-05-15T22:45:56.179635590Z	  timezone 0.10.1 (0.11.0 available)
+2026-05-15T22:45:56.179688965Z	  universal_html 2.2.5 (2.3.0 available)
+2026-05-15T22:45:56.179903468Z	  universal_io 2.2.3 (2.3.1 available)
+2026-05-15T22:45:56.179986399Z	  url_launcher_android 6.3.28 (6.3.29 available)
+2026-05-15T22:45:56.180111956Z	  url_launcher_ios 6.3.6 (6.4.1 available)
+2026-05-15T22:45:56.180199387Z	  url_launcher_web 2.4.1 (2.4.3 available)
+2026-05-15T22:45:56.180242361Z	  uuid 4.5.2 (4.5.3 available)
+2026-05-15T22:45:56.180358161Z	  vector_graphics 1.1.19 (1.2.1 available)
+2026-05-15T22:45:56.180517901Z	  vector_graphics_compiler 1.1.20 (1.2.2 available)
+2026-05-15T22:45:56.180662848Z	  vector_math 2.2.0 (2.3.0 available)
+2026-05-15T22:45:56.180717696Z	  video_player 2.10.1 (2.11.1 available)
+2026-05-15T22:45:56.180861468Z	  video_player_android 2.9.1 (2.9.5 available)
+2026-05-15T22:45:56.180903112Z	  video_player_avfoundation 2.8.9 (2.9.6 available)
+2026-05-15T22:45:56.180962501Z	  video_player_platform_interface 6.6.0 (6.7.0 available)
+2026-05-15T22:45:56.181071921Z	  vm_service 15.0.2 (15.2.0 available)
+2026-05-15T22:45:56.181122575Z	  wakelock_plus 1.4.0 (1.6.0 available)
+2026-05-15T22:45:56.181183052Z	  wakelock_plus_platform_interface 1.3.0 (1.5.1 available)
+2026-05-15T22:45:56.181213699Z	  webview_flutter_android 4.10.11 (4.12.0 available)
+2026-05-15T22:45:56.181264440Z	  webview_flutter_platform_interface 2.14.0 (2.15.1 available)
+2026-05-15T22:45:56.181293931Z	  webview_flutter_wkwebview 3.23.6 (3.25.1 available)
+2026-05-15T22:45:56.181339768Z	  win32 5.15.0 (6.2.0 available)
+2026-05-15T22:45:56.181369011Z	  win32_registry 2.1.0 (3.0.3 available)
+2026-05-15T22:45:56.181437281Z	  worker_manager 7.2.7 (7.2.9 available)
+2026-05-15T22:45:56.181468520Z	  xml 6.6.1 (7.0.1 available)
+2026-05-15T22:45:56.181633112Z	  youtube_explode_dart 2.5.3 (3.1.0 available)
+2026-05-15T22:45:56.181670119Z	Changed 5 dependencies!
+2026-05-15T22:45:56.181747588Z	122 packages have newer versions incompatible with dependency constraints.
+2026-05-15T22:45:56.181812713Z	Try `flutter pub outdated` for more information.
+2026-05-15T22:45:57.203314484Z	Installing CocoaPods dependencies...
+2026-05-15T22:46:02.249557688Z	Updating local specs repositories
+2026-05-15T22:46:02.249783498Z	Adding spec repo `trunk` with CDN `https://cdn.cocoapods.org/`
+2026-05-15T22:46:02.250060254Z	Analyzing dependencies
+2026-05-15T22:46:02.250159391Z	firebase_auth: Using Firebase SDK version '12.8.0' defined in 'firebase_core'
+2026-05-15T22:46:02.250268169Z	firebase_core: Using Firebase SDK version '12.8.0' defined in 'firebase_core'
+2026-05-15T22:46:04.289016280Z	Ignoring ffi-1.17.2 because its extensions are not built. Try: gem pristine ffi --version 1.17.2
+2026-05-15T22:46:04.812785191Z	firebase_crashlytics: Using Firebase SDK version '12.8.0' defined in 'firebase_core'
+2026-05-15T22:46:04.813240778Z	firebase_messaging: Using Firebase SDK version '12.8.0' defined in 'firebase_core'
+2026-05-15T22:46:06.853298434Z	mkdir -p .cache/xcframeworks
+2026-05-15T22:46:06.853477638Z	rm -f .cache/xcframeworks/*.tmp .cache/xcframeworks/*-ios-universal.tar.gz
+2026-05-15T22:46:06.853803666Z	curl -L \
+2026-05-15T22:46:06.853921595Z			https://github.com/media-kit/libmpv-darwin-build/releases/download/v0.6.0/libmpv-xcframeworks_v0.6.0_ios-universal-video-default.tar.gz \
+2026-05-15T22:46:06.854181175Z			-o .cache/xcframeworks/libmpv.tar.gz.tmp
+2026-05-15T22:46:06.854436380Z	  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-05-15T22:46:06.854833869Z	                                 Dload  Upload   Total   Spent    Left  Speed
+2026-05-15T22:46:06.854966330Z	
+2026-05-15T22:46:06.855018818Z	  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-05-15T22:46:06.855179886Z	  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-05-15T22:46:06.855851229Z	
+2026-05-15T22:46:06.856124621Z	100 18.8M  100 18.8M    0     0  28.7M      0 --:--:-- --:--:-- --:--:-- 28.7M
+2026-05-15T22:46:06.856169804Z	shasum -a 256 -c <<< 'a95bc18508af26136b8a408341c05b5585d644ec013f00ac07db09d2e28d36ae  .cache/xcframeworks/libmpv.tar.gz.tmp'
+2026-05-15T22:46:06.861119258Z	.cache/xcframeworks/libmpv.tar.gz.tmp: OK
+2026-05-15T22:46:06.861881185Z	mv .cache/xcframeworks/libmpv.tar.gz.tmp .cache/xcframeworks/libmpv-xcframeworks-v0.6.0-ios-universal.tar.gz
+2026-05-15T22:46:06.865955746Z	touch .cache/xcframeworks/libmpv-xcframeworks-v0.6.0-ios-universal.tar.gz
+2026-05-15T22:46:06.869680797Z	rm -f .cache/xcframeworks/libmpv-xcframeworks-ios-universal.tar.gz
+2026-05-15T22:46:06.878898630Z	ln -s libmpv-xcframeworks-v0.6.0-ios-universal.tar.gz .cache/xcframeworks/libmpv-xcframeworks-ios-universal.tar.gz
+2026-05-15T22:46:06.879685834Z	mkdir -p Frameworks
+2026-05-15T22:46:06.883851697Z	rm -rf Frameworks/*.xcframework
+2026-05-15T22:46:06.903488049Z	tar -xvf .cache/xcframeworks/libmpv-xcframeworks-ios-universal.tar.gz --strip-components 1 -C Frameworks
+2026-05-15T22:46:06.903721882Z	x Mbedx509.xcframework/
+2026-05-15T22:46:06.905237810Z	x Freetype.xcframework/
+2026-05-15T22:46:06.905390341Z	x Avformat.xcframework/
+2026-05-15T22:46:06.905789297Z	x Fribidi.xcframework/
+2026-05-15T22:46:06.905850080Z	x Mbedtls.xcframework/
+2026-05-15T22:46:06.906079445Z	x Uchardet.xcframework/
+2026-05-15T22:46:06.906150654Z	x Png16.xcframework/
+2026-05-15T22:46:06.906254993Z	x Dav1d.xcframework/
+2026-05-15T22:46:06.906301323Z	x Mbedcrypto.xcframework/
+2026-05-15T22:46:06.906336194Z	x Harfbuzz.xcframework/
+2026-05-15T22:46:06.906500498Z	x Swresample.xcframework/
+2026-05-15T22:46:06.906740841Z	x Avfilter.xcframework/
+2026-05-15T22:46:06.906880906Z	x Avutil.xcframework/
+2026-05-15T22:46:06.907239337Z	x Swscale.xcframework/
+2026-05-15T22:46:06.907313950Z	x Xml2.xcframework/
+2026-05-15T22:46:06.907497800Z	x Avcodec.xcframework/
+2026-05-15T22:46:06.907547932Z	x Ass.xcframework/
+2026-05-15T22:46:06.907765674Z	x Mpv.xcframework/
+2026-05-15T22:46:06.907862467Z	x Mpv.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:06.907996048Z	x Mpv.xcframework/ios-arm64/
+2026-05-15T22:46:06.908056116Z	x Mpv.xcframework/Info.plist
+2026-05-15T22:46:06.908136556Z	x Mpv.xcframework/ios-arm64/Mpv.framework/
+2026-05-15T22:46:06.915111718Z	x Mpv.xcframework/ios-arm64/Mpv.framework/Mpv
+2026-05-15T22:46:06.915263277Z	x Mpv.xcframework/ios-arm64/Mpv.framework/Info.plist
+2026-05-15T22:46:06.915560957Z	x Mpv.xcframework/ios-arm64_x86_64-simulator/Mpv.framework/
+2026-05-15T22:46:06.934180326Z	x Mpv.xcframework/ios-arm64_x86_64-simulator/Mpv.framework/Mpv
+2026-05-15T22:46:06.934702886Z	x Mpv.xcframework/ios-arm64_x86_64-simulator/Mpv.framework/Info.plist
+2026-05-15T22:46:06.934774720Z	x Ass.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:06.934952867Z	x Ass.xcframework/ios-arm64/
+2026-05-15T22:46:06.934999180Z	x Ass.xcframework/Info.plist
+2026-05-15T22:46:06.935376821Z	x Ass.xcframework/ios-arm64/Ass.framework/
+2026-05-15T22:46:06.935586297Z	x Ass.xcframework/ios-arm64/Ass.framework/Ass
+2026-05-15T22:46:06.935766673Z	x Ass.xcframework/ios-arm64/Ass.framework/Info.plist
+2026-05-15T22:46:06.935822609Z	x Ass.xcframework/ios-arm64_x86_64-simulator/Ass.framework/
+2026-05-15T22:46:06.936040276Z	x Ass.xcframework/ios-arm64_x86_64-simulator/Ass.framework/Ass
+2026-05-15T22:46:06.936190449Z	x Ass.xcframework/ios-arm64_x86_64-simulator/Ass.framework/Info.plist
+2026-05-15T22:46:06.936416973Z	x Avcodec.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:06.936507721Z	x Avcodec.xcframework/ios-arm64/
+2026-05-15T22:46:06.936614531Z	x Avcodec.xcframework/Info.plist
+2026-05-15T22:46:06.936656436Z	x Avcodec.xcframework/ios-arm64/Avcodec.framework/
+2026-05-15T22:46:06.953557285Z	x Avcodec.xcframework/ios-arm64/Avcodec.framework/Avcodec
+2026-05-15T22:46:06.954012321Z	x Avcodec.xcframework/ios-arm64/Avcodec.framework/Info.plist
+2026-05-15T22:46:06.954399004Z	x Avcodec.xcframework/ios-arm64_x86_64-simulator/Avcodec.framework/
+2026-05-15T22:46:06.972549675Z	x Avcodec.xcframework/ios-arm64_x86_64-simulator/Avcodec.framework/Avcodec
+2026-05-15T22:46:06.973029235Z	x Avcodec.xcframework/ios-arm64_x86_64-simulator/Avcodec.framework/Info.plist
+2026-05-15T22:46:06.973172397Z	x Xml2.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:06.973441846Z	x Xml2.xcframework/ios-arm64/
+2026-05-15T22:46:06.973713498Z	x Xml2.xcframework/Info.plist
+2026-05-15T22:46:06.973850769Z	x Xml2.xcframework/ios-arm64/Xml2.framework/
+2026-05-15T22:46:06.981626217Z	x Xml2.xcframework/ios-arm64/Xml2.framework/Xml2
+2026-05-15T22:46:06.981817361Z	x Xml2.xcframework/ios-arm64/Xml2.framework/Info.plist
+2026-05-15T22:46:06.982056984Z	x Xml2.xcframework/ios-arm64_x86_64-simulator/Xml2.framework/
+2026-05-15T22:46:07.001271265Z	x Xml2.xcframework/ios-arm64_x86_64-simulator/Xml2.framework/Xml2
+2026-05-15T22:46:07.001465624Z	x Xml2.xcframework/ios-arm64_x86_64-simulator/Xml2.framework/Info.plist
+2026-05-15T22:46:07.001940474Z	x Swscale.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.002002815Z	x Swscale.xcframework/ios-arm64/
+2026-05-15T22:46:07.002157184Z	x Swscale.xcframework/Info.plist
+2026-05-15T22:46:07.002244811Z	x Swscale.xcframework/ios-arm64/Swscale.framework/
+2026-05-15T22:46:07.002420846Z	x Swscale.xcframework/ios-arm64/Swscale.framework/Swscale
+2026-05-15T22:46:07.002585163Z	x Swscale.xcframework/ios-arm64/Swscale.framework/Info.plist
+2026-05-15T22:46:07.002728807Z	x Swscale.xcframework/ios-arm64_x86_64-simulator/Swscale.framework/
+2026-05-15T22:46:07.002814789Z	x Swscale.xcframework/ios-arm64_x86_64-simulator/Swscale.framework/Swscale
+2026-05-15T22:46:07.003076497Z	x Swscale.xcframework/ios-arm64_x86_64-simulator/Swscale.framework/Info.plist
+2026-05-15T22:46:07.003343982Z	x Avutil.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.003426819Z	x Avutil.xcframework/ios-arm64/
+2026-05-15T22:46:07.003564829Z	x Avutil.xcframework/Info.plist
+2026-05-15T22:46:07.003617757Z	x Avutil.xcframework/ios-arm64/Avutil.framework/
+2026-05-15T22:46:07.003695163Z	x Avutil.xcframework/ios-arm64/Avutil.framework/Avutil
+2026-05-15T22:46:07.003735234Z	x Avutil.xcframework/ios-arm64/Avutil.framework/Info.plist
+2026-05-15T22:46:07.003866154Z	x Avutil.xcframework/ios-arm64_x86_64-simulator/Avutil.framework/
+2026-05-15T22:46:07.010155215Z	x Avutil.xcframework/ios-arm64_x86_64-simulator/Avutil.framework/Avutil
+2026-05-15T22:46:07.010305149Z	x Avutil.xcframework/ios-arm64_x86_64-simulator/Avutil.framework/Info.plist
+2026-05-15T22:46:07.010580675Z	x Avfilter.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.010632015Z	x Avfilter.xcframework/ios-arm64/
+2026-05-15T22:46:07.010674486Z	x Avfilter.xcframework/Info.plist
+2026-05-15T22:46:07.010708993Z	x Avfilter.xcframework/ios-arm64/Avfilter.framework/
+2026-05-15T22:46:07.010739562Z	x Avfilter.xcframework/ios-arm64/Avfilter.framework/Avfilter
+2026-05-15T22:46:07.010770657Z	x Avfilter.xcframework/ios-arm64/Avfilter.framework/Info.plist
+2026-05-15T22:46:07.010942563Z	x Avfilter.xcframework/ios-arm64_x86_64-simulator/Avfilter.framework/
+2026-05-15T22:46:07.011053651Z	x Avfilter.xcframework/ios-arm64_x86_64-simulator/Avfilter.framework/Avfilter
+2026-05-15T22:46:07.011335991Z	x Avfilter.xcframework/ios-arm64_x86_64-simulator/Avfilter.framework/Info.plist
+2026-05-15T22:46:07.011476443Z	x Swresample.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.011626265Z	x Swresample.xcframework/ios-arm64/
+2026-05-15T22:46:07.011711609Z	x Swresample.xcframework/Info.plist
+2026-05-15T22:46:07.011867954Z	x Swresample.xcframework/ios-arm64/Swresample.framework/
+2026-05-15T22:46:07.011941050Z	x Swresample.xcframework/ios-arm64/Swresample.framework/Swresample
+2026-05-15T22:46:07.012440822Z	x Swresample.xcframework/ios-arm64/Swresample.framework/Info.plist
+2026-05-15T22:46:07.012535816Z	x Swresample.xcframework/ios-arm64_x86_64-simulator/Swresample.framework/
+2026-05-15T22:46:07.012751717Z	x Swresample.xcframework/ios-arm64_x86_64-simulator/Swresample.framework/Swresample
+2026-05-15T22:46:07.013563853Z	x Swresample.xcframework/ios-arm64_x86_64-simulator/Swresample.framework/Info.plist
+2026-05-15T22:46:07.013640444Z	x Harfbuzz.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.013875980Z	x Harfbuzz.xcframework/ios-arm64/
+2026-05-15T22:46:07.013920372Z	x Harfbuzz.xcframework/Info.plist
+2026-05-15T22:46:07.014042727Z	x Harfbuzz.xcframework/ios-arm64/Harfbuzz.framework/
+2026-05-15T22:46:07.033334366Z	x Harfbuzz.xcframework/ios-arm64/Harfbuzz.framework/Harfbuzz
+2026-05-15T22:46:07.033522003Z	x Harfbuzz.xcframework/ios-arm64/Harfbuzz.framework/Info.plist
+2026-05-15T22:46:07.033961480Z	x Harfbuzz.xcframework/ios-arm64_x86_64-simulator/Harfbuzz.framework/
+2026-05-15T22:46:07.072139698Z	x Harfbuzz.xcframework/ios-arm64_x86_64-simulator/Harfbuzz.framework/Harfbuzz
+2026-05-15T22:46:07.072306957Z	x Harfbuzz.xcframework/ios-arm64_x86_64-simulator/Harfbuzz.framework/Info.plist
+2026-05-15T22:46:07.072698451Z	x Mbedcrypto.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.072769739Z	x Mbedcrypto.xcframework/ios-arm64/
+2026-05-15T22:46:07.073185232Z	x Mbedcrypto.xcframework/Info.plist
+2026-05-15T22:46:07.073237620Z	x Mbedcrypto.xcframework/ios-arm64/Mbedcrypto.framework/
+2026-05-15T22:46:07.073312319Z	x Mbedcrypto.xcframework/ios-arm64/Mbedcrypto.framework/Mbedcrypto
+2026-05-15T22:46:07.073353597Z	x Mbedcrypto.xcframework/ios-arm64/Mbedcrypto.framework/Info.plist
+2026-05-15T22:46:07.073459601Z	x Mbedcrypto.xcframework/ios-arm64_x86_64-simulator/Mbedcrypto.framework/
+2026-05-15T22:46:07.073517869Z	x Mbedcrypto.xcframework/ios-arm64_x86_64-simulator/Mbedcrypto.framework/Mbedcrypto
+2026-05-15T22:46:07.074367273Z	x Mbedcrypto.xcframework/ios-arm64_x86_64-simulator/Mbedcrypto.framework/Info.plist
+2026-05-15T22:46:07.074513354Z	x Dav1d.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.074716083Z	x Dav1d.xcframework/ios-arm64/
+2026-05-15T22:46:07.075110398Z	x Dav1d.xcframework/Info.plist
+2026-05-15T22:46:07.075276837Z	x Dav1d.xcframework/ios-arm64/Dav1d.framework/
+2026-05-15T22:46:07.075329529Z	x Dav1d.xcframework/ios-arm64/Dav1d.framework/Dav1d
+2026-05-15T22:46:07.075650260Z	x Dav1d.xcframework/ios-arm64/Dav1d.framework/Info.plist
+2026-05-15T22:46:07.075704985Z	x Dav1d.xcframework/ios-arm64_x86_64-simulator/Dav1d.framework/
+2026-05-15T22:46:07.082846959Z	x Dav1d.xcframework/ios-arm64_x86_64-simulator/Dav1d.framework/Dav1d
+2026-05-15T22:46:07.083048650Z	x Dav1d.xcframework/ios-arm64_x86_64-simulator/Dav1d.framework/Info.plist
+2026-05-15T22:46:07.083341516Z	x Png16.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.083438326Z	x Png16.xcframework/ios-arm64/
+2026-05-15T22:46:07.083620868Z	x Png16.xcframework/Info.plist
+2026-05-15T22:46:07.083747278Z	x Png16.xcframework/ios-arm64/Png16.framework/
+2026-05-15T22:46:07.083791762Z	x Png16.xcframework/ios-arm64/Png16.framework/Png16
+2026-05-15T22:46:07.083863785Z	x Png16.xcframework/ios-arm64/Png16.framework/Info.plist
+2026-05-15T22:46:07.083914904Z	x Png16.xcframework/ios-arm64_x86_64-simulator/Png16.framework/
+2026-05-15T22:46:07.086824663Z	x Png16.xcframework/ios-arm64_x86_64-simulator/Png16.framework/Png16
+2026-05-15T22:46:07.086929587Z	x Png16.xcframework/ios-arm64_x86_64-simulator/Png16.framework/Info.plist
+2026-05-15T22:46:07.087046992Z	x Uchardet.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.087162850Z	x Uchardet.xcframework/ios-arm64/
+2026-05-15T22:46:07.087302495Z	x Uchardet.xcframework/Info.plist
+2026-05-15T22:46:07.087438951Z	x Uchardet.xcframework/ios-arm64/Uchardet.framework/
+2026-05-15T22:46:07.087477308Z	x Uchardet.xcframework/ios-arm64/Uchardet.framework/Uchardet
+2026-05-15T22:46:07.087635460Z	x Uchardet.xcframework/ios-arm64/Uchardet.framework/Info.plist
+2026-05-15T22:46:07.087726850Z	x Uchardet.xcframework/ios-arm64_x86_64-simulator/Uchardet.framework/
+2026-05-15T22:46:07.088932855Z	x Uchardet.xcframework/ios-arm64_x86_64-simulator/Uchardet.framework/Uchardet
+2026-05-15T22:46:07.090344070Z	x Uchardet.xcframework/ios-arm64_x86_64-simulator/Uchardet.framework/Info.plist
+2026-05-15T22:46:07.090430350Z	x Mbedtls.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.090607871Z	x Mbedtls.xcframework/ios-arm64/
+2026-05-15T22:46:07.090701298Z	x Mbedtls.xcframework/Info.plist
+2026-05-15T22:46:07.090857246Z	x Mbedtls.xcframework/ios-arm64/Mbedtls.framework/
+2026-05-15T22:46:07.091594338Z	x Mbedtls.xcframework/ios-arm64/Mbedtls.framework/Mbedtls
+2026-05-15T22:46:07.091702604Z	x Mbedtls.xcframework/ios-arm64/Mbedtls.framework/Info.plist
+2026-05-15T22:46:07.093239433Z	x Mbedtls.xcframework/ios-arm64_x86_64-simulator/Mbedtls.framework/
+2026-05-15T22:46:07.094062370Z	x Mbedtls.xcframework/ios-arm64_x86_64-simulator/Mbedtls.framework/Mbedtls
+2026-05-15T22:46:07.095281933Z	x Mbedtls.xcframework/ios-arm64_x86_64-simulator/Mbedtls.framework/Info.plist
+2026-05-15T22:46:07.095354382Z	x Fribidi.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.095522951Z	x Fribidi.xcframework/ios-arm64/
+2026-05-15T22:46:07.095627685Z	x Fribidi.xcframework/Info.plist
+2026-05-15T22:46:07.095862341Z	x Fribidi.xcframework/ios-arm64/Fribidi.framework/
+2026-05-15T22:46:07.099462840Z	x Fribidi.xcframework/ios-arm64/Fribidi.framework/Fribidi
+2026-05-15T22:46:07.099638787Z	x Fribidi.xcframework/ios-arm64/Fribidi.framework/Info.plist
+2026-05-15T22:46:07.100046114Z	x Fribidi.xcframework/ios-arm64_x86_64-simulator/Fribidi.framework/
+2026-05-15T22:46:07.100245048Z	x Fribidi.xcframework/ios-arm64_x86_64-simulator/Fribidi.framework/Fribidi
+2026-05-15T22:46:07.100431102Z	x Fribidi.xcframework/ios-arm64_x86_64-simulator/Fribidi.framework/Info.plist
+2026-05-15T22:46:07.100603770Z	x Avformat.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.100826637Z	x Avformat.xcframework/ios-arm64/
+2026-05-15T22:46:07.100880187Z	x Avformat.xcframework/Info.plist
+2026-05-15T22:46:07.101046461Z	x Avformat.xcframework/ios-arm64/Avformat.framework/
+2026-05-15T22:46:07.103314095Z	x Avformat.xcframework/ios-arm64/Avformat.framework/Avformat
+2026-05-15T22:46:07.103418948Z	x Avformat.xcframework/ios-arm64/Avformat.framework/Info.plist
+2026-05-15T22:46:07.103539385Z	x Avformat.xcframework/ios-arm64_x86_64-simulator/Avformat.framework/
+2026-05-15T22:46:07.112308164Z	x Avformat.xcframework/ios-arm64_x86_64-simulator/Avformat.framework/Avformat
+2026-05-15T22:46:07.112619066Z	x Avformat.xcframework/ios-arm64_x86_64-simulator/Avformat.framework/Info.plist
+2026-05-15T22:46:07.112671975Z	x Freetype.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.112973121Z	x Freetype.xcframework/ios-arm64/
+2026-05-15T22:46:07.113019869Z	x Freetype.xcframework/Info.plist
+2026-05-15T22:46:07.113146067Z	x Freetype.xcframework/ios-arm64/Freetype.framework/
+2026-05-15T22:46:07.116455456Z	x Freetype.xcframework/ios-arm64/Freetype.framework/Freetype
+2026-05-15T22:46:07.116566456Z	x Freetype.xcframework/ios-arm64/Freetype.framework/Info.plist
+2026-05-15T22:46:07.116745293Z	x Freetype.xcframework/ios-arm64_x86_64-simulator/Freetype.framework/
+2026-05-15T22:46:07.125680042Z	x Freetype.xcframework/ios-arm64_x86_64-simulator/Freetype.framework/Freetype
+2026-05-15T22:46:07.125775248Z	x Freetype.xcframework/ios-arm64_x86_64-simulator/Freetype.framework/Info.plist
+2026-05-15T22:46:07.126019557Z	x Mbedx509.xcframework/ios-arm64_x86_64-simulator/
+2026-05-15T22:46:07.126131144Z	x Mbedx509.xcframework/ios-arm64/
+2026-05-15T22:46:07.126424621Z	x Mbedx509.xcframework/Info.plist
+2026-05-15T22:46:07.126516426Z	x Mbedx509.xcframework/ios-arm64/Mbedx509.framework/
+2026-05-15T22:46:07.126700158Z	x Mbedx509.xcframework/ios-arm64/Mbedx509.framework/Mbedx509
+2026-05-15T22:46:07.126819748Z	x Mbedx509.xcframework/ios-arm64/Mbedx509.framework/Info.plist
+2026-05-15T22:46:07.126916984Z	x Mbedx509.xcframework/ios-arm64_x86_64-simulator/Mbedx509.framework/
+2026-05-15T22:46:07.128000022Z	x Mbedx509.xcframework/ios-arm64_x86_64-simulator/Mbedx509.framework/Mbedx509
+2026-05-15T22:46:07.128078379Z	x Mbedx509.xcframework/ios-arm64_x86_64-simulator/Mbedx509.framework/Info.plist
+2026-05-15T22:46:07.136665330Z	touch Frameworks/*.xcframework
+2026-05-15T22:46:07.157213112Z	rm -rf Frameworks/.symlinks
+2026-05-15T22:46:07.157354120Z	mkdir -p Frameworks/.symlinks/mpv
+2026-05-15T22:46:07.157774507Z	sed -i '' 's/\r$//g' create_framework_symlinks.sh # remove CRLF line terminator added by Flutter packaging (https://github.com/media-kit/media-kit/issues/338)
+2026-05-15T22:46:07.175543989Z	sh create_framework_symlinks.sh Frameworks/Mpv.xcframework Frameworks/.symlinks/mpv
+2026-05-15T22:46:07.313406438Z	mkdir -p .cache/headers
+2026-05-15T22:46:07.313602265Z	rm -f .cache/headers/*.tmp .cache/headers/*.tar.gz
+2026-05-15T22:46:07.313846285Z	curl -L \
+2026-05-15T22:46:07.313898440Z			https://github.com/mpv-player/mpv/archive/refs/tags/v0.36.0.tar.gz \
+2026-05-15T22:46:07.313982202Z			-o .cache/headers/mpv.tar.gz.tmp
+2026-05-15T22:46:07.331774513Z	  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-05-15T22:46:07.331909250Z	                                 Dload  Upload   Total   Spent    Left  Speed
+2026-05-15T22:46:07.332152280Z	
+2026-05-15T22:46:07.599804332Z	  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-05-15T22:46:07.600004392Z	  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-05-15T22:46:07.868094433Z	
+2026-05-15T22:46:08.130847974Z	100 12961    0 12961    0     0  24605      0 --:--:-- --:--:-- --:--:-- 24605
+2026-05-15T22:46:08.131042957Z	100 3329k    0 3329k    0     0  4152k      0 --:--:-- --:--:-- --:--:-- 11.7M
+2026-05-15T22:46:08.131317569Z	shasum -a 256 -c <<< '29abc44f8ebee013bb2f9fe14d80b30db19b534c679056e4851ceadf5a5e8bf6  .cache/headers/mpv.tar.gz.tmp'
+2026-05-15T22:46:08.200625543Z	.cache/headers/mpv.tar.gz.tmp: OK
+2026-05-15T22:46:08.200837111Z	mv .cache/headers/mpv.tar.gz.tmp .cache/headers/mpv-v0.36.0.tar.gz
+2026-05-15T22:46:08.201130407Z	touch .cache/headers/mpv-v0.36.0.tar.gz
+2026-05-15T22:46:08.201204185Z	rm -f .cache/headers/mpv.tar.gz
+2026-05-15T22:46:08.203468415Z	ln -s mpv-v0.36.0.tar.gz .cache/headers/mpv.tar.gz
+2026-05-15T22:46:08.206696478Z	mkdir -p /Users/local/.pub-cache/hosted/pub.dev/media_kit_video-2.0.1/ios/Headers/mpv
+2026-05-15T22:46:08.210119358Z	tar  -xvf .cache/headers/mpv.tar.gz --strip-components 2 -C /Users/local/.pub-cache/hosted/pub.dev/media_kit_video-2.0.1/ios/Headers/mpv/ 'mpv-*/libmpv/*.h'
+2026-05-15T22:46:08.247162284Z	x client.h
+2026-05-15T22:46:08.247326540Z	x render.h
+2026-05-15T22:46:08.247667999Z	x render_gl.h
+2026-05-15T22:46:08.247801579Z	x stream_cb.h
+2026-05-15T22:46:08.247991039Z	touch /Users/local/.pub-cache/hosted/pub.dev/media_kit_video-2.0.1/ios/Headers/mpv/*.h
+2026-05-15T22:46:08.283072659Z	media_kit: INFO: package:media_kit_libs_ios_video found
+2026-05-15T22:47:02.417685548Z	Downloading dependencies
+2026-05-15T22:47:02.418052308Z	Installing AppAuth (2.0.0)
+2026-05-15T22:47:04.456942856Z	Installing AppCheckCore (11.2.0)
+2026-05-15T22:47:06.493977814Z	Installing CwlCatchException (2.2.1)
+2026-05-15T22:47:07.528462697Z	Installing CwlCatchExceptionSupport (2.2.1)
+2026-05-15T22:47:08.563975900Z	Installing Firebase (12.8.0)
+2026-05-15T22:47:17.608543249Z	Installing FirebaseAppCheckInterop (12.8.0)
+2026-05-15T22:47:27.659283245Z	Installing FirebaseAuth (12.8.0)
+2026-05-15T22:47:37.707159689Z	Installing FirebaseAuthInterop (12.8.0)
+2026-05-15T22:47:47.754884243Z	Installing FirebaseCore (12.8.0)
+2026-05-15T22:47:57.802232324Z	Installing FirebaseCoreExtension (12.8.0)
+2026-05-15T22:48:05.847105722Z	Installing FirebaseCoreInternal (12.8.0)
+2026-05-15T22:48:15.891317541Z	Installing FirebaseCrashlytics (12.8.0)
+2026-05-15T22:48:24.937000917Z	Installing FirebaseInstallations (12.8.0)
+2026-05-15T22:48:32.985502945Z	Installing FirebaseMessaging (12.8.0)
+2026-05-15T22:48:42.034864376Z	Installing FirebaseRemoteConfigInterop (12.8.0)
+2026-05-15T22:48:54.096433875Z	Installing FirebaseSessions (12.8.0)
+2026-05-15T22:49:04.151554586Z	Installing Flutter (1.0.0)
+2026-05-15T22:49:04.151717392Z	Installing GTMAppAuth (5.0.0)
+2026-05-15T22:49:05.191768233Z	Installing GTMSessionFetcher (3.5.0)
+2026-05-15T22:49:07.232375593Z	Installing Google-Mobile-Ads-SDK (12.14.0)
+2026-05-15T22:49:09.273328062Z	Installing GoogleDataTransport (10.1.0)
+2026-05-15T22:49:11.314783316Z	Installing GoogleSignIn (9.1.0)
+2026-05-15T22:49:14.354340821Z	Installing GoogleUserMessagingPlatform (3.1.0)
+2026-05-15T22:49:14.354488930Z	Installing GoogleUtilities (8.1.0)
+2026-05-15T22:49:16.388412641Z	Installing OrderedSet (6.0.3)
+2026-05-15T22:49:18.427279034Z	Installing PromisesObjC (2.4.0)
+2026-05-15T22:49:19.464464586Z	Installing PromisesSwift (2.4.0)
+2026-05-15T22:49:21.503192848Z	Installing Protobuf (5.34.1)
+2026-05-15T22:49:29.558539915Z	Installing PurchasesHybridCommon (17.31.0)
+2026-05-15T22:49:31.605678891Z	Installing RecaptchaInterop (101.0.0)
+2026-05-15T22:49:33.644824375Z	Installing RevenueCat (5.57.0)
+2026-05-15T22:49:40.691862771Z	Installing ScreenProtectorKit (1.5.1)
+2026-05-15T22:49:42.734191591Z	Installing Stripe (25.0.1)
+2026-05-15T22:49:58.792124754Z	Installing StripeApplePay (25.0.1)
+2026-05-15T22:50:26.868368200Z	Installing StripeCore (25.0.1)
+2026-05-15T22:50:43.923630086Z	Installing StripeFinancialConnections (25.0.1)
+2026-05-15T22:51:00.983889470Z	Installing StripePaymentSheet (25.0.1)
+2026-05-15T22:51:20.053403168Z	Installing StripePayments (25.0.1)
+2026-05-15T22:51:38.121439859Z	Installing StripePaymentsUI (25.0.1)
+2026-05-15T22:51:55.190890323Z	Installing StripeUICore (25.0.1)
+2026-05-15T22:52:12.251529681Z	Installing audio_session (0.0.1)
+2026-05-15T22:52:12.251878049Z	Installing connectivity_plus (0.0.1)
+2026-05-15T22:52:12.252317424Z	Installing device_info_plus (0.0.1)
+2026-05-15T22:52:12.252354995Z	Installing firebase_auth (6.1.4)
+2026-05-15T22:52:12.252424494Z	Installing firebase_core (4.4.0)
+2026-05-15T22:52:12.252503016Z	Installing firebase_crashlytics (5.0.7)
+2026-05-15T22:52:12.252650562Z	Installing firebase_messaging (16.1.1)
+2026-05-15T22:52:12.252704422Z	Installing flutter_chrome_cast (1.4.1)
+2026-05-15T22:52:12.252774391Z	Installing flutter_custom_tabs_ios (2.4.1)
+2026-05-15T22:52:12.252806040Z	Installing flutter_inappwebview_ios (0.0.1)
+2026-05-15T22:52:12.252983196Z	Installing flutter_local_notifications (0.0.1)
+2026-05-15T22:52:12.253023524Z	Installing flutter_paystack (0.0.1)
+2026-05-15T22:52:12.253154542Z	Installing flutter_secure_storage (6.0.0)
+2026-05-15T22:52:12.253182284Z	Installing fluttertoast (0.0.2)
+2026-05-15T22:52:12.253241906Z	Installing google-cast-sdk (4.8.4)
+2026-05-15T22:52:16.295308064Z	Installing google_mobile_ads (7.0.0)
+2026-05-15T22:52:16.295755248Z	Installing google_sign_in_ios (0.0.1)
+2026-05-15T22:52:16.296270199Z	Installing image_picker_ios (0.0.1)
+2026-05-15T22:52:16.296325413Z	Installing just_audio (0.0.1)
+2026-05-15T22:52:16.296535305Z	Installing media_kit_libs_ios_video (1.0.4)
+2026-05-15T22:52:16.296605763Z	Installing media_kit_video (0.0.1)
+2026-05-15T22:52:16.296721503Z	Installing mobile_scanner (7.0.0)
+2026-05-15T22:52:16.296779823Z	Installing nanopb (3.30910.0)
+2026-05-15T22:52:18.332764331Z	Installing nb_utils (0.0.1)
+2026-05-15T22:52:18.333056529Z	Installing open_file_ios (1.0.3)
+2026-05-15T22:52:18.333548547Z	Installing package_info_plus (0.4.5)
+2026-05-15T22:52:18.333808049Z	Installing path_provider_foundation (0.0.1)
+2026-05-15T22:52:18.333883874Z	Installing permission_handler_apple (9.3.0)
+2026-05-15T22:52:18.336019349Z	Installing purchases_flutter (9.11.0)
+2026-05-15T22:52:18.336072338Z	Installing razorpay-core-pod (1.0.6)
+2026-05-15T22:52:21.375587680Z	Installing razorpay-pod (1.5.3)
+2026-05-15T22:52:34.957776179Z	Installing razorpay_flutter (1.1.10)
+2026-05-15T22:52:34.957923497Z	Installing screen_protector (1.5.1)
+2026-05-15T22:52:34.958145444Z	Installing share_plus (0.0.1)
+2026-05-15T22:52:34.958203761Z	Installing shared_preferences_foundation (0.0.1)
+2026-05-15T22:52:34.958553043Z	Installing speech_to_text (7.2.0)
+2026-05-15T22:52:34.958628855Z	Installing sqflite_darwin (0.0.4)
+2026-05-15T22:52:34.958722665Z	Installing stripe_ios (0.0.1)
+2026-05-15T22:52:34.958770962Z	Installing the_apple_sign_in (1.0.0)
+2026-05-15T22:52:34.959027024Z	Installing url_launcher_ios (0.0.1)
+2026-05-15T22:52:34.959118132Z	Installing video_player_avfoundation (0.0.1)
+2026-05-15T22:52:34.959237137Z	Installing wakelock_plus (0.0.1)
+2026-05-15T22:52:34.959446850Z	Installing webview_flutter_wkwebview (0.0.1)
+2026-05-15T22:52:34.959583728Z	Generating Pods project
+2026-05-15T22:52:34.959809372Z	Integrating client project
+2026-05-15T22:52:34.960031634Z	Pod installation complete! There are 40 dependencies from the Podfile and 83 total pods installed.
+2026-05-15T22:52:34.960080854Z	
+2026-05-15T22:52:34.960247074Z	[!] CocoaPods did not set the base configuration of your project because your project already has a custom config set. In order for CocoaPods integration to work at all, please either set the base configurations of the target `Runner` to `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` or include the `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` in your build configuration (`Flutter/Release.xcconfig`).
+2026-05-15T22:52:34.960307829Z	=== ci_post_clone.sh completed successfully ===

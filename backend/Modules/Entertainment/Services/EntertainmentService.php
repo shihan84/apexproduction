@@ -380,108 +380,120 @@ class EntertainmentService
     }
 
 
- public function getDataTable(Datatables $datatable, $filter, $type)
+    public function getDataTable(Datatables $datatable, $filter, $type)
     {
-        $query = $this->getFilteredData($filter, $type)
-            ->withCount([
-                'entertainmentLike' => function ($query) use ($type) {
-                    $query->where('is_like', 1)->where('type', $type);
-                },
-                'entertainmentView' => function ($query) {
-                    // Add custom logic here if needed
-                }
-            ]);
+        try {
+            $query = $this->getFilteredData($filter, $type)
+                ->with(['plan'])
+                ->withCount([
+                    'entertainmentLike' => function ($query) use ($type) {
+                        $query->where('is_like', 1)->where('type', $type);
+                    },
+                    'entertainmentView' => function ($query) {
+                        // Add custom logic here if needed
+                    }
+                ]);
 
-    return $datatable->eloquent($query)
-        ->editColumn('thumbnail_url', function ($data) {
-            $genres = $this->entertainmentRepository->movieGenres($data->id);
-            $countries = $this->entertainmentRepository->moviecountries($data->id);
-            $type = 'movie';
-            $releaseDate = $data->release_date ? formatDate($data->release_date) : '';
-            $imageUrl = setBaseUrlWithFileName($data->thumbnail_url, 'image', 'movie');
-            return view('components.media-item', [
-                'thumbnail' => $imageUrl,
-                'name' => $data->name,
-                'genre' => implode(', ', $genres->toArray()),
-                'country' => implode(', ', $countries->toArray()),
-                'releaseDate' => $releaseDate,
-                'type' => $type
-            ])->render();
-        })
-        ->addColumn('like_count', function ($data) {
-            return $data->entertainment_like_count > 0 ? $data->entertainment_like_count : '-';
-        })
-        ->orderColumn('like_count', 'entertainment_like_count $1')
-        ->addColumn('watch_count', function ($data) {
-            return $data->entertainment_view_count > 0 ? $data->entertainment_view_count : '-';
-        })
-        ->orderColumn('watch_count', 'entertainment_view_count $1')
-        ->filterColumn('thumbnail_url', function ($query, $keyword) {
-            if (!empty($keyword)) {
-                $query->where(function($q) use ($keyword) {
-                    // Search by movie name
-                    $q->where('name', 'like', '%' . $keyword . '%')
-                      // Search by genre names
-                      ->orWhereHas('entertainmentGenerMappings.genre', function ($genreQuery) use ($keyword) {
-                          $genreQuery->where('name', 'like', '%' . $keyword . '%');
-                      })
-                      // Search by language
-                      ->orWhere('language', 'like', '%' . $keyword . '%')
-                      // Search by access type (paid, free, pay-per-view)
-                      ->orWhere('movie_access', 'like', '%' . $keyword . '%')
-                      // Search by plan name
-                      ->orWhereHas('plan', function ($planQuery) use ($keyword) {
-                          $planQuery->where('name', 'like', '%' . $keyword . '%');
-                      });
-                });
-            }
-        })
-        ->editColumn('plan_id', function ($data) {
-            return $data->movie_access === 'pay-per-view' ? '-' : optional($data->plan)->name ?? '-';
-        })
-        ->filterColumn('plan_id', function ($query, $keyword) {
-            if (!empty($keyword)) {
-                $query->whereHas('plan', function ($query) use ($keyword) {
-                    $query->where('name', 'like', '%' . $keyword . '%');
-                });
-            }
-        })
-        ->addColumn('check', function ($data) {
-            return '<input type="checkbox" class="form-check-input select-table-row" id="datatable-row-' . $data->id . '" name="datatable_ids[]" value="' . $data->id . '" data-type="entertainment" onclick="dataTableRowCheck(' . $data->id . ',this)">';
-        })
-        ->addColumn('action', function ($data) {
-            return view('entertainment::backend.entertainment.action', compact('data'));
-        })
-        ->editColumn('status', function ($row) {
-            $checked = $row->status ? 'checked="checked"' : '';
-            $disabled = $row->trashed() ? 'disabled' : '';
+            return $datatable->eloquent($query)
+                ->editColumn('thumbnail_url', function ($data) {
+                    try {
+                        $genres = $data->entertainmentGenerMappings
+                            ->pluck('genre.name')
+                            ->filter()
+                            ->unique()
+                            ->values();
+                        $type = 'movie';
+                        $releaseDate = $data->release_date ? formatDate($data->release_date) : '';
+                        $imageUrl = setBaseUrlWithFileName($data->thumbnail_url, 'image', 'movie');
+                        return view('components.media-item', [
+                            'thumbnail' => $imageUrl,
+                            'name' => $data->name,
+                            'genre' => implode(', ', $genres->toArray()),
+                            'releaseDate' => $releaseDate,
+                            'type' => $type
+                        ])->render();
+                    } catch (\Throwable $e) {
+                        \Illuminate\Support\Facades\Log::error('DataTable thumbnail render error: ' . $e->getMessage());
+                        return '<div class="text-danger">' . e($data->name) . '</div>';
+                    }
+                })
+                ->addColumn('like_count', function ($data) {
+                    return $data->entertainment_like_count > 0 ? $data->entertainment_like_count : '-';
+                })
+                ->orderColumn('like_count', 'entertainment_like_count $1')
+                ->addColumn('watch_count', function ($data) {
+                    return $data->entertainment_view_count > 0 ? $data->entertainment_view_count : '-';
+                })
+                ->orderColumn('watch_count', 'entertainment_view_count $1')
+                ->filterColumn('thumbnail_url', function ($query, $keyword) {
+                    if (!empty($keyword)) {
+                        $query->where(function($q) use ($keyword) {
+                            $q->where('name', 'like', '%' . $keyword . '%')
+                              ->orWhereHas('entertainmentGenerMappings.genre', function ($genreQuery) use ($keyword) {
+                                  $genreQuery->where('name', 'like', '%' . $keyword . '%');
+                              })
+                              ->orWhere('language', 'like', '%' . $keyword . '%')
+                              ->orWhere('movie_access', 'like', '%' . $keyword . '%')
+                              ->orWhereHas('plan', function ($planQuery) use ($keyword) {
+                                  $planQuery->where('name', 'like', '%' . $keyword . '%');
+                              });
+                        });
+                    }
+                })
+                ->editColumn('plan_id', function ($data) {
+                    return $data->movie_access === 'pay-per-view' ? '-' : optional($data->plan)->name ?? '-';
+                })
+                ->filterColumn('plan_id', function ($query, $keyword) {
+                    if (!empty($keyword)) {
+                        $query->whereHas('plan', function ($query) use ($keyword) {
+                            $query->where('name', 'like', '%' . $keyword . '%');
+                        });
+                    }
+                })
+                ->addColumn('check', function ($data) {
+                    return '<input type="checkbox" class="form-check-input select-table-row" id="datatable-row-' . $data->id . '" name="datatable_ids[]" value="' . $data->id . '" data-type="entertainment" onclick="dataTableRowCheck(' . $data->id . ',this)">';
+                })
+                ->addColumn('action', function ($data) {
+                    return view('entertainment::backend.entertainment.action', compact('data'));
+                })
+                ->editColumn('status', function ($row) {
+                    $checked = $row->status ? 'checked="checked"' : '';
+                    $disabled = $row->trashed() ? 'disabled' : '';
 
-            return '
-                <div class="form-check form-switch">
-                    <input type="checkbox" data-url="' . route('backend.entertainments.update_status', $row->id) . '"
-                        data-token="' . csrf_token() . '" class="switch-status-change form-check-input"
-                        id="datatable-row-' . $row->id . '" name="status" value="' . $row->id . '" ' . $checked . ' ' . $disabled . '>
-                </div>';
-        })
-        ->editColumn('is_restricted', function ($row) {
-            $checked = $row->is_restricted ? 'checked' : '';
-            $disabled = $row->trashed() ? 'disabled' : '';
+                    return '
+                        <div class="form-check form-switch">
+                            <input type="checkbox" data-url="' . route('backend.entertainments.update_status', $row->id) . '"
+                                data-token="' . csrf_token() . '" class="switch-status-change form-check-input"
+                                id="datatable-row-' . $row->id . '" name="status" value="' . $row->id . '" ' . $checked . ' ' . $disabled . '>
+                        </div>';
+                })
+                ->editColumn('is_restricted', function ($row) {
+                    $checked = $row->is_restricted ? 'checked' : '';
+                    $disabled = $row->trashed() ? 'disabled' : '';
 
-            return '
-                <div class="form-check form-switch">
-                    <input type="checkbox"
-                        class="switch-status-change form-check-input"
-                        data-id="' . $row->id . '"
-                        data-url="' . route('backend.entertainments.update_is_restricted', $row->id) . '"
-                        data-token="' . csrf_token() . '"
-                        ' . $checked . ' ' . $disabled . '>
-                </div>';
-        })
-        ->editColumn('updated_at', fn($data) => formatUpdatedAt($data->updated_at))
-        ->orderColumns(['id'], '-:column $1')
-        ->rawColumns(['action', 'status', 'check', 'thumbnail_url', 'is_restricted'])
-        ->toJson();
-}
+                    return '
+                        <div class="form-check form-switch">
+                            <input type="checkbox"
+                                class="switch-status-change form-check-input"
+                                data-id="' . $row->id . '"
+                                data-url="' . route('backend.entertainments.update_is_restricted', $row->id) . '"
+                                data-token="' . csrf_token() . '"
+                                ' . $checked . ' ' . $disabled . '>
+                        </div>';
+                })
+                ->editColumn('updated_at', fn($data) => formatUpdatedAt($data->updated_at))
+                ->orderColumns(['id'], '-:column $1')
+                ->rawColumns(['action', 'status', 'check', 'thumbnail_url', 'is_restricted'])
+                ->toJson();
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Movies DataTable error: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error($e->getTraceAsString());
+            return response()->json([
+                'error' => 'Failed to load data. Please check the error log.',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function getFilteredData($filter, $type)
     {
         $query = $this->entertainmentRepository->query();
@@ -548,7 +560,7 @@ class EntertainmentService
             });
         }
 
-        if (isset($filter['column_status'])) {
+        if (isset($filter['column_status']) && $filter['column_status'] !== '' && $filter['column_status'] !== null) {
             $query->where('status', $filter['column_status']);
         }
 

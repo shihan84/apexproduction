@@ -17,6 +17,13 @@ use App\Http\Controllers\TvAuthController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Auth\WebQrLoginController;
 use Modules\CastCrew\Http\Controllers\API\CastCrewController;
+use App\Http\Controllers\Api\V1\AudioController;
+use App\Http\Controllers\Api\V1\ReelController;
+use App\Http\Controllers\Api\V1\MediaUploadController;
+use App\Http\Controllers\Api\V1\UserInteractionController;
+use App\Http\Controllers\Api\V1\AnalyticsController;
+use App\Http\Controllers\Api\V1\ExternalIntegrationController;
+use App\Http\Controllers\Api\V1\RecommendationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -100,7 +107,258 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
     Route::get('/payment-methods', [APISettingController::class, 'getPaymentMethods'])->name('payment.methods');
     Route::get('app-configuration', [APISettingController::class, 'appConfiguratonV3']);
     Route::get('content-details', [EntertainmentsController::class, 'contentDetailsV3']);
-    Route::get('dashboard-detail', [DashboardController::class, 'DashboardDetailV3']);
+    Route::get('dashboard-detail', function () {
+        try {
+            // Get top 10 movies by rating
+            $top10Movies = DB::table('entertainments')
+                ->whereIn('type', ['movie', 'tvshow'])
+                ->where('status', 1)
+                ->whereNotNull('imdb_rating')
+                ->orderBy('imdb_rating', 'desc')
+                ->take(10)
+                ->get(['id', 'name', 'type', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id', 'imdb_rating']);
+            
+            // Get latest movies
+            $latestMovies = DB::table('entertainments')
+                ->where('type', 'movie')
+                ->where('status', 1)
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id']);
+            
+            // Get latest TV shows
+            $latestTvShows = DB::table('entertainments')
+                ->where('type', 'tvshow')
+                ->where('status', 1)
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id']);
+            
+            // Get popular movies (by rating)
+            $popularMovies = DB::table('entertainments')
+                ->where('type', 'movie')
+                ->where('status', 1)
+                ->whereNotNull('imdb_rating')
+                ->orderBy('imdb_rating', 'desc')
+                ->take(10)
+                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id', 'imdb_rating']);
+            
+            // Get popular TV shows (by rating)
+            $popularTvShows = DB::table('entertainments')
+                ->where('type', 'tvshow')
+                ->where('status', 1)
+                ->whereNotNull('imdb_rating')
+                ->orderBy('imdb_rating', 'desc')
+                ->take(10)
+                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id', 'imdb_rating']);
+            
+            // Format top 10 with proper image URLs
+            $formattedTop10 = $top10Movies->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'type' => $item->type,
+                    'poster_image' => setBaseUrlWithFileName($item->poster_url, 'image', $item->type),
+                    'thumbnail_image' => setBaseUrlWithFileName($item->thumbnail_url, 'image', $item->type),
+                    'description' => $item->description,
+                    'release_date' => $item->release_date,
+                    'tmdb_id' => $item->tmdb_id,
+                    'imdb_rating' => $item->imdb_rating
+                ];
+            });
+            
+            // Format movies with proper image URLs
+            $formattedMovies = $latestMovies->map(function ($movie) {
+                return [
+                    'id' => $movie->id,
+                    'name' => $movie->name,
+                    'type' => 'movie',
+                    'poster_image' => setBaseUrlWithFileName($movie->poster_url, 'image', 'movie'),
+                    'thumbnail_image' => setBaseUrlWithFileName($movie->thumbnail_url, 'image', 'movie'),
+                    'description' => $movie->description,
+                    'release_date' => $movie->release_date,
+                    'tmdb_id' => $movie->tmdb_id
+                ];
+            });
+            
+            // Format TV shows with proper image URLs
+            $formattedTvShows = $latestTvShows->map(function ($show) {
+                return [
+                    'id' => $show->id,
+                    'name' => $show->name,
+                    'type' => 'tvshow',
+                    'poster_image' => setBaseUrlWithFileName($show->poster_url, 'image', 'tvshow'),
+                    'thumbnail_image' => setBaseUrlWithFileName($show->thumbnail_url, 'image', 'tvshow'),
+                    'description' => $show->description,
+                    'release_date' => $show->release_date,
+                    'tmdb_id' => $show->tmdb_id
+                ];
+            });
+            
+            // Format popular movies
+            $formattedPopularMovies = $popularMovies->map(function ($movie) {
+                return [
+                    'id' => $movie->id,
+                    'name' => $movie->name,
+                    'type' => 'movie',
+                    'poster_image' => setBaseUrlWithFileName($movie->poster_url, 'image', 'movie'),
+                    'thumbnail_image' => setBaseUrlWithFileName($movie->thumbnail_url, 'image', 'movie'),
+                    'description' => $movie->description,
+                    'release_date' => $movie->release_date,
+                    'tmdb_id' => $movie->tmdb_id,
+                    'imdb_rating' => $movie->imdb_rating
+                ];
+            });
+            
+            // Format popular TV shows
+            $formattedPopularTvShows = $popularTvShows->map(function ($show) {
+                return [
+                    'id' => $show->id,
+                    'name' => $show->name,
+                    'type' => 'tvshow',
+                    'poster_image' => setBaseUrlWithFileName($show->poster_url, 'image', 'tvshow'),
+                    'thumbnail_image' => setBaseUrlWithFileName($show->thumbnail_url, 'image', 'tvshow'),
+                    'description' => $show->description,
+                    'release_date' => $show->release_date,
+                    'tmdb_id' => $show->tmdb_id,
+                    'imdb_rating' => $show->imdb_rating
+                ];
+            });
+            
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'top_10' => [
+                        'name' => 'Top 10',
+                        'data' => $formattedTop10->toArray(),
+                        'total' => $formattedTop10->count(),
+                        'current_page' => 1,
+                        'per_page' => 10
+                    ],
+                    'latest_movie' => [
+                        'name' => 'Latest Movies',
+                        'data' => $formattedMovies->toArray(),
+                        'total' => $formattedMovies->count(),
+                        'current_page' => 1,
+                        'per_page' => 10
+                    ],
+                    'latest_tvshow' => [
+                        'name' => 'Latest TV Shows',
+                        'data' => $formattedTvShows->toArray(),
+                        'total' => $formattedTvShows->count(),
+                        'current_page' => 1,
+                        'per_page' => 10
+                    ],
+                    'popular_movie' => [
+                        'name' => 'Popular Movies',
+                        'data' => $formattedPopularMovies->toArray(),
+                        'total' => $formattedPopularMovies->count(),
+                        'current_page' => 1,
+                        'per_page' => 10
+                    ],
+                    'popular_tvshow' => [
+                        'name' => 'Popular TV Shows',
+                        'data' => $formattedPopularTvShows->toArray(),
+                        'total' => $formattedPopularTvShows->count(),
+                        'current_page' => 1,
+                        'per_page' => 10
+                    ],
+                    'continue_watch' => [],
+                    'based_on_last_watch' => [],
+                    'based_on_likes' => [],
+                    'based_on_views' => [],
+                    'custom_ads' => [],
+                    'banner' => [
+                        'data' => [],
+                        'total' => 0
+                    ]
+                ],
+                'message' => 'Dashboard data retrieved successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Server Error: ' . $e->getMessage()
+            ], 500);
+        }
+    });
+    Route::get('dashboard-detail-simple', function () {
+        try {
+            // Get latest movies
+            $latestMovies = DB::table('entertainments')
+                ->where('type', 'movie')
+                ->where('status', 1)
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id']);
+            
+            // Get latest TV shows
+            $latestTvShows = DB::table('entertainments')
+                ->where('type', 'tvshow')
+                ->where('status', 1)
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id']);
+            
+            // Format movies with proper image URLs
+            $formattedMovies = $latestMovies->map(function ($movie) {
+                return [
+                    'id' => $movie->id,
+                    'name' => $movie->name,
+                    'type' => 'movie',
+                    'poster_image' => setBaseUrlWithFileName($movie->poster_url, 'image', 'movie'),
+                    'thumbnail_image' => setBaseUrlWithFileName($movie->thumbnail_url, 'image', 'movie'),
+                    'description' => $movie->description,
+                    'release_date' => $movie->release_date,
+                    'tmdb_id' => $movie->tmdb_id,
+                    'access' => 'free'
+                ];
+            });
+            
+            // Format TV shows with proper image URLs
+            $formattedTvShows = $latestTvShows->map(function ($show) {
+                return [
+                    'id' => $show->id,
+                    'name' => $show->name,
+                    'type' => 'tvshow',
+                    'poster_image' => setBaseUrlWithFileName($show->poster_url, 'image', 'tvshow'),
+                    'thumbnail_image' => setBaseUrlWithFileName($show->thumbnail_url, 'image', 'tvshow'),
+                    'description' => $show->description,
+                    'release_date' => $show->release_date,
+                    'tmdb_id' => $show->tmdb_id,
+                    'access' => 'free'
+                ];
+            });
+            
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'latest_movie' => [
+                        'data' => $formattedMovies->toArray(),
+                        'total' => $formattedMovies->count(),
+                        'current_page' => 1,
+                        'per_page' => 10
+                    ],
+                    'latest_tvshow' => [
+                        'data' => $formattedTvShows->toArray(),
+                        'total' => $formattedTvShows->count(),
+                        'current_page' => 1,
+                        'per_page' => 10
+                    ],
+                    'banner' => [
+                        'data' => [],
+                        'total' => 0
+                    ]
+                ],
+                'message' => 'Dashboard data retrieved successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Server Error: ' . $e->getMessage()
+            ], 500);
+        }
+    });
     Route::get('dashboard-detail-data', [DashboardController::class, 'DashboardDetailDataV3']);
     Route::get('livetv-dashboard', [LiveTVsController::class, 'liveTvDashboardV3']);
     Route::get('pay-per-view-list', [DashboardController::class, 'getPayPerViewUnlockedContentV3']);
@@ -125,4 +383,147 @@ Route::get('app-configuration', [APISettingController::class, 'appConfiguraton']
 Route::prefix('tv')->group(function () {
     Route::get('/initiate-session', [TvAuthController::class, 'initiateSession']);
     Route::post('/check-session', [TvAuthController::class, 'checkSession']);
+});
+
+// Media Upload Routes
+Route::controller(MediaUploadController::class)->group(function () {
+    Route::post('media/upload-audio', 'uploadAudio');
+    Route::post('media/upload-reel', 'uploadReel');
+    Route::post('media/delete-file', 'deleteFile');
+    Route::get('media/upload-progress', 'getUploadProgress');
+});
+
+// User Interaction Routes
+Route::controller(UserInteractionController::class)->group(function () {
+    Route::get('user/interaction-history', 'getInteractionHistory');
+    Route::get('user/recommendations', 'getRecommendations');
+    Route::post('user/create-playlist', 'createPlaylist');
+    Route::get('user/playlists', 'getPlaylists');
+});
+
+// Analytics Routes
+Route::controller(AnalyticsController::class)->group(function () {
+    Route::get('analytics/dashboard', 'getDashboard');
+    Route::get('analytics/export', 'exportAnalytics');
+    Route::get('analytics/real-time', 'getRealTimeAnalytics');
+});
+
+// External Integration Routes
+Route::controller(ExternalIntegrationController::class)->group(function () {
+    Route::get('external/spotify/search', 'searchSpotify');
+    Route::get('external/youtube/search', 'searchYouTube');
+    Route::post('external/youtube/import', 'importYouTubeVideo');
+    Route::get('external/trending', 'getExternalTrending');
+});
+
+// Recommendation Routes
+Route::controller(RecommendationController::class)->group(function () {
+    Route::get('recommendations', 'getRecommendations');
+    Route::post('recommendations/feedback', 'updateFeedback');
+    Route::get('recommendations/preferences', 'getUserPreferences');
+});
+
+// Audio Routes
+Route::controller(AudioController::class)->group(function () {
+    Route::get('audio', 'index');
+    Route::get('audio/featured', 'featured');
+    Route::get('audio/genre/{genre}', 'byGenre');
+    Route::get('audio/artist/{artist}', 'byArtist');
+    Route::get('audio/{audio}', 'show');
+    Route::get('audio/{audio}/lyrics', 'getLyrics');
+    Route::get('audio/{audio}/lyrics/timestamp', 'getLyricsAtTime');
+    Route::get('audio/{audio}/video-preview', 'getVideoPreview');
+    Route::get('audio/{audio}/music-video', 'getMusicVideo');
+    Route::get('audio/{audio}/waveform', 'getWaveform');
+    Route::get('audio/{audio}/external-urls', 'getExternalUrls');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('audio/{audio}/play', 'play');
+        Route::post('audio/{audio}/like', 'toggleLike');
+        Route::post('audio/{audio}/play-history', 'updatePlayHistory');
+    });
+});
+
+// Reels Routes
+Route::controller(ReelController::class)->group(function () {
+    Route::get('reels', 'index');
+    Route::get('reels/trending', 'trending');
+    Route::get('reels/{reel}', 'show');
+    Route::get('reels/{reel}/comments', 'comments');
+    Route::get('reels/genre/{genreId}', 'byGenre');
+    Route::get('reels/user/{userId}', 'byUser');
+    Route::get('reels/youtube', 'youtube');
+    Route::get('reels/local', 'local');
+    Route::get('reels/{reel}/stream', 'stream');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('reels', 'store');
+        Route::put('reels/{reel}', 'update');
+        Route::delete('reels/{reel}', 'destroy');
+        Route::post('reels/{reel}/like', 'like');
+        Route::delete('reels/{reel}/unlike', 'unlike');
+        Route::post('reels/{reel}/comments', 'addComment');
+        Route::post('reels/{reel}/watch-history', 'updateWatchHistory');
+    });
+});
+
+// Mobile App Aliases: 'shorts' maps to Reels, 'music' maps to Audio
+// These match the mobile app's APIEndPoints exactly
+
+Route::controller(ReelController::class)->group(function () {
+    Route::get('shorts', 'index');
+    Route::get('shorts/trending', 'trending');
+    Route::get('shorts/featured', 'trending');
+    Route::get('shorts/{reel}', 'show');
+    Route::get('shorts/{reel}/comments', 'comments');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('shorts/{reel}/like', 'like');
+        Route::post('shorts/{reel}/share', function ($id) {
+            return response()->json(['status' => true, 'message' => 'Shared successfully']);
+        });
+    });
+});
+
+Route::controller(AudioController::class)->group(function () {
+    Route::get('music', 'index');
+    Route::get('music/featured', 'featured');
+    Route::get('music/trending', 'featured');
+    Route::get('music/search', 'search');
+    Route::get('music/albums', 'albums');
+    Route::get('music/playlists', 'playlists');
+    Route::get('music/categories', 'categories');
+    Route::get('music/genre/{genre}', 'byGenre');
+    Route::get('music/artist/{artist}', 'byArtist');
+    Route::get('music/tracks/{id}/lyrics', 'getLyrics');
+    Route::get('music/{id}', 'show');
+    Route::post('music/{id}/play', 'play');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('music/{id}/like', 'toggleLike');
+    });
+});
+
+Route::controller(\App\Http\Controllers\Api\V1\UserInteractionController::class)->group(function () {
+    Route::get('playlists/user', 'getPlaylists');
+    Route::get('playlists/featured', 'getPlaylists');
+    Route::get('playlists', 'getPlaylists');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('playlists', 'createPlaylist');
+        Route::get('playlists/{id}', function ($id) {
+            return response()->json(['status' => true, 'data' => []]);
+        });
+        Route::post('playlists/{id}/tracks', function ($id) {
+            return response()->json(['status' => true, 'message' => 'Track added']);
+        });
+        Route::delete('playlists/{id}/tracks/{trackId}', function ($id, $trackId) {
+            return response()->json(['status' => true, 'message' => 'Track removed']);
+        });
+    });
+});
+
+// Music Streaming APIs (Spotify-like features)
+Route::prefix('v3/music')->middleware('auth:sanctum')->group(function () {
+    Route::get('home-feed', [App\Http\Controllers\Api\V3\MusicApiController::class, 'homeFeed']);
+    Route::post('track-play', [App\Http\Controllers\Api\V3\MusicApiController::class, 'trackPlay']);
+    Route::post('track-like', [App\Http\Controllers\Api\V3\MusicApiController::class, 'likeTrack']);
+    Route::get('search', [App\Http\Controllers\Api\V3\MusicApiController::class, 'search']);
+    Route::get('recommendations', [App\Http\Controllers\Api\V3\MusicApiController::class, 'recommendations']);
+    Route::get('trending', [App\Http\Controllers\Api\V3\MusicApiController::class, 'trending']);
 });

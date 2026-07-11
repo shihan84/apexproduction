@@ -845,7 +845,13 @@ function formatDate($date)
         // Handle both date (Y-m-d) and datetime (Y-m-d H:i:s) formats
 
         $releaseDate = Carbon::parse($date);
-        $defaultFormat = Setting::where('name', 'default_date_format')->where('datatype', 'misc')->value('val')  ?? 'Y-m-d';
+        static $cachedFormat = null;
+        if ($cachedFormat === null) {
+            $cachedFormat = \Illuminate\Support\Facades\Cache::remember('setting_default_date_format', 3600, function () {
+                return Setting::where('name', 'default_date_format')->where('datatype', 'misc')->value('val') ?? 'Y-m-d';
+            });
+        }
+        $defaultFormat = $cachedFormat;
         $userAgent = request()->header('user-agent');
         $isAppOrTv = false;
 

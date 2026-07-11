@@ -42,7 +42,7 @@ class MusicController extends Controller
                 return $query->where('is_trending', true);
             })
             ->when($request->explicit, function ($query) {
-                return $query->where('explicit_content', true);
+                return $query->where('is_explicit', true);
             })
             ->where('status', true)
             ->latest()
@@ -50,8 +50,8 @@ class MusicController extends Controller
 
         // Convert relative paths to full URLs
         $query->getCollection()->transform(function ($track) {
-            if ($track->audio_url && !filter_var($track->audio_url, FILTER_VALIDATE_URL)) {
-                $track->audio_url = asset('storage/' . ltrim($track->audio_url, '/'));
+            if ($track->file_url && !filter_var($track->file_url, FILTER_VALIDATE_URL)) {
+                $track->file_url = asset('storage/' . ltrim($track->file_url, '/'));
             }
             
             if ($track->cover_art_url && !filter_var($track->cover_art_url, FILTER_VALIDATE_URL)) {
@@ -61,9 +61,40 @@ class MusicController extends Controller
             return $track;
         });
 
+        $tracks = $query->getCollection()->map(function ($track) {
+            return [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => optional($track->created_at)->toISOString() ?? now()->toISOString(),
+                'updated_at'    => optional($track->updated_at)->toISOString() ?? now()->toISOString(),
+                'category'      => $track->category ? ['id' => $track->category->id, 'name' => $track->category->name] : null,
+            ];
+        });
+
         return response()->json([
-            'success' => true,
-            'data' => $query,
+            'status' => true,
+            'data'   => [
+                'data'         => $tracks,
+                'current_page' => $query->currentPage(),
+                'last_page'    => $query->lastPage(),
+                'per_page'     => $query->perPage(),
+                'total'        => $query->total(),
+            ],
         ]);
     }
 
@@ -85,8 +116,8 @@ class MusicController extends Controller
         $track->incrementPlays();
 
         // Convert relative paths to full URLs
-        if ($track->audio_url && !filter_var($track->audio_url, FILTER_VALIDATE_URL)) {
-            $track->audio_url = asset('storage/' . ltrim($track->audio_url, '/'));
+        if ($track->file_url && !filter_var($track->file_url, FILTER_VALIDATE_URL)) {
+            $track->file_url = asset('storage/' . ltrim($track->file_url, '/'));
         }
         
         if ($track->cover_art_url && !filter_var($track->cover_art_url, FILTER_VALIDATE_URL)) {
@@ -94,8 +125,33 @@ class MusicController extends Controller
         }
 
         return response()->json([
-            'success' => true,
-            'data' => $track,
+            'status' => true,
+            'data' => [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'description'   => $track->description,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'allow_download'=> (bool) $track->allow_download,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+                'release_date'  => $track->release_date,
+                'label'         => $track->label,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => $track->created_at?->toISOString() ?? now()->toISOString(),
+                'updated_at'    => $track->updated_at?->toISOString() ?? now()->toISOString(),
+                'category'      => $track->category ? ['id' => $track->category->id, 'name' => $track->category->name] : null,
+            ],
         ]);
     }
 
@@ -114,7 +170,7 @@ class MusicController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'audio_url' => 'required|string',
+            'file_url' => 'required|string',
             'cover_art_url' => 'nullable|string',
             'duration' => 'required|integer|min:1',
             'artist' => 'required|string|max:255',
@@ -133,13 +189,13 @@ class MusicController extends Controller
             'waveform_data' => 'nullable|array',
             'tags' => 'nullable|array',
             'allow_download' => 'boolean',
-            'explicit_content' => 'boolean',
+            'is_explicit' => 'boolean',
         ]);
 
         $track = MusicTrack::create([
             'title' => $request->title,
             'description' => $request->description,
-            'audio_url' => $request->audio_url,
+            'file_url' => $request->file_url,
             'cover_art_url' => $request->cover_art_url,
             'duration' => $request->duration,
             'artist' => $request->artist,
@@ -158,7 +214,7 @@ class MusicController extends Controller
             'waveform_data' => $request->waveform_data,
             'tags' => $request->tags,
             'allow_download' => $request->boolean('allow_download', false),
-            'explicit_content' => $request->boolean('explicit_content', false),
+            'is_explicit' => $request->boolean('is_explicit', false),
             'user_id' => auth()->id(),
             'status' => true,
         ]);
@@ -193,7 +249,7 @@ class MusicController extends Controller
             'lyrics_timestamps' => 'sometimes|array',
             'tags' => 'sometimes|array',
             'allow_download' => 'boolean',
-            'explicit_content' => 'boolean',
+            'is_explicit' => 'boolean',
             'is_featured' => 'boolean',
             'is_trending' => 'boolean',
         ]);
@@ -201,7 +257,7 @@ class MusicController extends Controller
         $track->update($request->only([
             'title', 'description', 'artist', 'album', 'genre', 'category_id', 'album_id',
             'release_date', 'lyrics', 'lyrics_timestamps', 'tags', 'allow_download',
-            'explicit_content', 'is_featured', 'is_trending'
+            'is_explicit', 'is_featured', 'is_trending'
         ]));
 
         return response()->json($track);
@@ -236,10 +292,31 @@ class MusicController extends Controller
             ->limit(20)
             ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $tracks,
-        ]);
+        $mapped = $tracks->map(function ($track) {
+            return [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => optional($track->created_at)->toISOString() ?? now()->toISOString(),
+                'updated_at'    => optional($track->updated_at)->toISOString() ?? now()->toISOString(),
+            ];
+        });
+
+        return response()->json(['status' => true, 'data' => $mapped]);
     }
 
     /**
@@ -253,10 +330,31 @@ class MusicController extends Controller
             ->latest()
             ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $tracks,
-        ]);
+        $mapped = $tracks->map(function ($track) {
+            return [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => optional($track->created_at)->toISOString() ?? now()->toISOString(),
+                'updated_at'    => optional($track->updated_at)->toISOString() ?? now()->toISOString(),
+            ];
+        });
+
+        return response()->json(['status' => true, 'data' => $mapped]);
     }
 
     /**
@@ -270,10 +368,31 @@ class MusicController extends Controller
             ->latest()
             ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $tracks,
-        ]);
+        $mapped = $tracks->map(function ($track) {
+            return [
+                'id'            => $track->id,
+                'title'         => $track->title,
+                'artist_name'   => $track->artist_name,
+                'album_name'    => $track->album_name,
+                'genre'         => $track->genre,
+                'duration'      => (int) $track->duration,
+                'audio_url'     => $track->file_url,
+                'cover_art_url' => $track->cover_art_url,
+                'lyrics'        => $track->lyrics,
+                'is_featured'   => (bool) $track->is_featured,
+                'is_trending'   => (bool) $track->is_trending,
+                'is_explicit'   => (bool) $track->is_explicit,
+                'is_premium'    => (bool) $track->is_premium,
+                'play_count'    => (int) $track->play_count,
+                'like_count'    => (int) $track->like_count,
+                'is_liked'      => false,
+                'slug'          => $track->slug ?? '',
+                'created_at'    => optional($track->created_at)->toISOString() ?? now()->toISOString(),
+                'updated_at'    => optional($track->updated_at)->toISOString() ?? now()->toISOString(),
+            ];
+        });
+
+        return response()->json(['status' => true, 'data' => $mapped]);
     }
 
     /**
@@ -490,15 +609,57 @@ class MusicController extends Controller
     {
         $playlists = MusicPlaylist::with(['user', 'tracks'])
             ->when($request->search, function ($query, $search) {
-                return $query->where('title', 'like', "%{$search}%");
+                return $query->where('name', 'like', "%{$search}%");
             })
-            ->where('status', true)
+            ->where('is_public', true)
             ->latest()
             ->paginate(20);
 
         return response()->json([
             'success' => true,
             'data' => $playlists,
+        ]);
+    }
+
+    public function showAlbum(MusicAlbum $album): JsonResponse
+    {
+        $album->load(['category', 'tracks']);
+        return response()->json(['success' => true, 'data' => $album]);
+    }
+
+    public function showPlaylist(MusicPlaylist $playlist): JsonResponse
+    {
+        $playlist->load(['user', 'tracks']);
+        return response()->json(['success' => true, 'data' => $playlist]);
+    }
+
+    public function search(Request $request): JsonResponse
+    {
+        $query = $request->get('q', '');
+        $tracks = MusicTrack::with(['category'])
+            ->where('status', true)
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                  ->orWhere('artist_name', 'like', "%{$query}%")
+                  ->orWhere('album_name', 'like', "%{$query}%")
+                  ->orWhere('genre', 'like', "%{$query}%");
+            })
+            ->limit(30)->get();
+
+        $albums = MusicAlbum::where('status', true)
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                  ->orWhere('artist_name', 'like', "%{$query}%");
+            })
+            ->limit(10)->get();
+
+        $playlists = MusicPlaylist::where('is_public', true)
+            ->where('name', 'like', "%{$query}%")
+            ->limit(10)->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => compact('tracks', 'albums', 'playlists'),
         ]);
     }
 

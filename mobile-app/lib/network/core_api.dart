@@ -33,9 +33,6 @@ import '../main.dart';
 import '../models/base_response_model.dart';
 import '../screens/auth/model/about_page_res.dart';
 import '../screens/coupon/model/coupon_list_model.dart';
-import '../screens/shorts/models/short_model.dart';
-import '../screens/music/models/music_model.dart';
-import '../screens/music/models/playlist_model.dart';
 import '../screens/subscription/model/subscription_plan_model.dart';
 import '../utils/api_end_points.dart';
 import '../utils/common_base.dart';
@@ -89,10 +86,57 @@ class CoreServiceApis {
             (error, stackTrace) {
               setBoolToLocal(SharedPreferenceConst.IS_APP_CONFIGURATION_SYNCED_ONCE, false);
 
+              // Load cached config if API fails
+              getCachedConfig().then((cachedConfig) {
+                if (cachedConfig != null) {
+                  appCurrency(cachedConfig.currency);
+                  appConfigs(cachedConfig);
+                  isSupportedDevice(cachedConfig.isDeviceSupported);
+                  isCastingAvailable(cachedConfig.isCastingAvailable);
+                } else {
+                  // Use default config if no cache available
+                  final defaultConfig = ConfigurationResponse(
+                    applicationURL: ApplicationURL(mobileAppUrl: MobileAppUrl()),
+                    currency: Currency(),
+                    bannerAds: BannerAds(),
+                    enableMovie: true,
+                    enableTvShow: true,
+                    enableLiveTv: true,
+                    enableVideo: true,
+                    enableContinueWatch: true,
+                    enableRateUs: false,
+                    isDeviceSupported: true,
+                    isCastingAvailable: false,
+                    isDownloadAvailable: false,
+                    isGoogleLoginEnabled: true,
+                    isAppleSocialLoginEnabled: true,
+                    isOtpLoginEnabled: true,
+                    isForceUpdate: false,
+                    enableDemoLogin: true,
+                  );
+                  appCurrency(defaultConfig.currency);
+                  appConfigs(defaultConfig);
+                  isSupportedDevice(defaultConfig.isDeviceSupported);
+                  isCastingAvailable(defaultConfig.isCastingAvailable);
+                }
+              });
+
               onError?.call();
             },
           ).whenComplete(() => loaderOnOff?.call(false));
         });
+  }
+
+  static Future<ConfigurationResponse?> getCachedConfig() async {
+    try {
+      final cachedJson = await getJsonFromLocal(SharedPreferenceConst.CACHE_CONFIGURATION_RESPONSE);
+      if (cachedJson != null) {
+        return ConfigurationResponse.fromJson(cachedJson);
+      }
+    } catch (e) {
+      log('Error loading cached config: $e');
+    }
+    return null;
   }
 
   static Future<DashboardDetailResponse> getDashboard() async {
@@ -1368,6 +1412,104 @@ class CoreServiceApis {
     } catch (e) {
       log('playMusic Error: $e');
       return BaseResponseModel(status: false, message: 'Failed to play music');
+    }
+  }
+
+  static Future<BaseResponseModel> getAlbums({int page = 1, int limit = 20}) async {
+    try {
+      final response = await getApiResponse(
+        getEndPoint(endPoint: APIEndPoints.musicAlbums, params: ['page=$page', 'per_page=$limit']),
+      );
+      return BaseResponseModel.fromJson(response);
+    } catch (e) {
+      log('getAlbums Error: $e');
+      return BaseResponseModel(status: false, message: 'Failed to get albums');
+    }
+  }
+
+  static Future<BaseResponseModel> getAlbumDetail(int albumId) async {
+    try {
+      final response = await getApiResponse(
+        getEndPoint(endPoint: APIEndPoints.musicAlbumDetail.replaceAll('{id}', albumId.toString())),
+      );
+      return BaseResponseModel.fromJson(response);
+    } catch (e) {
+      log('getAlbumDetail Error: $e');
+      return BaseResponseModel(status: false, message: 'Failed to get album');
+    }
+  }
+
+  static Future<BaseResponseModel> getPlaylistDetail(int playlistId) async {
+    try {
+      final response = await getApiResponse(
+        getEndPoint(endPoint: APIEndPoints.musicPlaylistDetail.replaceAll('{id}', playlistId.toString())),
+      );
+      return BaseResponseModel.fromJson(response);
+    } catch (e) {
+      log('getPlaylistDetail Error: $e');
+      return BaseResponseModel(status: false, message: 'Failed to get playlist');
+    }
+  }
+
+  static Future<BaseResponseModel> searchMusicGlobal(String query) async {
+    try {
+      final response = await getApiResponse(
+        getEndPoint(endPoint: APIEndPoints.musicGlobalSearch, params: ['q=${Uri.encodeComponent(query)}']),
+      );
+      return BaseResponseModel.fromJson(response);
+    } catch (e) {
+      log('searchMusicGlobal Error: $e');
+      return BaseResponseModel(status: false, message: 'Failed to search');
+    }
+  }
+
+  static Future<BaseResponseModel> getMusicLyrics(int trackId) async {
+    try {
+      final response = await getApiResponse(
+        getEndPoint(endPoint: 'music/tracks/$trackId/lyrics'),
+      );
+      return BaseResponseModel.fromJson(response);
+    } catch (e) {
+      log('getMusicLyrics Error: $e');
+      return BaseResponseModel(status: false, message: 'Failed to get lyrics');
+    }
+  }
+
+  static Future<BaseResponseModel> getTracksByArtist(String artistName) async {
+    try {
+      final encoded = Uri.encodeComponent(artistName);
+      final response = await getApiResponse(
+        getEndPoint(endPoint: 'music/artist/$encoded'),
+      );
+      return BaseResponseModel.fromJson(response);
+    } catch (e) {
+      log('getTracksByArtist Error: $e');
+      return BaseResponseModel(status: false, message: 'Failed to get artist tracks');
+    }
+  }
+
+  static Future<BaseResponseModel> getTracksByGenre(String genre) async {
+    try {
+      final encoded = Uri.encodeComponent(genre);
+      final response = await getApiResponse(
+        getEndPoint(endPoint: 'music/genre/$encoded'),
+      );
+      return BaseResponseModel.fromJson(response);
+    } catch (e) {
+      log('getTracksByGenre Error: $e');
+      return BaseResponseModel(status: false, message: 'Failed to get genre tracks');
+    }
+  }
+
+  static Future<BaseResponseModel> getMusicCategories() async {
+    try {
+      final response = await getApiResponse(
+        getEndPoint(endPoint: 'music/categories'),
+      );
+      return BaseResponseModel.fromJson(response);
+    } catch (e) {
+      log('getMusicCategories Error: $e');
+      return BaseResponseModel(status: false, message: 'Failed to get categories');
     }
   }
 }

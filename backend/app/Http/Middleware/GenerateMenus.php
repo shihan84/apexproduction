@@ -39,7 +39,7 @@ class GenerateMenus
             ]);
 
             $permissionsToCheck = ['view_genres', 'view_movies', 'view_tvshow', 'view_seasons','view_episodes','view_videos','view_livetv',
-            'view_tvcategory','view_tvchannel','view_castcrew','view_director','view_ads','view_vastads','view_customads','view_shorts','view_music_tracks','view_music_albums','view_music_playlists'];
+            'view_tvcategory','view_tvchannel','view_castcrew','view_director','view_ads','view_vastads','view_customads','view_shorts','view_shorts_categories','view_music_tracks','view_music_albums','view_music_playlists','view_music_categories'];
 
             if (collect($permissionsToCheck)->contains(fn ($permission) => $user && $user->can($permission))) {
                 $this->staticMenu($menu, ['title' => __('sidebar.media_management'), 'order' => 0]);
@@ -151,22 +151,39 @@ class GenerateMenus
 
         }
         
-        // Add Shorts module to Media Management (MATCH WORKING DASHBOARD)
+        // Add Shorts/Reels module to Media Management
         if(isenablemodule('shorts')==1){
-            $this->mainRoute($menu, [
-                'icon' => 'ph ph-camera-video',
-                'route' => 'backend.shorts.index',
+            $shorts = $this->parentMenu($menu, [
+                'icon' => 'ph ph-film-strip',
                 'title' => __('sidebar.shorts'),
-                'active' => ['app/shorts','app/shorts/*'],
+                'nickname' => 'shorts',
                 'permission' => ['view_shorts'],
                 'order' => 0,
             ]);
+            $this->childMain($shorts, [
+                'title' => __('sidebar.shorts'),
+                'route' => 'backend.shorts.index',
+                'active' => ['app/shorts','app/shorts/create','app/shorts/*/edit'],
+                'shortTitle' => 'S',
+                'order' => 0,
+                'permission' => ['view_shorts'],
+                'icon' => 'ph ph-film-strip',
+            ]);
+            $this->childMain($shorts, [
+                'title' => __('sidebar.shorts_categories'),
+                'route' => 'backend.shorts.categories.index',
+                'active' => ['app/shorts-categories','app/shorts-categories/*'],
+                'shortTitle' => 'C',
+                'order' => 0,
+                'permission' => ['view_shorts_categories'],
+                'icon' => 'ph ph-circles-three-plus',
+            ]);
         }
         
-        // Add Music module to Media Management (MATCH WORKING DASHBOARD)
+        // Add Music module to Media Management
         if(isenablemodule('music')==1){
             $music = $this->parentMenu($menu, [
-                'icon' => 'ph ph-music-note-beamed',
+                'icon' => 'ph ph-vinyl-record',
                 'title' => __('sidebar.music'),
                 'nickname' => 'music',
                 'permission' => ['view_music_tracks'],
@@ -201,6 +218,16 @@ class GenerateMenus
                 'order' => 0,
                 'permission' => ['view_music_playlists'],
                 'icon' => 'ph ph-list-music',
+            ]);
+
+            $this->childMain($music, [
+                'title' => __('sidebar.music_categories'),
+                'route' => 'backend.music.categories.index',
+                'active' => ['app/music-categories','app/music-categories/*'],
+                'shortTitle' => 'C',
+                'order' => 0,
+                'permission' => ['view_music_categories'],
+                'icon' => 'ph ph-circles-three-plus',
             ]);
         }
 

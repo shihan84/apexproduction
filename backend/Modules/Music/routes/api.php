@@ -21,8 +21,11 @@ Route::prefix('music')->group(function () {
     Route::get('genre/{genre}', [MusicController::class, 'byGenre']);
     Route::get('artist/{artist}', [MusicController::class, 'byArtist']);
     Route::get('albums', [MusicController::class, 'albums']);
+    Route::get('albums/{album}', [MusicController::class, 'showAlbum']);
     Route::get('playlists', [MusicController::class, 'playlists']);
+    Route::get('playlists/{playlist}', [MusicController::class, 'showPlaylist']);
     Route::get('categories', [MusicController::class, 'categories']);
+    Route::get('search', [MusicController::class, 'search']);
     
     // Track-specific routes
     Route::get('tracks/{track}', [MusicController::class, 'show']);

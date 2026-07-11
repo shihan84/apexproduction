@@ -13,282 +13,410 @@ use Illuminate\Support\Facades\Storage;
 
 class MusicController extends Controller
 {
-    /**
-     * Display a listing of music tracks.
-     */
+    /* ------------------------------------------------------------------ */
+    /*  TRACKS                                                              */
+    /* ------------------------------------------------------------------ */
+
     public function index(Request $request)
     {
-        $tracks = MusicTrack::with(['user', 'category', 'album'])
-            ->when($request->search, function ($query, $search) {
-                return $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('artist', 'like', "%{$search}%")
-                    ->orWhere('album', 'like', "%{$search}%");
-            })
-            ->when($request->category_id, function ($query, $categoryId) {
-                return $query->where('category_id', $categoryId);
-            })
-            ->when($request->genre, function ($query, $genre) {
-                return $query->where('genre', $genre);
-            })
-            ->when($request->artist, function ($query, $artist) {
-                return $query->where('artist', 'like', "%{$artist}%");
-            })
-            ->latest()
-            ->paginate(20);
+        $tracks = MusicTrack::with(['category', 'album'])
+            ->when($request->search, fn($q, $s) =>
+                $q->where('title', 'like', "%{$s}%")
+                  ->orWhere('artist_name', 'like', "%{$s}%"))
+            ->when($request->category_id, fn($q, $id) => $q->where('category_id', $id))
+            ->when($request->genre, fn($q, $g) => $q->where('genre', $g))
+            ->latest()->paginate(20);
 
-        $categories = MusicCategory::where('status', true)->get();
-        $genres = MusicTrack::distinct()->pluck('genre')->filter();
-        $artists = MusicTrack::distinct()->pluck('artist')->filter();
+        $categories = MusicCategory::where('status', true)->orderBy('name')->get();
+        $albums     = MusicAlbum::where('status', true)->orderBy('title')->get();
+        $genres     = MusicTrack::distinct()->pluck('genre')->filter()->values();
 
-        return view('music::backend.tracks.index', compact('tracks', 'categories', 'genres', 'artists'));
+        return view('music::backend.tracks.index', compact('tracks', 'categories', 'albums', 'genres'));
     }
 
-    /**
-     * Show the form for creating a new music track.
-     */
     public function create()
     {
-        $categories = MusicCategory::active()->get();
-        $albums = MusicAlbum::active()->get();
+        $categories = MusicCategory::where('status', true)->orderBy('name')->get();
+        $albums     = MusicAlbum::where('status', true)->orderBy('title')->get();
         return view('music::backend.tracks.create', compact('categories', 'albums'));
     }
 
-    /**
-     * Store a newly created music track in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
-            'content_type' => 'required|in:track,album,podcast',
-            'audio_upload_type' => 'required|in:upload,youtube,soundcloud',
-            'audio_url' => 'required_if:audio_upload_type,youtube,soundcloud|url',
-            'audio_file' => 'required_if:audio_upload_type,upload|mimes:mp3,aac,flac,wav|max:51200', // 50MB
-            'cover_art_file' => 'nullable|mimes:jpg,jpeg,png|max:10240', // 10MB
-            'cover_art_url' => 'nullable|url',
-            'duration' => 'nullable|integer|min:1|max:3600', // Max 1 hour
-            'language' => 'nullable|string|max:10',
-            'audio_quality' => 'nullable|in:128kbps,256kbps,320kbps',
-            'audio_format' => 'nullable|in:MP3,AAC,FLAC,WAV',
-            'artist_name' => 'required|string|max:255',
-            'album_name' => 'nullable|string|max:255',
-            'track_number' => 'nullable|integer|min:1',
-            'genre' => 'nullable|string|max:100',
-            'release_date' => 'nullable|date',
-            'lyrics' => 'nullable|string|max:5000',
-            'copyright_info' => 'nullable|string|max:1000',
-            'allow_download' => 'boolean',
-            'explicit_content' => 'boolean',
-            'category_id' => 'nullable|exists:music_categories,id',
-            'album_id' => 'nullable|exists:music_albums,id',
-            'tags' => 'nullable|array|max:10',
-            'tags.*' => 'string|max:50',
-            'is_featured' => 'boolean',
-            'is_trending' => 'boolean',
-            'status' => 'boolean',
+            'title'         => 'required|string|max:191',
+            'artist_name'   => 'required|string|max:191',
+            'genre'         => 'required|string|max:100',
+            'duration'      => 'required|integer|min:1',
+            'file_url'      => 'required_without:audio_file|nullable|string|max:500',
+            'audio_file'    => 'required_without:file_url|nullable|file|mimes:mp3,aac,flac,wav|max:51200',
+            'cover_art_url' => 'nullable|string|max:500',
+            'cover_art_file'=> 'nullable|file|mimes:jpg,jpeg,png,webp|max:10240',
+            'album_id'      => 'nullable|exists:music_albums,id',
+            'category_id'   => 'nullable|exists:music_categories,id',
+            'release_date'  => 'nullable|date',
+            'lyrics'        => 'nullable|string',
+            'description'   => 'nullable|string|max:2000',
+            'copyright_info'=> 'nullable|string|max:500',
+            'label'         => 'nullable|string|max:191',
+            'track_number'  => 'nullable|integer|min:1',
         ]);
 
-        $data = $request->except(['audio_file', 'cover_art_file', 'tags']);
-        $data['slug'] = Str::slug($request->title);
-        $data['user_id'] = auth()->id();
-        $data['created_by'] = auth()->id();
+        $data = [
+            'title'         => $request->title,
+            'artist_name'   => $request->artist_name,
+            'album_name'    => $request->album_name,
+            'album_id'      => $request->album_id,
+            'genre'         => $request->genre,
+            'duration'      => $request->duration,
+            'description'   => $request->description,
+            'lyrics'        => $request->lyrics,
+            'copyright_info'=> $request->copyright_info,
+            'label'         => $request->label,
+            'track_number'  => $request->track_number,
+            'release_date'  => $request->release_date,
+            'category_id'   => $request->category_id,
+            'is_featured'   => $request->boolean('is_featured'),
+            'is_trending'   => $request->boolean('is_trending'),
+            'is_explicit'   => $request->boolean('is_explicit'),
+            'is_premium'    => $request->boolean('is_premium'),
+            'allow_download'=> $request->boolean('allow_download'),
+            'allow_sharing' => $request->boolean('allow_sharing', true),
+            'status'        => $request->boolean('status', true),
+            'slug'          => Str::slug($request->title) . '-' . time(),
+            'user_id'       => auth()->id(),
+            'created_by'    => auth()->id(),
+        ];
 
-        // Handle audio upload
-        if ($request->audio_upload_type === 'upload' && $request->hasFile('audio_file')) {
-            $audio = $request->file('audio_file');
-            $audioPath = $audio->store('music/tracks', 'public');
-            $data['audio_url'] = Storage::url($audioPath);
-            $data['content_source'] = 'upload';
-        } elseif ($request->audio_upload_type === 'youtube') {
-            $data['content_source'] = 'youtube';
-            // Extract YouTube video ID and metadata
-            $videoId = $this->extractYouTubeId($request->audio_url);
-            $data['external_metadata'] = [
-                'youtube_id' => $videoId,
-                'original_url' => $request->audio_url,
-            ];
-        } elseif ($request->audio_upload_type === 'soundcloud') {
-            $data['content_source'] = 'soundcloud';
-            $data['external_metadata'] = [
-                'soundcloud_url' => $request->audio_url,
-            ];
+        // Audio file
+        if ($request->hasFile('audio_file')) {
+            $path = $request->file('audio_file')->store('music/tracks', 'public');
+            $data['file_url']    = Storage::url($path);
+            $data['file_size']   = $request->file('audio_file')->getSize();
+            $data['file_format'] = strtolower($request->file('audio_file')->getClientOriginalExtension());
+        } elseif ($request->file_url) {
+            $data['file_url'] = $request->file_url;
         }
 
-        // Handle cover art upload
+        // Cover art
         if ($request->hasFile('cover_art_file')) {
-            $coverArt = $request->file('cover_art_file');
-            $coverArtPath = $coverArt->store('music/covers', 'public');
-            $data['cover_art_url'] = Storage::url($coverArtPath);
+            $path = $request->file('cover_art_file')->store('music/covers', 'public');
+            $data['cover_art_url'] = Storage::url($path);
         } elseif ($request->cover_art_url) {
             $data['cover_art_url'] = $request->cover_art_url;
         }
 
-        // Handle tags
-        if ($request->has('tags')) {
-            $data['tags'] = json_encode($request->tags);
+        // Tags
+        if ($request->filled('tags')) {
+            $data['tags'] = array_filter(array_map('trim', explode(',', $request->tags)));
         }
 
-        $track = MusicTrack::create($data);
+        MusicTrack::create($data);
 
-        return redirect()
-            ->route('backend.music.tracks.index')
-            ->with('success', 'Music track created successfully!');
+        return redirect()->route('backend.music.tracks.index')
+            ->with('success', 'Track created successfully!');
     }
 
-    /**
-     * Display the specified music track.
-     */
     public function show(MusicTrack $track)
     {
-        $track->load(['user', 'category', 'album', 'likes.user']);
+        $track->load(['category', 'album', 'playlists']);
         return view('music::backend.tracks.show', compact('track'));
     }
 
-    /**
-     * Show the form for editing the specified music track.
-     */
     public function edit(MusicTrack $track)
     {
-        $categories = MusicCategory::active()->get();
-        $albums = MusicAlbum::active()->get();
+        $categories = MusicCategory::where('status', true)->orderBy('name')->get();
+        $albums     = MusicAlbum::where('status', true)->orderBy('title')->get();
         return view('music::backend.tracks.edit', compact('track', 'categories', 'albums'));
     }
 
-    /**
-     * Update the specified music track in storage.
-     */
     public function update(Request $request, MusicTrack $track)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
-            'content_type' => 'required|in:track,album,podcast',
-            'audio_upload_type' => 'required|in:upload,youtube,soundcloud',
-            'audio_url' => 'required_if:audio_upload_type,youtube,soundcloud|url',
-            'audio_file' => 'nullable|mimes:mp3,aac,flac,wav|max:51200',
-            'cover_art_file' => 'nullable|mimes:jpg,jpeg,png|max:10240',
-            'cover_art_url' => 'nullable|url',
-            'duration' => 'nullable|integer|min:1|max:3600',
-            'language' => 'nullable|string|max:10',
-            'audio_quality' => 'nullable|in:128kbps,256kbps,320kbps',
-            'audio_format' => 'nullable|in:MP3,AAC,FLAC,WAV',
-            'artist_name' => 'required|string|max:255',
-            'album_name' => 'nullable|string|max:255',
-            'track_number' => 'nullable|integer|min:1',
-            'genre' => 'nullable|string|max:100',
-            'release_date' => 'nullable|date',
-            'lyrics' => 'nullable|string|max:5000',
-            'copyright_info' => 'nullable|string|max:1000',
-            'allow_download' => 'boolean',
-            'explicit_content' => 'boolean',
-            'category_id' => 'nullable|exists:music_categories,id',
-            'album_id' => 'nullable|exists:music_albums,id',
-            'tags' => 'nullable|array|max:10',
-            'tags.*' => 'string|max:50',
-            'is_featured' => 'boolean',
-            'is_trending' => 'boolean',
-            'status' => 'boolean',
+            'title'         => 'required|string|max:191',
+            'artist_name'   => 'required|string|max:191',
+            'genre'         => 'required|string|max:100',
+            'duration'      => 'required|integer|min:1',
+            'file_url'      => 'nullable|string|max:500',
+            'cover_art_url' => 'nullable|string|max:500',
+            'album_id'      => 'nullable|exists:music_albums,id',
+            'category_id'   => 'nullable|exists:music_categories,id',
+            'release_date'  => 'nullable|date',
         ]);
 
-        $data = $request->except(['audio_file', 'cover_art_file', 'tags']);
-        $data['slug'] = Str::slug($request->title);
-        $data['updated_by'] = auth()->id();
+        $data = [
+            'title'         => $request->title,
+            'artist_name'   => $request->artist_name,
+            'album_name'    => $request->album_name,
+            'album_id'      => $request->album_id,
+            'genre'         => $request->genre,
+            'duration'      => $request->duration,
+            'description'   => $request->description,
+            'lyrics'        => $request->lyrics,
+            'copyright_info'=> $request->copyright_info,
+            'label'         => $request->label,
+            'track_number'  => $request->track_number,
+            'release_date'  => $request->release_date,
+            'category_id'   => $request->category_id,
+            'is_featured'   => $request->boolean('is_featured'),
+            'is_trending'   => $request->boolean('is_trending'),
+            'is_explicit'   => $request->boolean('is_explicit'),
+            'is_premium'    => $request->boolean('is_premium'),
+            'allow_download'=> $request->boolean('allow_download'),
+            'allow_sharing' => $request->boolean('allow_sharing', true),
+            'status'        => $request->boolean('status', true),
+            'updated_by'    => auth()->id(),
+        ];
 
-        // Handle audio upload
-        if ($request->audio_upload_type === 'upload' && $request->hasFile('audio_file')) {
-            $audio = $request->file('audio_file');
-            $audioPath = $audio->store('music/tracks', 'public');
-            $data['audio_url'] = Storage::url($audioPath);
-            $data['content_source'] = 'upload';
+        if ($request->hasFile('audio_file')) {
+            $path = $request->file('audio_file')->store('music/tracks', 'public');
+            $data['file_url']    = Storage::url($path);
+            $data['file_size']   = $request->file('audio_file')->getSize();
+            $data['file_format'] = strtolower($request->file('audio_file')->getClientOriginalExtension());
+        } elseif ($request->file_url) {
+            $data['file_url'] = $request->file_url;
         }
 
-        // Handle cover art upload
         if ($request->hasFile('cover_art_file')) {
-            $coverArt = $request->file('cover_art_file');
-            $coverArtPath = $coverArt->store('music/covers', 'public');
-            $data['cover_art_url'] = Storage::url($coverArtPath);
+            $path = $request->file('cover_art_file')->store('music/covers', 'public');
+            $data['cover_art_url'] = Storage::url($path);
+        } elseif ($request->cover_art_url) {
+            $data['cover_art_url'] = $request->cover_art_url;
         }
 
-        // Handle tags
-        if ($request->has('tags')) {
-            $data['tags'] = json_encode($request->tags);
+        if ($request->filled('tags')) {
+            $data['tags'] = array_filter(array_map('trim', explode(',', $request->tags)));
         }
 
         $track->update($data);
 
-        return redirect()
-            ->route('backend.music.tracks.index')
-            ->with('success', 'Music track updated successfully!');
+        return redirect()->route('backend.music.tracks.index')
+            ->with('success', 'Track updated successfully!');
     }
 
-    /**
-     * Remove the specified music track from storage.
-     */
     public function destroy(MusicTrack $track)
     {
         $track->delete();
-        return redirect()
-            ->route('backend.music.tracks.index')
-            ->with('success', 'Music track deleted successfully!');
+        return redirect()->route('backend.music.tracks.index')
+            ->with('success', 'Track deleted successfully!');
     }
 
-    /**
-     * Display music albums.
-     */
+    /* ------------------------------------------------------------------ */
+    /*  ALBUMS                                                              */
+    /* ------------------------------------------------------------------ */
+
     public function albums()
     {
-        $albums = MusicAlbum::with(['user', 'category', 'tracks'])
-            ->latest()
-            ->paginate(20);
-
+        $albums = MusicAlbum::with(['category'])->withCount('tracks')->latest()->paginate(20);
         return view('music::backend.albums.index', compact('albums'));
     }
 
-    /**
-     * Display music playlists.
-     */
+    public function createAlbum()
+    {
+        $categories = MusicCategory::where('status', true)->orderBy('name')->get();
+        $tracks     = MusicTrack::where('status', true)->orderBy('title')->get();
+        return view('music::backend.albums.create', compact('categories', 'tracks'));
+    }
+
+    public function storeAlbum(Request $request)
+    {
+        $request->validate([
+            'title'       => 'required|string|max:191',
+            'artist_name' => 'required|string|max:191',
+            'genre'       => 'nullable|string|max:100',
+            'release_date'=> 'nullable|date',
+            'cover_art_url'=> 'nullable|string|max:500',
+            'description' => 'nullable|string|max:2000',
+            'category_id' => 'nullable|exists:music_categories,id',
+            'track_ids'   => 'nullable|array',
+            'track_ids.*' => 'exists:music_tracks,id',
+        ]);
+
+        $album = MusicAlbum::create([
+            'title'       => $request->title,
+            'artist_name' => $request->artist_name,
+            'slug'        => Str::slug($request->title) . '-' . time(),
+            'genre'       => $request->genre,
+            'release_date'=> $request->release_date,
+            'cover_art_url'=> $request->cover_art_url,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'status'      => $request->boolean('status', true),
+            'is_featured' => $request->boolean('is_featured'),
+            'is_trending' => $request->boolean('is_trending'),
+            'user_id'     => auth()->id(),
+            'created_by'  => auth()->id(),
+        ]);
+
+        if ($request->filled('track_ids')) {
+            MusicTrack::whereIn('id', $request->track_ids)
+                ->update(['album_id' => $album->id, 'album_name' => $album->title]);
+        }
+
+        return redirect()->route('backend.music.albums.index')
+            ->with('success', 'Album created successfully!');
+    }
+
+    public function editAlbum(MusicAlbum $album)
+    {
+        $categories     = MusicCategory::where('status', true)->orderBy('name')->get();
+        $tracks         = MusicTrack::where('status', true)->orderBy('title')->get();
+        $selectedTrackIds = $album->tracks->pluck('id')->toArray();
+        return view('music::backend.albums.edit', compact('album', 'categories', 'tracks', 'selectedTrackIds'));
+    }
+
+    public function updateAlbum(Request $request, MusicAlbum $album)
+    {
+        $request->validate([
+            'title'        => 'required|string|max:191',
+            'artist_name'  => 'required|string|max:191',
+            'genre'        => 'nullable|string|max:100',
+            'release_date' => 'nullable|date',
+            'cover_art_url'=> 'nullable|string|max:500',
+            'description'  => 'nullable|string|max:2000',
+            'category_id'  => 'nullable|exists:music_categories,id',
+            'track_ids'    => 'nullable|array',
+            'track_ids.*'  => 'exists:music_tracks,id',
+        ]);
+
+        $album->update([
+            'title'        => $request->title,
+            'artist_name'  => $request->artist_name,
+            'genre'        => $request->genre,
+            'release_date' => $request->release_date,
+            'cover_art_url'=> $request->cover_art_url,
+            'description'  => $request->description,
+            'category_id'  => $request->category_id,
+            'status'       => $request->boolean('status', true),
+            'is_featured'  => $request->boolean('is_featured'),
+            'is_trending'  => $request->boolean('is_trending'),
+            'updated_by'   => auth()->id(),
+        ]);
+
+        MusicTrack::where('album_id', $album->id)->update(['album_id' => null, 'album_name' => null]);
+        if ($request->filled('track_ids')) {
+            MusicTrack::whereIn('id', $request->track_ids)
+                ->update(['album_id' => $album->id, 'album_name' => $album->title]);
+        }
+
+        return redirect()->route('backend.music.albums.index')
+            ->with('success', 'Album updated successfully!');
+    }
+
+    public function destroyAlbum(MusicAlbum $album)
+    {
+        MusicTrack::where('album_id', $album->id)->update(['album_id' => null, 'album_name' => null]);
+        $album->delete();
+        return redirect()->route('backend.music.albums.index')
+            ->with('success', 'Album deleted successfully!');
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  PLAYLISTS                                                           */
+    /* ------------------------------------------------------------------ */
+
     public function playlists()
     {
-        $playlists = MusicPlaylist::with(['user', 'tracks'])
-            ->latest()
-            ->paginate(20);
-
+        $playlists = MusicPlaylist::with(['tracks'])->withCount('tracks')->latest()->paginate(20);
         return view('music::backend.playlists.index', compact('playlists'));
     }
 
-    /**
-     * Display featured music.
-     */
+    public function createPlaylist()
+    {
+        $tracks = MusicTrack::where('status', true)->orderBy('title')->get();
+        return view('music::backend.playlists.create', compact('tracks'));
+    }
+
+    public function storePlaylist(Request $request)
+    {
+        $request->validate([
+            'name'         => 'required|string|max:191',
+            'description'  => 'nullable|string|max:2000',
+            'cover_art_url'=> 'nullable|string|max:500',
+            'track_ids'    => 'nullable|array',
+            'track_ids.*'  => 'exists:music_tracks,id',
+        ]);
+
+        $playlist = MusicPlaylist::create([
+            'name'         => $request->name,
+            'slug'         => Str::slug($request->name) . '-' . time(),
+            'description'  => $request->description,
+            'cover_art_url'=> $request->cover_art_url,
+            'is_public'    => $request->boolean('is_public', true),
+            'is_featured'  => $request->boolean('is_featured'),
+            'user_id'      => auth()->id(),
+            'created_by'   => auth()->id(),
+        ]);
+
+        if ($request->filled('track_ids')) {
+            $sync = [];
+            foreach ($request->track_ids as $pos => $id) {
+                $sync[$id] = ['position' => $pos + 1];
+            }
+            $playlist->tracks()->sync($sync);
+        }
+
+        return redirect()->route('backend.music.playlists.index')
+            ->with('success', 'Playlist created successfully!');
+    }
+
+    public function editPlaylist(MusicPlaylist $playlist)
+    {
+        $tracks           = MusicTrack::where('status', true)->orderBy('title')->get();
+        $selectedTrackIds = $playlist->tracks->pluck('id')->toArray();
+        return view('music::backend.playlists.edit', compact('playlist', 'tracks', 'selectedTrackIds'));
+    }
+
+    public function updatePlaylist(Request $request, MusicPlaylist $playlist)
+    {
+        $request->validate([
+            'name'         => 'required|string|max:191',
+            'description'  => 'nullable|string|max:2000',
+            'cover_art_url'=> 'nullable|string|max:500',
+            'track_ids'    => 'nullable|array',
+            'track_ids.*'  => 'exists:music_tracks,id',
+        ]);
+
+        $playlist->update([
+            'name'         => $request->name,
+            'description'  => $request->description,
+            'cover_art_url'=> $request->cover_art_url,
+            'is_public'    => $request->boolean('is_public', true),
+            'is_featured'  => $request->boolean('is_featured'),
+            'updated_by'   => auth()->id(),
+        ]);
+
+        $sync = [];
+        foreach ($request->input('track_ids', []) as $pos => $id) {
+            $sync[$id] = ['position' => $pos + 1];
+        }
+        $playlist->tracks()->sync($sync);
+
+        return redirect()->route('backend.music.playlists.index')
+            ->with('success', 'Playlist updated successfully!');
+    }
+
+    public function destroyPlaylist(MusicPlaylist $playlist)
+    {
+        $playlist->tracks()->detach();
+        $playlist->delete();
+        return redirect()->route('backend.music.playlists.index')
+            ->with('success', 'Playlist deleted successfully!');
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  FEATURED / TRENDING                                                 */
+    /* ------------------------------------------------------------------ */
+
     public function featured()
     {
-        $tracks = MusicTrack::featured()
-            ->with(['user', 'category', 'album'])
-            ->latest()
-            ->paginate(20);
-
-        return view('music::backend.tracks.featured', compact('tracks'));
+        $tracks = MusicTrack::featured()->with(['category','album'])->latest()->paginate(20);
+        return view('music::backend.tracks.index', compact('tracks'));
     }
 
-    /**
-     * Display trending music.
-     */
     public function trending()
     {
-        $tracks = MusicTrack::trending()
-            ->with(['user', 'category', 'album'])
-            ->latest()
-            ->paginate(20);
-
-        return view('music::backend.tracks.trending', compact('tracks'));
-    }
-
-    /**
-     * Extract YouTube video ID from URL
-     */
-    private function extractYouTubeId($url)
-    {
-        preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/', $url, $matches);
-        return $matches[1] ?? null;
+        $tracks = MusicTrack::trending()->with(['category','album'])->latest()->paginate(20);
+        return view('music::backend.tracks.index', compact('tracks'));
     }
 }

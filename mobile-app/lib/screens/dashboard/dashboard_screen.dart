@@ -16,6 +16,7 @@ import 'package:streamit_laravel/screens/profile/profile_screen.dart';
 import 'package:streamit_laravel/screens/search/search_screen.dart';
 import 'package:streamit_laravel/screens/shorts/shorts_screen.dart';
 import 'package:streamit_laravel/screens/music/music_screen.dart';
+import 'package:streamit_laravel/screens/music/components/mini_player.dart';
 import 'package:streamit_laravel/services/notification_service.dart';
 import 'package:streamit_laravel/utils/common_base.dart';
 
@@ -80,10 +81,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       canPop: false, // Always prevent default pop
       onPopInvokedWithResult: (didPop, result) async {
         if (dashboardController.currentBackPressTime == null || DateTime.now().difference(dashboardController.currentBackPressTime!) > const Duration(seconds: 2)) {
-          // First back press → record time
           dashboardController.currentBackPressTime = DateTime.now();
+          toast('Press back again to exit');
         } else {
-          await SystemNavigator.pop(); // closes the app
+          await SystemNavigator.pop();
         }
       },
       child: Scaffold(
@@ -109,7 +110,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: getCurrentScreen(dashboardController.currentIndex.value),
           ),
         ),
-        bottomNavigationBar: Blur(
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const DismissibleMiniPlayer(),
+            Blur(
           blur: 20,
           borderRadius: radius(0),
           child: Obx(
@@ -140,7 +145,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onTap: () async {
                       hideKeyboard(context);
                       floatingController.isExpanded(false);
-                      dashboardController.currentIndex(index);
+                      if (dashboardController.currentIndex.value == index) {
+                        dashboardController.scrollToTop(navBar.type);
+                      } else {
+                        dashboardController.currentIndex(index);
+                      }
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -182,6 +191,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ),
+          ),
+          ],
         ),
       ),
     );

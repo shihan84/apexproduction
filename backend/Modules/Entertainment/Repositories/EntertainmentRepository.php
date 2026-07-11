@@ -107,7 +107,11 @@ class EntertainmentRepository implements EntertainmentRepositoryInterface
 
     public function query()
     {
-        $entertainemnt = Entertainment::with('entertainmentGenerMappings');
+        $entertainemnt = Entertainment::with([
+            'entertainmentGenerMappings.genre',
+            'entertainmentCountryMappings.country',
+            'entertainmentTalentMappings.talentprofile',
+        ]);
 
         if (Auth::user()->hasRole('user')) {
             $entertainemnt->whereNull('deleted_at'); // Only include non-deleted

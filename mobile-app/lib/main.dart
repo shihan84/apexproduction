@@ -57,6 +57,7 @@ const platform = MethodChannel('flutter.iqonic.streamitlaravel.com.channel');
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
+  
   setupGlobalFontConfig();
 
   await Firebase.initializeApp().then((value) {
@@ -72,11 +73,12 @@ Future<void> main() async {
   await LocalStorage.init();
   
   // Clear corrupted secure storage from old git version (one-time fix)
+  // Uses synchronous GetStorage read/write to avoid async encryption race condition on iOS Keychain
   try {
-    bool needsClear = await getBoolFromLocal('NEEDS_STORAGE_CLEAR_V1', defaultValue: true);
-    if (needsClear) {
+    final rawFlag = LocalStorage.localStorage.read('NEEDS_STORAGE_CLEAR_V1');
+    if (rawFlag != false) {
       LocalStorage.clearAll();
-      await setBoolToLocal('NEEDS_STORAGE_CLEAR_V1', false);
+      LocalStorage.localStorage.write('NEEDS_STORAGE_CLEAR_V1', false);
       print('Cleared corrupted secure storage from old version');
     }
   } catch (e) {
