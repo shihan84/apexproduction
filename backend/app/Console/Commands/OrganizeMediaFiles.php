@@ -30,7 +30,7 @@ class OrganizeMediaFiles extends Command
 
     public function handle()
     {
-        $oldPath = storage_path('app/public/streamit-laravel');
+        $oldPath = storage_path('app/public/ApexPrimeTv-laravel');
 
         $models = [
 

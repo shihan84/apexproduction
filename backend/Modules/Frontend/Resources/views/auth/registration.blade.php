@@ -108,7 +108,7 @@
                                     </div>
                                 </form>
                                 <p class="mt-3 mb-0 small text-muted w-80">
-                                    {{ __('messages.by_signing_you_agree_to_streamit') }} {{ app_name() }}
+                                    {{ __('messages.by_signing_you_agree_to_ApexPrimeTv') }} {{ app_name() }}
                                     <a href="{{ route('page.show', ['slug' => 'terms-conditions']) }}" class="text-primary">{{ __('messages.terms_and_conditions') }}</a>
                                     {{ __('messages.of_all_services_and') }}
                                     <a href="{{ route('page.show', ['slug' => 'privacy-policy']) }}" class="text-primary"> {{ __('messages.privacy_policy') }}</a> {{ __('messages.of_all_services_and') }}.

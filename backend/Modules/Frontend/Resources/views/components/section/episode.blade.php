@@ -1,4 +1,4 @@
-<div class="streamit-block">
+<div class="ApexPrimeTv-block">
     <div class="d-flex align-items-center justify-content-between my-2 me-2">
         <h5 class="main-title text-capitalize mb-0">{{ $title }}</h5>
     </div>

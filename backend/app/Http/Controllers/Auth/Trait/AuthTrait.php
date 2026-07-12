@@ -20,7 +20,7 @@ trait AuthTrait
         $demoLoginEnabled = setting('demo_login', 0);
         if ($demoLoginEnabled != 1) {
             // Block known demo/super admin seeded credentials
-            if ($email === 'demo@streamit.com') {
+            if ($email === 'demo@ApexPrimeTv.com') {
                 return ['status' => 403, 'message' => __('messages.demo_login_disabled')];
             }
 

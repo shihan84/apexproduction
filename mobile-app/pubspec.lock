@@ -649,7 +649,7 @@ packages:
       path: "."
       ref: main
       resolved-ref: "0fd819dd0ffcea9b04ea306fc67a7afdd21bf2f5"
-      url: "https://github.com/iqonic-design/flutter_paypal_checkout.git"
+      url: "https://github.com/varchaswaa/flutter_paypal_checkout.git"
     source: git
     version: "1.0.2"
   flutter_paystack:
@@ -658,7 +658,7 @@ packages:
       path: "."
       ref: "1.5.1"
       resolved-ref: e72beea5a27e33896e4de5b016b68198c7b5c196
-      url: "https://github.com/iqonic-design/flutter_paystack.git"
+      url: "https://github.com/varchaswaa/flutter_paystack.git"
     source: git
     version: "1.0.0"
   flutter_plugin_android_lifecycle:
@@ -773,7 +773,7 @@ packages:
       path: "."
       ref: main
       resolved-ref: b9458abfd1a189c4e692ce3f16f45d4258a54a77
-      url: "https://github.com/iqonic-design/flutterwave_standard.git"
+      url: "https://github.com/varchaswaa/flutterwave_standard.git"
     source: git
     version: "1.0.8"
   freezed_annotation:

@@ -118,7 +118,7 @@ php artisan route:clear
 adb logcat | grep -i "firebase\|fcm\|notification"
 
 # App logs
-adb logcat | grep -i "streamit\|apexprime"
+adb logcat | grep -i "ApexPrimeTv\|apexprime"
 ```
 
 ### **Check Backend Logs**

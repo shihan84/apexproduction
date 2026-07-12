@@ -94,6 +94,6 @@ class DatabaseSeeder extends Seeder
         \Artisan::call('storage:link');
 
         // chmod(storage_path('app/public/avatars'), 0775);
-        // chmod(storage_path('app/public/streamit-laravel'), 0775);
+        // chmod(storage_path('app/public/ApexPrimeTv-laravel'), 0775);
     }
 }

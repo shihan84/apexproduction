@@ -109,7 +109,7 @@ return [
   'user_details_successfull' => 'Τα στοιχεία χρήστη ανακτήθηκαν επιτυχώς',
   'delete_account' => 'Ο λογαριασμός σας έχει προγραμματιστεί για διαγραφή.',
   'data_not_available' => 'Δεδομένα μη διαθέσιμα',
-  'unknown_user' => 'Χρήστης Streamit',
+  'unknown_user' => 'Χρήστης ApexPrime Tv',
   'myprofile' => 'Το προφίλ μου',
   'logout' => 'Αποσύνδεση',
   'change_language' => 'Αλλαγή γλώσσας',
@@ -1574,7 +1574,7 @@ return [
   'image_is_required' => 'Η εικόνα είναι υποχρεωτική.',
   'parental_lock' => 'Γονικός έλεγχος',
 
-  'by_signing_you_agree_to_streamit' => 'Με την υπογραφή σας συμφωνείτε με ',
+  'by_signing_you_agree_to_ApexPrimeTv' => 'Με την υπογραφή σας συμφωνείτε με ',
   'terms_and_conditions' => 'Όροι και Προϋποθέσεις',
   'of_all_services_and' => 'όλων των υπηρεσιών και',
   'privacy_policy' => 'Πολιτική Απορρήτου',

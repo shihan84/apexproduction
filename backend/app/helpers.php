@@ -1292,11 +1292,11 @@ function setBaseUrlWithFileNameV2($url = '')
 
     // Handle local storage
     if ($activeDisk === 'local') {
-        $filePath = public_path("storage/streamit-laravel/$fileName");
+        $filePath = public_path("storage/ApexPrimeTv-laravel/$fileName");
 
         // Return local asset path if the file exists
         if (file_exists($filePath)) {
-            return asset("storage/streamit-laravel/$fileName");
+            return asset("storage/ApexPrimeTv-laravel/$fileName");
         }
     } elseif ($activeDisk == 'bunny') {
         $baseUrl = env('BUNNY_PULL_ZONE');
@@ -1306,7 +1306,7 @@ function setBaseUrlWithFileNameV2($url = '')
     } else {
         // Handle remote storage
         $baseUrl = rtrim(env('AWS_URL'), '/');
-        $filePath = "$baseUrl/streamit-laravel/$fileName";
+        $filePath = "$baseUrl/ApexPrimeTv-laravel/$fileName";
 
         // Return remote file URL if it exists
         if (checkImageExists($filePath)) {

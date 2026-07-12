@@ -225,7 +225,7 @@ storage/app/public/
 ### Environment Variables (.env)
 ```bash
 # Application
-APP_NAME="Streamit"
+APP_NAME="ApexPrime Tv"
 APP_ENV=local|production
 APP_KEY=base64:YOUR_APP_KEY
 APP_DEBUG=true|false

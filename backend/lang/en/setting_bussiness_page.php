@@ -33,5 +33,5 @@ return [
     'placeholder_instagram_url' => 'Enter Instagram URL',
     'placeholder_youtube_url' => 'Enter YouTube URL',
     'lbl_copyright_text' => 'Copyright Text',
-    'placeholder_copyright_text' => '© 2025 Streamit. All Rights Reserved.',
+    'placeholder_copyright_text' => '© 2025 ApexPrime Tv. All Rights Reserved.',
 ];

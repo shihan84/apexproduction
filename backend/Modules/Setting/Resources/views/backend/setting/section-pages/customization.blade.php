@@ -410,9 +410,9 @@
 
 @push('after-scripts')
     <!-- Utilities Functions -->
-    <script src="{{ asset('js/iqonic-script/utility.js') }}"></script>
+    <script src="{{ asset('js/Varchaswaa-script/utility.js') }}"></script>
     <!-- Settings Script -->
-    <script src="{{ asset('js/iqonic-script/setting.js') }}"></script>
+    <script src="{{ asset('js/Varchaswaa-script/setting.js') }}"></script>
     <script src="{{ asset('js/setting-init.js') }}" defer></script>
     
     <script>
@@ -546,7 +546,7 @@
                 // Create customization_json object
                 const customizationObject = {
                     saveLocal: 'sessionStorage',
-                    storeKey: 'streamit-setting',
+                    storeKey: 'ApexPrimeTv-setting',
                     setting: dataToSend,
                 };
 

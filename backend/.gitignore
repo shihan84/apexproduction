@@ -25,8 +25,8 @@ yarn-error.log
 # /public/js/*.js*
 # !/public/js/.gitkeep
 
-# /public/js/iqonic-script/*.min.js*
-# !/public/js/iqonic-script/.gitkeep
+# /public/js/Varchaswaa-script/*.min.js*
+# !/public/js/Varchaswaa-script/.gitkeep
 # !/public/js/setting-init.js
 
 # /public/modules/**/*

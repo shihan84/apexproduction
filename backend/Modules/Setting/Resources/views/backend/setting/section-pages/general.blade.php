@@ -52,7 +52,7 @@
 
     <div class="form-group">
         <label class="form-label">{{ __('setting_bussiness_page.lbl_copyright_text') }} <span class="text-danger">*</span></label>
-        {{ html()->text('copyright_text')->class('form-control')->value($data['copyright_text'] ?? old('copyright_text'))->required()->placeholder('© 2025 Streamit. All Rights Reserved.') }}
+        {{ html()->text('copyright_text')->class('form-control')->value($data['copyright_text'] ?? old('copyright_text'))->required()->placeholder('© 2025 ApexPrime Tv. All Rights Reserved.') }}
         @error('copyright_text')
             <div class="invalid-feedback d-block">{{ $message }}</div>
         @else

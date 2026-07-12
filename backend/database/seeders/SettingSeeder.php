@@ -101,7 +101,7 @@ class SettingSeeder extends Seeder
             array (
                 'id' => 6,
                 'name' => 'app_name',
-                'val' => 'Streamit: Your Ultimate Entertainment Hub',
+                'val' => 'ApexPrime Tv: Your Ultimate Entertainment Hub',
                 'type' => 'bussiness',
                 'datatype' => 'bussiness',
                 'created_by' => 2,
@@ -115,7 +115,7 @@ class SettingSeeder extends Seeder
             array (
                 'id' => 7,
                 'name' => 'user_app_name',
-                'val' => 'Streamit: Your Ultimate Entertainment Hub',
+                'val' => 'ApexPrime Tv: Your Ultimate Entertainment Hub',
                 'type' => 'bussiness',
                 'datatype' => 'bussiness',
                 'created_by' => 2,
@@ -143,7 +143,7 @@ class SettingSeeder extends Seeder
             array (
                 'id' => 9,
                 'name' => 'inquriy_email',
-                'val' => 'hello@iqonic.design',
+                'val' => 'hello@varchaswaa.design',
                 'type' => 'bussiness',
                 'datatype' => 'bussiness',
                 'created_by' => 2,
@@ -157,7 +157,7 @@ class SettingSeeder extends Seeder
             array (
                 'id' => 10,
                 'name' => 'short_description',
-                'val' => 'StreamIt: Your Ultimate Destination for Unlimited Movies and Shows!',
+                'val' => 'ApexPrime TV: Your Ultimate Destination for Unlimited Movies and Shows!',
                 'type' => 'bussiness',
                 'datatype' => 'bussiness',
                 'created_by' => 2,
@@ -747,7 +747,7 @@ class SettingSeeder extends Seeder
             array (
                 'id' => 51,
                 'name' => 'ios_url',
-                'val' => 'https://apps.apple.com/us/app/streamit-laravel/id6736365806',
+                'val' => 'https://apps.apple.com/us/app/ApexPrimeTv-laravel/id6736365806',
                 'type' => 'appconfig',
                 'datatype' => NULL,
                 'created_by' => 2,
@@ -761,7 +761,7 @@ class SettingSeeder extends Seeder
             array (
                 'id' => 52,
                 'name' => 'android_url',
-                'val' => 'https://play.google.com/store/apps/details?id=com.iqonic.streamitlaravel&pcampaignid=web_share',
+                'val' => 'https://play.google.com/store/apps/details?id=com.varchaswaa.apexprimetv&pcampaignid=web_share',
                 'type' => 'appconfig',
                 'datatype' => NULL,
                 'created_by' => 2,
@@ -999,7 +999,7 @@ class SettingSeeder extends Seeder
             array (
                 'id' => 69,
                 'name' => 'facebook_url',
-                'val' => 'https://www.facebook.com/iqonicdesign',
+                'val' => 'https://www.facebook.com/varchaswaadesign',
                 'type' => 'bussiness',
                 'datatype' => 'bussiness',
                 'created_by' => 2,
@@ -1013,7 +1013,7 @@ class SettingSeeder extends Seeder
             array (
                 'id' => 70,
                 'name' => 'x_url',
-                'val' => 'https://twitter.com/iqonicdesign',
+                'val' => 'https://twitter.com/varchaswaadesign',
                 'type' => 'bussiness',
                 'datatype' => 'bussiness',
                 'created_by' => 2,
@@ -1028,7 +1028,7 @@ class SettingSeeder extends Seeder
             array (
                 'id' => 71,
                 'name' => 'instagram_url',
-                'val' => 'https://www.instagram.com/iqonicdesign',
+                'val' => 'https://www.instagram.com/varchaswaadesign',
                 'type' => 'bussiness',
                 'datatype' => 'bussiness',
                 'created_by' => 2,
@@ -1041,7 +1041,7 @@ class SettingSeeder extends Seeder
             71 => array (
                 'id' => 72,
                 'name' => 'youtube_url',    
-                'val' => 'https://www.youtube.com/c/IqonicDesign',
+                'val' => 'https://www.youtube.com/c/VarchaswaaDesign',
                 'type' => 'bussiness',
                 'datatype' => 'bussiness',
                 'created_by' => 2,
@@ -1132,21 +1132,37 @@ class SettingSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        $sourceFilePath = base_path('public/dummy-images/json-file/streamit-laravel-flutter-firebase-adminsdk-czzah-2c84a7b029.json');
-        $destinationPath = storage_path('app/data/streamit-laravel-flutter-firebase-adminsdk-czzah-2c84a7b029.json');
+        $projectId = '';
+        foreach ($data as $setting) {
+            if (isset($setting['name']) && $setting['name'] === 'projectId') {
+                $projectId = $setting['val'];
+                break;
+            }
+        }
 
-        // Check if the file exists in the source location
-        if (File::exists($sourceFilePath)) {
-            // Ensure the destination directory exists
+        $sourceDir = base_path('public/dummy-images/json-file');
+        $sourceFiles = File::glob($sourceDir . '/*.json');
+        $sourceFilePath = null;
+
+        foreach ($sourceFiles as $file) {
+            $config = json_decode(File::get($file), true);
+            if (is_array($config) && ($config['type'] ?? '') === 'service_account' && ($config['project_id'] ?? '') === $projectId) {
+                $sourceFilePath = $file;
+                break;
+            }
+        }
+
+        if ($sourceFilePath) {
+            $destinationPath = storage_path('app/data/' . basename($sourceFilePath));
+
             if (!File::isDirectory(storage_path('app/data'))) {
                 File::makeDirectory(storage_path('app/data'), 0755, true);
             }
 
-            // Copy the file to the destination directory
             File::copy($sourceFilePath, $destinationPath);
             $this->command->info('Firebase JSON file has been copied successfully.');
         } else {
-            $this->command->error('Firebase JSON file not found at ' . $sourceFilePath);
+            $this->command->error('Firebase JSON file for projectId ' . ($projectId ?: '(empty)') . ' not found in ' . $sourceDir);
         }
     
 

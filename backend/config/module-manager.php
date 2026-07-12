@@ -50,10 +50,10 @@ return [
     */
 
     'composer' => [
-        'vendor' => 'iqonicdesign',
+        'vendor' => 'varchaswaadesign',
         'author' => [
-            'name' => 'Iqonic Design',
-            'email' => 'hello@iqonic.design',
+            'name' => 'Varchaswaa Design',
+            'email' => 'hello@varchaswaa.design',
         ],
     ],
 ];

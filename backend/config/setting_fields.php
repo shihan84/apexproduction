@@ -24,7 +24,7 @@ return [
                 'label' => 'User App Name', // you know what label it is
                 'rules' => 'nullable|min:2|max:50', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'Streamit', // default value if you want
+                'value' => 'ApexPrime Tv', // default value if you want
                 'datatype' => 'bussiness',
             ],
             [
@@ -34,7 +34,7 @@ return [
                 'label' => 'User App Name', // you know what label it is
                 'rules' => 'nullable|min:2', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'Streamit', // default value if you want
+                'value' => 'ApexPrime Tv', // default value if you want
                 'datatype' => 'bussiness',
             ],
 
@@ -56,7 +56,7 @@ return [
                 'label' => 'Email', // you know what label it is
                 'rules' => 'nullable|min:2', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'admin@streamit.com', // default value if you want
+                'value' => 'admin@ApexPrimeTv.com', // default value if you want
                 'datatype' => 'bussiness',
             ],
             [
@@ -76,7 +76,7 @@ return [
                 'label' => 'Facebook URL', // you know what label it is
                 'rules' => 'nullable|string|max:191', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' =>  'https://www.facebook.com/iqonicdesign', // default value if you want
+                'value' =>  'https://www.facebook.com/varchaswaadesign', // default value if you want
                 'datatype' => 'bussiness',
             ],
             [
@@ -86,7 +86,7 @@ return [
                 'label' => 'X (Twitter) URL', // you know what label it is
                 'rules' => 'nullable|string|max:191', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'https://twitter.com/iqonicdesign', // default value if you want
+                'value' => 'https://twitter.com/varchaswaadesign', // default value if you want
                 'datatype' => 'bussiness',
             ], [
                 'type' => 'text', // input fields type
@@ -95,7 +95,7 @@ return [
                 'label' => 'Instagram URL', // you know what label it is
                 'rules' => 'nullable|string|max:191', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'https://www.instagram.com/iqonicdesign', // default value if you want
+                'value' => 'https://www.instagram.com/varchaswaadesign', // default value if you want
                 'datatype' => 'bussiness',
             ], [
                 'type' => 'text', // input fields type
@@ -104,7 +104,7 @@ return [
                 'label' => 'YouTube URL', // you know what label it is
                 'rules' => 'nullable|string|max:191', // validation rule of laravel  max:191   url
                 'class' => '', // any class for input
-                'value' => 'https://www.youtube.com/c/IqonicDesign', // default value if you want
+                'value' => 'https://www.youtube.com/c/VarchaswaaDesign', // default value if you want
                 'datatype' => 'bussiness',
             ],
             [
@@ -1099,7 +1099,7 @@ return [
                 'label' => 'From Name', // you know what label it is
                 'rules' => 'nullable', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'Streamit-Laravel', // default value if you wantPassword
+                'value' => 'ApexPrime Tv-Laravel', // default value if you wantPassword
             ],
         ],
 

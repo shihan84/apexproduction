@@ -198,7 +198,7 @@
     @stack('before-scripts')
     
     <script src="{{ mix('js/backend.js') }}"></script>
-    <script src="{{ asset('js/iqonic-script/utility.js') }}"></script>
+    <script src="{{ asset('js/Varchaswaa-script/utility.js') }}"></script>
     <script src="{{ asset('js/app.min.js') }}"></script>
     <script src="{{ asset('js/vue.js') }}"></script>
 

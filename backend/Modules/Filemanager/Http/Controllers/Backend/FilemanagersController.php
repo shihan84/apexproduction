@@ -249,10 +249,10 @@ private function getFileType($extension)
     // if ($index + 1 === $totalChunks) {
     //     $activeDisk = env('ACTIVE_STORAGE', 'local');
     //     if ($activeDisk === 'local') {
-    //         $targetPath = 'public/streamit-laravel/' . $fileName;
+    //         $targetPath = 'public/ApexPrimeTv-laravel/' . $fileName;
     //         \Illuminate\Support\Facades\Storage::disk('local')->put($targetPath, file_get_contents($outputFilePath));
     //     } else {
-    //         $targetPath = 'streamit-laravel/' . $fileName;
+    //         $targetPath = 'ApexPrimeTv-laravel/' . $fileName;
     //         \Illuminate\Support\Facades\Storage::disk($activeDisk)->put($targetPath, file_get_contents($outputFilePath));
     //     }
     //     @unlink($outputFilePath);

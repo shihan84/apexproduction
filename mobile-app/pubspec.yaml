@@ -1,4 +1,4 @@
-name: streamit_laravel
+name: apexprime_tv
 description: "A new Flutter project."
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
@@ -54,17 +54,17 @@ dependencies:
   uuid: ^4.5.2
   flutterwave_standard:
     git:
-      url: https://github.com/iqonic-design/flutterwave_standard.git
+      url: https://github.com/varchaswaa/flutterwave_standard.git
       ref: main
 
   flutter_paystack:
     git:
-      url: https://github.com/iqonic-design/flutter_paystack.git
+      url: https://github.com/varchaswaa/flutter_paystack.git
       ref: 1.5.1
 
   flutter_paypal_checkout:
     git:
-      url: https://github.com/iqonic-design/flutter_paypal_checkout.git
+      url: https://github.com/varchaswaa/flutter_paypal_checkout.git
       ref: main
 
   purchases_flutter: ^9.10.1
