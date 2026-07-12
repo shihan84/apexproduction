@@ -35,4 +35,8 @@ yarn-error.log
 node_modules
 node_modules
 /storage/media-library/**/*
+# Firebase service account credentials
+/storage/app/data/*firebase-adminsdk*.json
+/storage/app/firebase/firebase-credentials.json
+/public/dummy-images/json-file/*.json
 _ide_helper.php

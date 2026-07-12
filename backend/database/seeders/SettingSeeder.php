@@ -1140,29 +1140,21 @@ class SettingSeeder extends Seeder
             }
         }
 
-        $sourceDir = base_path('public/dummy-images/json-file');
-        $sourceFiles = File::glob($sourceDir . '/*.json');
-        $sourceFilePath = null;
-
-        foreach ($sourceFiles as $file) {
-            $config = json_decode(File::get($file), true);
+        $sourceFilePath = storage_path('app/firebase/firebase-credentials.json');
+        if (File::exists($sourceFilePath)) {
+            $config = json_decode(File::get($sourceFilePath), true);
             if (is_array($config) && ($config['type'] ?? '') === 'service_account' && ($config['project_id'] ?? '') === $projectId) {
-                $sourceFilePath = $file;
-                break;
+                $destinationPath = storage_path('app/data/' . basename($sourceFilePath));
+                if (!File::isDirectory(storage_path('app/data'))) {
+                    File::makeDirectory(storage_path('app/data'), 0755, true);
+                }
+                File::copy($sourceFilePath, $destinationPath);
+                $this->command->info('Firebase JSON file has been copied successfully.');
+            } else {
+                $this->command->error('Firebase JSON file in storage/app/firebase/firebase-credentials.json does not match projectId ' . ($projectId ?: '(empty)'));
             }
-        }
-
-        if ($sourceFilePath) {
-            $destinationPath = storage_path('app/data/' . basename($sourceFilePath));
-
-            if (!File::isDirectory(storage_path('app/data'))) {
-                File::makeDirectory(storage_path('app/data'), 0755, true);
-            }
-
-            File::copy($sourceFilePath, $destinationPath);
-            $this->command->info('Firebase JSON file has been copied successfully.');
         } else {
-            $this->command->error('Firebase JSON file for projectId ' . ($projectId ?: '(empty)') . ' not found in ' . $sourceDir);
+            $this->command->info('Firebase JSON file not found in storage/app/firebase/firebase-credentials.json. Skipping copy.');
         }
     
 
