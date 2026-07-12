@@ -1,12 +1,12 @@
 # AI Agent Memory - Apex Prime TV
-Last Updated: 2026-06-08
+Last Updated: 2026-07-12
 
 ## SERVER CREDENTIALS
-SSH: ssh -p 65002 u894221422@217.21.94.159 (pass: Saad321safa@)
-App: /home/u894221422/domains/apexprimetv.com/public_html
+SSH: ssh -p 65002 u254324758@82.112.232.137 (pass: Saad@123safa#)
+App: /home/u254324758/domains/apexprimetv.com/public_html
 PHP: /opt/alt/php84/usr/bin/php
 Admin: https://apexprimetv.com/admin/login (admin@streamit.com / password)
-DB: u894221422_apexprimetv / gVj;T!uJ4P@
+DB: u254324758_apexprimetv / ZLtHD760h+H
 Mobile Repo: https://github.com/shihan84/apexproduction.git
 Android: com.apexprime.ott | Keystore: apexprime/apexprime123
 SHA-1: DB:7F:8D:6A:EF:F2:35:D3:BA:5E:6A:B5:BF:AB:46:54:15:D1:7D:2E
@@ -28,7 +28,7 @@ measurementId: G-5BK85Q5K6E
 - payment keys, mail fields, firebase fields all now nullable
 - Firebase creds + databaseURL saved to DB
 - Deleted 14 stale dev PHP scripts (inode cleanup)
-- Backup: /home/u894221422/backups/ (287MB files + 668KB DB)
+- Backup: /home/u254324758/backups/
 
 ## ANDROID APP FIXES
 - FirebaseAuthHandleExceptionsUtils: detailed error codes

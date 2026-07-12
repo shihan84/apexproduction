@@ -8,9 +8,9 @@ Read this file first every session. Update Progress Tracker and Chat Summary.
 - **Publisher:** Varchaswaa (rebranded from Iqonic)
 - **Backend repo:** `shihan84/apexproduction` (branch: `clean-xcode-cloud`)
 - **Mobile repo:** `shihan84/apex-mobile-app-xcode-cloud` (branch: `android`)
-- **Server:** Hostinger `u894221422@217.21.94.159:65002`
+- **Server:** Hostinger `u254324758@82.112.232.137:65002`
 - **Admin panel:** https://apexprimetv.com/admin/login
-- **Production backend path:** `/home/u894221422/domains/apexprimetv.com/public_html`
+- **Production backend path:** `/home/u254324758/domains/apexprimetv.com/public_html`
 - **PHP:** `/opt/alt/php84/usr/bin/php`
 - **Firebase project:** `apexprime-ott`
 - **Android package:** `com.apexprime.ott`
@@ -30,11 +30,11 @@ Read this file first every session. Update Progress Tracker and Chat Summary.
    - Commit to `clean-xcode-cloud` and push.
 
 3. **Deploy to Hostinger**
-   - SSH: `ssh -p 65002 u894221422@217.21.94.159`
-   - App path: `/home/u894221422/domains/apexprimetv.com/public_html`
+   - SSH: `ssh -p 65002 u254324758@82.112.232.137`
+   - App path: `/home/u254324758/domains/apexprimetv.com/public_html`
    - After upload/pull, run:
      ```bash
-     cd /home/u894221422/domains/apexprimetv.com/public_html
+     cd /home/u254324758/domains/apexprimetv.com/public_html
      /opt/alt/php84/usr/bin/php artisan migrate --force
      /opt/alt/php84/usr/bin/php artisan config:clear
      /opt/alt/php84/usr/bin/php artisan cache:clear
