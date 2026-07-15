@@ -140,20 +140,14 @@ class FilemanagersController extends Controller
 
     if (!empty($jobs)) {
 
-        Bus::batch($jobs)->dispatch();
-        Log::info('batch dispatched', ['count' => count($jobs)]);
-
-        // foreach ($jobs as $job) {
-        //      ProcessFileUpload::dispatchSync(
-        //         $job->filemanager,
-        //         $job->filePath,
-        //         $job->diskType,
-        //         $job->originalName,
-        //         $job->page_type,
-        //         $job->fileType
-        //     );
-        // }
-        // Log::info('jobs dispatched synchronously', ['count' => count($jobs)]);
+        foreach ($jobs as $job) {
+            try {
+                Bus::dispatchSync($job);
+            } catch (\Throwable $e) {
+                Log::error('File upload processing failed', ['file' => $job->filemanager->file_name, 'error' => $e->getMessage()]);
+            }
+        }
+        Log::info('files processed synchronously', ['count' => count($jobs)]);
 
     } else {
         Log::warning('no jobs queued for upload');
@@ -249,10 +243,10 @@ private function getFileType($extension)
     // if ($index + 1 === $totalChunks) {
     //     $activeDisk = env('ACTIVE_STORAGE', 'local');
     //     if ($activeDisk === 'local') {
-    //         $targetPath = 'public/streamit-laravel/' . $fileName;
+    //         $targetPath = 'public/ApexPrimeTv-laravel/' . $fileName;
     //         \Illuminate\Support\Facades\Storage::disk('local')->put($targetPath, file_get_contents($outputFilePath));
     //     } else {
-    //         $targetPath = 'streamit-laravel/' . $fileName;
+    //         $targetPath = 'ApexPrimeTv-laravel/' . $fileName;
     //         \Illuminate\Support\Facades\Storage::disk($activeDisk)->put($targetPath, file_get_contents($outputFilePath));
     //     }
     //     @unlink($outputFilePath);

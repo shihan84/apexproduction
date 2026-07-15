@@ -101,27 +101,25 @@ class LiveTvChannelController extends Controller
         $query = LiveTvChannel::query()->with('TvCategory', 'TvChannelStreamContentMappings')->withTrashed();
 
         $filter = $request->filter;
-      
-        if (isset($filter['name'])) {
-            $query->where('name', $filter['name']);
+
+        if (!empty($filter['name'])) {
+            $query->where('name', 'like', '%' . $filter['name'] . '%');
         }
 
-        if (isset($filter)) {
-            if (isset($filter['column_status'])) {
-                $query->where('status', $filter['column_status']);
-            }
+        if (!empty($filter['column_status'])) {
+            $query->where('status', $filter['column_status']);
+        }
 
-            if (isset($filter['category'])) {
-                $query->where('category_id', $filter['category']);
-            }
+        if (!empty($filter['category'])) {
+            $query->where('category_id', $filter['category']);
+        }
 
-            if (isset($filter['access'])) {
-                $query->where('access', $filter['access']);
-            }
+        if (!empty($filter['access'])) {
+            $query->where('access', $filter['access']);
+        }
 
-            if (isset($filter['plan_id']) && !empty($filter['plan_id'])) {
-                $query->where('plan_id', $filter['plan_id']);
-            }
+        if (!empty($filter['plan_id'])) {
+            $query->where('plan_id', $filter['plan_id']);
         }
 
         return $datatable->eloquent($query)
@@ -215,9 +213,9 @@ class LiveTvChannelController extends Controller
     public function store(TvChannelRequest $request)
     {
         $data = $request->all();
-        $data['thumb_url'] = extractFileNameFromUrl($data['thumbnail_url'],'livetv');
-        $data['poster_url'] = extractFileNameFromUrl($data['poster_url'],'livetv');
-        $data['poster_tv_url'] = extractFileNameFromUrl($data['poster_tv_url'],'livetv');
+        $data['thumb_url'] = extractFileNameFromUrl($data['thumbnail_url'] ?? '','livetv');
+        $data['poster_url'] = extractFileNameFromUrl($data['poster_url'] ?? '','livetv');
+        $data['poster_tv_url'] = extractFileNameFromUrl($data['poster_tv_url'] ?? '','livetv');
 
         $liveTvChannel = $this->liveTvChannelService->create($data, $request);
 
@@ -267,9 +265,9 @@ class LiveTvChannelController extends Controller
     public function update(TvChannelRequest $request, $id): RedirectResponse
     {
         $data = $request->all();
-        $data['poster_url'] = extractFileNameFromUrl($data['poster_url'],'livetv');
-        $data['poster_tv_url'] = extractFileNameFromUrl($data['poster_tv_url'],'livetv');
-        $data['thumb_url'] = extractFileNameFromUrl($data['thumbnail_url'],'livetv');
+        $data['poster_url'] = extractFileNameFromUrl($data['poster_url'] ?? '','livetv');
+        $data['poster_tv_url'] = extractFileNameFromUrl($data['poster_tv_url'] ?? '','livetv');
+        $data['thumb_url'] = extractFileNameFromUrl($data['thumbnail_url'] ?? '','livetv');
         $liveTvChannel = LiveTvChannel::findOrFail($id);
 
 
