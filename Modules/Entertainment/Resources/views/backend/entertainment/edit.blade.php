@@ -492,7 +492,7 @@
                                     'video_upload_type',
                                     $upload_url_type->pluck('name', 'value')->prepend(__('placeholder.lbl_select_video_type'), ''),
                                     old('video_upload_type', $data->video_upload_type ?? ''),
-                                )->class('form-control select2')->id('video_upload_type')->required() }}
+                                )->class('form-control select2')->id('video_upload_type') }}
                             @error('video_upload_type')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -2602,6 +2602,16 @@
 
             // Get form data
             var formData = new FormData(this);
+
+            // Ensure video_upload_type and video_url_input are captured (select2 sync)
+            const videoUploadTypeSelect = document.getElementById('video_upload_type');
+            if (videoUploadTypeSelect) {
+                formData.set('video_upload_type', videoUploadTypeSelect.value);
+            }
+            const videoUrlInput = document.getElementById('video_url_input');
+            if (videoUrlInput) {
+                formData.set('video_url_input', videoUrlInput.value);
+            }
 
             // 1. Validate Video URL manually to ensure class is added
             if (typeof validateVideoUrlInput === 'function') {

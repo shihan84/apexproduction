@@ -453,7 +453,7 @@
                                 {{ html()->label(__('messages.on'), 'download_status')->class('form-label mb-0 text-body') }}
                                 <div class="form-check form-switch">
                                     {{ html()->hidden('download_status', 0) }}
-                                    {{ html()->checkbox('download_status', old('download_status', 1))->class('form-check-input')->id('download_status')->value(1) }}
+                                    {{ html()->checkbox('download_status', old('download_status', 0))->class('form-check-input')->id('download_status')->value(1) }}
                                 </div>
                             </div>
                             @error('download_status')
@@ -507,7 +507,7 @@
                                     'video_upload_type',
                                     $upload_url_type->pluck('name', 'value')->prepend(__('placeholder.lbl_select_video_type'), ''),
                                     old('video_upload_type', ''),
-                                )->class('form-control select2')->id('video_upload_type')->required() }}
+                                )->class('form-control select2')->id('video_upload_type') }}
                             @error('video_upload_type')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -1429,6 +1429,16 @@
                 const trailerEmbeddedField = document.getElementById('trailer_embedded');
                 if (trailerEmbeddedField) {
                     formData.set('trailer_embedded', trailerEmbeddedField.value);
+                }
+
+                // Ensure video_upload_type and video_url_input are captured (select2 sync)
+                const videoUploadTypeSelect = document.getElementById('video_upload_type');
+                if (videoUploadTypeSelect) {
+                    formData.set('video_upload_type', videoUploadTypeSelect.value);
+                }
+                const videoUrlInput = document.getElementById('video_url_input');
+                if (videoUrlInput) {
+                    formData.set('video_url_input', videoUrlInput.value);
                 }
 
                 const descriptionEditor = typeof tinymce !== 'undefined' ? tinymce.get('description') : null;
