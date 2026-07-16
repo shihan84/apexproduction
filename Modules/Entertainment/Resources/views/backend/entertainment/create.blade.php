@@ -383,8 +383,8 @@
 
 
                         <div class="col-md-6 col-lg-4">
-                            {{ html()->label(__('movie.lbl_imdb_rating') . ' <span class="text-danger">*</span>', 'IMDb_rating')->class('form-label') }}
-                            {{ html()->input('number', 'IMDb_rating', old('IMDb_rating'))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control')->attribute('step', '0.1')->attribute('min', '1')->attribute('max', '10')->required() }}
+                            {{ html()->label(__('movie.lbl_imdb_rating'), 'IMDb_rating')->class('form-label') }}
+                            {{ html()->input('number', 'IMDb_rating', old('IMDb_rating'))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control')->attribute('step', '0.1')->attribute('min', '1')->attribute('max', '10') }}
 
                             @error('IMDb_rating')
                                 <span class="text-danger">{{ $message }}</span>
