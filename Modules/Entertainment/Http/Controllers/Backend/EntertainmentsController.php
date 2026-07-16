@@ -252,47 +252,21 @@ public function store(EntertainmentRequest $request)
 
     // Cache::flush();
 
-    // Send notification for new movie/TV show added only when release date is today or earlier
+    // Send notification when toggle is ON
     $sendNotification = $request->input('send_notification', 0);
-    if ($sendNotification && isset($data['status']) && $data['status'] == 1) {
-        $releaseDate = $entertainment->release_date ? \Carbon\Carbon::parse($entertainment->release_date)->startOfDay() : null;
-        $today = now()->startOfDay();
-
-        if (!$releaseDate || $releaseDate->lessThanOrEqualTo($today)) {
-            $notificationType = $entertainment->type == 'movie' ? 'movie_add' : 'tv_show_add';
-            $notificationData = [
-                'notification_type' => $notificationType,
-                'id' => $entertainment->id,
-                'release_date' => $entertainment->release_date,
-            ];
-            if ($entertainment->type == 'movie') {
-                $notificationData['movie_name'] = $entertainment->name;
-            } else {
-                $notificationData['tvshow_name'] = $entertainment->name;
-            }
-            SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+    if ($sendNotification) {
+        $notificationType = $entertainment->type == 'movie' ? 'movie_add' : 'tv_show_add';
+        $notificationData = [
+            'notification_type' => $notificationType,
+            'id' => $entertainment->id,
+            'release_date' => $entertainment->release_date,
+        ];
+        if ($entertainment->type == 'movie') {
+            $notificationData['movie_name'] = $entertainment->name;
+        } else {
+            $notificationData['tvshow_name'] = $entertainment->name;
         }
-
-        // Upcoming notification when release date is in the configured upcoming window
-        $upcomingDays = (int) (setting('upcoming') ?? 0);
-        $upcomingThreshold = $today->copy()->addDays($upcomingDays)->endOfDay();
-        $isUpcomingWindow = $releaseDate && $releaseDate->greaterThan($today) && $releaseDate->lessThanOrEqualTo($upcomingThreshold);
-
-        if ($isUpcomingWindow) {
-            $daysRemaining = $today->diffInDays($releaseDate, false);
-            $upcomingData = [
-                'notification_type' => 'upcoming',
-                'id' => $entertainment->id,
-                'name' => $entertainment->name,
-                'content_type' => $entertainment->type,
-                'release_date' => $entertainment->release_date,
-                'description' => $entertainment->description,
-                'days' => $daysRemaining,
-                'days_remaining' => $daysRemaining,
-                'posterimage' => $entertainment->poster_url ?? null,
-            ];
-            SendBulkNotification::dispatch($upcomingData)->onQueue('notifications');
-        }
+        SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
     }
 
 
@@ -622,9 +596,9 @@ public function update(EntertainmentRequest $request, $id)
     $message = $entertainment->type == 'movie' ?
     trans('messages.update_form_movie') : trans('messages.update_form_tvshow');
 
-    // Send notification if toggle is ON and content is active
+    // Send notification if toggle is ON
     $sendNotification = $request->input('send_notification', 0);
-    if ($sendNotification && isset($request_data['status']) && $request_data['status'] == 1) {
+    if ($sendNotification) {
         $notificationType = $type == 'movie' ? 'movie_add' : 'tv_show_add';
         $notificationData = [
             'notification_type' => $notificationType,
