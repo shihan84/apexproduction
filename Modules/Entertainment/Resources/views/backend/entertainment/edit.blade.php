@@ -1494,6 +1494,8 @@
                     seoImage.value = '';
                 }
             });
+
+            seoCheckbox?.dispatchEvent(new Event('change'));
         });
     </script>
 

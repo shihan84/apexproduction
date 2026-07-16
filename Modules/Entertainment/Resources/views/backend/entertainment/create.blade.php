@@ -788,7 +788,7 @@
                                         <input type="text" name="meta_title" id="meta_title"
                                             class="form-control @error('meta_title') is-invalid @enderror"
                                             value="{{ old('meta_title', $seo->meta_title ?? '') }}" maxlength="100"
-                                            placeholder="{{ __('placeholder.lbl_meta_title') }}" required>
+                                            placeholder="{{ __('placeholder.lbl_meta_title') }}">
 
                                         <div class="invalid-feedback" id="meta_title_error"
                                             style="display: {{ $errors->has('meta_title') ? 'block' : 'none' }};">
@@ -805,7 +805,7 @@
                                             id="google_site_verification"
                                             class="form-control @error('google_site_verification') is-invalid @enderror"
                                             value="{{ old('google_site_verification', $seo->google_site_verification ?? '') }}"
-                                            placeholder="{{ __('placeholder.lbl_google_site_verification') }}" required>
+                                            placeholder="{{ __('placeholder.lbl_google_site_verification') }}">
                                         <div class="invalid-feedback" id="embed-error">{{ __('messages.google_site_verification_required') }}</div>
                                     </div>
                                 </div>
@@ -832,7 +832,7 @@
                                         <input type="text" name="canonical_url" id="canonical_url"
                                             class="form-control @error('canonical_url') is-invalid @enderror"
                                             value="{{ old('canonical_url', $seo->canonical_url ?? '') }}"
-                                            placeholder="{{ __('placeholder.lbl_canonical_url') }}" required>
+                                            placeholder="{{ __('placeholder.lbl_canonical_url') }}">
                                         <div class="invalid-feedback" id="embed-error">{{ __('messages.canonical_url_required') }}</div>
                                     </div>
                                 </div>
@@ -1199,6 +1199,7 @@
                 }
             });
 
+            seoCheckbox?.dispatchEvent(new Event('change'));
         });
     </script>
 
