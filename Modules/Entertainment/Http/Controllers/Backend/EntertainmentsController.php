@@ -260,6 +260,7 @@ public function store(EntertainmentRequest $request)
             'notification_type' => $notificationType,
             'id' => $entertainment->id,
             'release_date' => $entertainment->release_date,
+            'posterimage' => setBaseUrlWithFileName($entertainment->poster_url, 'image', $entertainment->type == 'movie' ? 'movie' : 'tvshow'),
         ];
         if ($entertainment->type == 'movie') {
             $notificationData['movie_name'] = $entertainment->name;
@@ -604,6 +605,7 @@ public function update(EntertainmentRequest $request, $id)
             'notification_type' => $notificationType,
             'id' => $entertainment->id,
             'release_date' => $entertainment->release_date,
+            'posterimage' => setBaseUrlWithFileName($entertainment->poster_url, 'image', $type == 'movie' ? 'movie' : 'tvshow'),
         ];
         if ($type == 'movie') {
             $notificationData['movie_name'] = $entertainment->name;

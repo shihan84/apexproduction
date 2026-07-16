@@ -228,6 +228,7 @@ class LiveTvChannelController extends Controller
                     'notification_type' => 'livetv_add',
                     'id' => $liveTvChannel->id,
                     'name' => $liveTvChannel->name,
+                    'posterimage' => setBaseUrlWithFileName($liveTvChannel->poster_url, 'image', 'livetv'),
                 ];
                 SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
             }
@@ -317,6 +318,7 @@ class LiveTvChannelController extends Controller
                 'notification_type' => 'livetv_add',
                 'id' => $liveTvChannel->id,
                 'name' => $liveTvChannel->name,
+                'posterimage' => setBaseUrlWithFileName($liveTvChannel->poster_url, 'image', 'livetv'),
             ];
             SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
         }

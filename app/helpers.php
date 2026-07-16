@@ -1464,12 +1464,17 @@ function getThumbnail(string $name, string $type): ?string
             $url = \Modules\Video\Models\Video::where('name', $name)->value('poster_url');
             break;
 
+        case 'livetv':
+            $url = \Modules\LiveTV\Models\LiveTvChannel::where('name', $name)->value('poster_url');
+            break;
+
         default:
             return url('default-image/Default-Image.jpg');
     }
 
     $folder = match ($type) {
         'tv_show' => 'tvshow',
+        'livetv' => 'livetv',
         default => $type,
     };
 

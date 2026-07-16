@@ -223,7 +223,7 @@ class CommonNotification extends Notification implements ShouldQueue
         $msg = trim($msg); // Remove leading/trailing whitespace
         $msg = preg_replace('/\s+/', ' ', $msg); // Replace multiple spaces with single space
         
-        $type = 'streamit';
+        $type = 'ApexPrimeTv';
         if (isset($this->template_data->notification_subject) && $this->template_data->notification_subject !== '') {
             $type = $this->template_data->notification_subject;
         }
@@ -255,6 +255,9 @@ class CommonNotification extends Notification implements ShouldQueue
                     break;
                 case 'tv_show_add':
                     $thumbnailImage = getThumbnail($innerData['tvshow_name'] ?? $innerData['name'] ?? null, 'tv_show');
+                    break;
+                case 'livetv_add':
+                    $thumbnailImage = getThumbnail($innerData['name'] ?? null, 'livetv');
                     break;
                 case 'purchase_video':
                 case 'rent_video':
@@ -386,24 +389,36 @@ class CommonNotification extends Notification implements ShouldQueue
     function getAccessToken()
     {
         try {
+            $projectID = \App\Models\Setting::where('name', 'projectId')->value('val');
             $directory = storage_path('app/data');
             $credentialsFiles = File::glob($directory . '/*.json');
-            
-            if (!empty($credentialsFiles)) {
-                $client = new Google_Client();
-                $client->setAuthConfig($credentialsFiles[0]);
-                $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
 
-                $token = $client->fetchAccessTokenWithAssertion();
-                
-                if (isset($token['error'])) {
-                    Log::error('FCM Token Error: ' . json_encode($token));
-                    return null;
+            foreach ($credentialsFiles as $file) {
+                $config = json_decode(File::get($file), true);
+                if (!is_array($config) || ($config['type'] ?? '') !== 'service_account') {
+                    continue;
                 }
 
-                return $token['access_token'];
-            } else {
+                if (empty($projectID) || ($config['project_id'] ?? '') === $projectID) {
+                    $client = new Google_Client();
+                    $client->setAuthConfig($file);
+                    $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+
+                    $token = $client->fetchAccessTokenWithAssertion();
+
+                    if (isset($token['error'])) {
+                        Log::error('FCM Token Error: ' . json_encode($token));
+                        return null;
+                    }
+
+                    return $token['access_token'];
+                }
+            }
+
+            if (empty($credentialsFiles)) {
                 Log::error('FCM Error: No JSON credentials found in ' . $directory);
+            } else {
+                Log::error('FCM Error: No service-account JSON matching projectId ' . ($projectID ?: '(empty)') . ' found in ' . $directory);
             }
         } catch (\Exception $e) {
             Log::error('FCM Exception in getAccessToken: ' . $e->getMessage());
