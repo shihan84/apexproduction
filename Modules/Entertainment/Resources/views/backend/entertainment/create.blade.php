@@ -384,7 +384,7 @@
 
                         <div class="col-md-6 col-lg-4">
                             {{ html()->label(__('movie.lbl_imdb_rating') . ' <span class="text-danger">*</span>', 'IMDb_rating')->class('form-label') }}
-                            {{ html()->text('IMDb_rating')->attribute('value', old('IMDb_rating'))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control')->required() }}
+                            {{ html()->input('number', 'IMDb_rating', old('IMDb_rating'))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control')->attribute('step', '0.1')->attribute('min', '1')->attribute('max', '10')->required() }}
 
                             @error('IMDb_rating')
                                 <span class="text-danger">{{ $message }}</span>
@@ -471,16 +471,16 @@
                 <div class="card-body">
                     <div class="row gy-3">
                         <div class="col-md-6">
-                            {{ html()->label(__('movie.lbl_actors') . '<span class="text-danger">*</span>', 'actors')->class('form-label') }}
-                            {{ html()->select('actors[]', $actors->pluck('name', 'id'), old('actors'))->class('form-control select2')->id('actors')->multiple()->attribute('required', 'required') }}
+                            {{ html()->label(__('movie.lbl_actors'), 'actors')->class('form-label') }}
+                            {{ html()->select('actors[]', $actors->pluck('name', 'id'), old('actors'))->class('form-control select2')->id('actors')->multiple() }}
                             @error('actors')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                             <div class="invalid-feedback" id="name-error">{{ __('messages.actors_field_required') }}</div>
                         </div>
                         <div class="col-md-6">
-                            {{ html()->label(__('movie.lbl_directors') . '<span class="text-danger">*</span>', 'directors')->class('form-label') }}
-                            {{ html()->select('directors[]', $directors->pluck('name', 'id'), old('directors'))->class('form-control select2')->id('directors')->multiple()->attribute('required', 'required') }}
+                            {{ html()->label(__('movie.lbl_directors'), 'directors')->class('form-label') }}
+                            {{ html()->select('directors[]', $directors->pluck('name', 'id'), old('directors'))->class('form-control select2')->id('directors')->multiple() }}
                             @error('directors')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
