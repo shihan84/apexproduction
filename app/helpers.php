@@ -147,7 +147,7 @@ function sendNotification($data)
                     break;
                 case 'user':
                     // If notification type is movie_add, tv_show_add, upcoming, or continue_watch, send to all users
-                    if (in_array($data['notification_type'], ['movie_add', 'tv_show_add','episode_add','season_add','video_add', 'upcoming'])) {
+                    if (in_array($data['notification_type'], ['movie_add', 'tv_show_add','episode_add','season_add','video_add', 'livetv_add', 'upcoming'])) {
                         \App\Models\User::where('user_type','user')->chunk(500, function ($users) use ($data) {
                             $chunkCount = 0;
                             foreach ($users as $user) {
@@ -501,8 +501,8 @@ if (!function_exists('setting')) {
 function app_name()
 {
         $value = App\Models\Setting::where('name','app_name')->select('val')->first();
-        $app_name = $value->val;
-        return is_null($app_name) ? : $app_name;
+        $app_name = $value?->val;
+        return is_null($app_name) ? 'ApexPrime Tv' : $app_name;
 }
 
 
@@ -845,7 +845,13 @@ function formatDate($date)
         // Handle both date (Y-m-d) and datetime (Y-m-d H:i:s) formats
 
         $releaseDate = Carbon::parse($date);
-        $defaultFormat = Setting::where('name', 'default_date_format')->where('datatype', 'misc')->value('val')  ?? 'Y-m-d';
+        static $cachedFormat = null;
+        if ($cachedFormat === null) {
+            $cachedFormat = \Illuminate\Support\Facades\Cache::remember('setting_default_date_format', 3600, function () {
+                return Setting::where('name', 'default_date_format')->where('datatype', 'misc')->value('val') ?? 'Y-m-d';
+            });
+        }
+        $defaultFormat = $cachedFormat;
         $userAgent = request()->header('user-agent');
         $isAppOrTv = false;
 
@@ -1286,11 +1292,11 @@ function setBaseUrlWithFileNameV2($url = '')
 
     // Handle local storage
     if ($activeDisk === 'local') {
-        $filePath = public_path("storage/streamit-laravel/$fileName");
+        $filePath = public_path("storage/ApexPrimeTv-laravel/$fileName");
 
         // Return local asset path if the file exists
         if (file_exists($filePath)) {
-            return asset("storage/streamit-laravel/$fileName");
+            return asset("storage/ApexPrimeTv-laravel/$fileName");
         }
     } elseif ($activeDisk == 'bunny') {
         $baseUrl = env('BUNNY_PULL_ZONE');
@@ -1300,7 +1306,7 @@ function setBaseUrlWithFileNameV2($url = '')
     } else {
         // Handle remote storage
         $baseUrl = rtrim(env('AWS_URL'), '/');
-        $filePath = "$baseUrl/streamit-laravel/$fileName";
+        $filePath = "$baseUrl/ApexPrimeTv-laravel/$fileName";
 
         // Return remote file URL if it exists
         if (checkImageExists($filePath)) {
