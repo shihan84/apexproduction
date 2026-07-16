@@ -502,7 +502,7 @@
                 <div class="card-body">
                     <div class="row gy-3">
                         <div class="col-md-6">
-                            {{ html()->label(__('movie.lbl_video_upload_type') . '<span class="text-danger">*</span>', 'video_upload_type')->class('form-label') }}
+                            {{ html()->label(__('movie.lbl_video_upload_type'), 'video_upload_type')->class('form-label') }}
                             {{ html()->select(
                                     'video_upload_type',
                                     $upload_url_type->pluck('name', 'value')->prepend(__('placeholder.lbl_select_video_type'), ''),

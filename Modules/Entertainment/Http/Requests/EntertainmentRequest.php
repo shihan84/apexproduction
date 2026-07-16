@@ -75,7 +75,6 @@ class EntertainmentRequest extends FormRequest
 
         if ($this->input('type') == 'movie') {
             $rules['duration'] = 'required';
-            $rules['video_upload_type'] = 'required';
         }
 
         // Validate quality-wise video URLs based on video_quality_type
