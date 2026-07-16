@@ -1977,21 +1977,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle initial state
             const videoUploadType = document.getElementById('video_upload_type');
             if (videoUploadType) {
                 handleVideoUrlTypeChange(videoUploadType.value);
-
-                // Add change event listener
-                videoUploadType.addEventListener('change', function() {
-                    handleVideoUrlTypeChange(this.value);
-                });
-
-                // Also handle select2 change event
-                $('#video_upload_type').on('select2:select', function(e) {
-                    handleVideoUrlTypeChange(e.target.value);
-                });
             }
+        });
+
+        $(document).on('select2:select change', '#video_upload_type', function(e) {
+            handleVideoUrlTypeChange($(this).val());
         });
 
         function handleQualityTypeChange($container) {

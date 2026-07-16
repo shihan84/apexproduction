@@ -2237,6 +2237,9 @@
                 var selectedtypeValue = $(this).val();
                 handleVideoUrlTypeChange(selectedtypeValue);
             });
+            $('#video_upload_type').on('select2:select', function(e) {
+                handleVideoUrlTypeChange($(this).val());
+            });
 
             // Real-time validation while typing
             var videourl = document.querySelector('input[name="video_url_input"]');
