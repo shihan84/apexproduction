@@ -2864,6 +2864,11 @@
                         }
                     }
                 });
+
+                // Bind change handler AFTER select2 init
+                $('#video_upload_type').on('change select2:select', function() {
+                    handleVideoUrlTypeChange($(this).val());
+                });
             }
         });
     </script>
