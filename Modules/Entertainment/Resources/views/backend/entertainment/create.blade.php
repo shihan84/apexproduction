@@ -100,6 +100,7 @@
                                         style="{{ old('thumbnail_url', isset($data) ? $data->thumbnail_url : '') ? '' : 'display:none;' }}" />
                                 </div>
                                 {{ html()->hidden('thumbnail_url')->id('thumbnail_url')->value(old('thumbnail_url', isset($data) ? $data->thumbnail_url : '')) }}
+                                <small class="text-muted d-block mt-2">Recommended: 1280 × 720 px (16:9), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
                         <div class="col-md-4 col-lg-4">
@@ -119,6 +120,7 @@
                                         style="{{ old('poster_url', isset($data) ? $data->poster_url : '') ? '' : 'display:none;' }}" />
 
                                 </div>
+                                <small class="text-muted d-block mt-2">Recommended: 1000 × 1500 px (2:3), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
                         <div class="col-md-4 col-lg-4">
@@ -138,6 +140,7 @@
                                         style="{{ old('poster_tv_url', isset($data) ? $data->poster_tv_url : '') ? '' : 'display:none;' }}" />
 
                                 </div>
+                                <small class="text-muted d-block mt-2">Recommended: 1920 × 1080 px (16:9), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
 

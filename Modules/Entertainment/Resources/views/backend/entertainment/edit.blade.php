@@ -80,6 +80,7 @@
                                 </div>
                                 {{ html()->hidden('thumbnail_url')->id('file_url1')->value($data->thumbnail_url) }}
                                 {{ html()->hidden('remove_image_thumbnail')->id('remove_image_flag_thumbnail')->value(0) }}
+                                <small class="text-muted d-block mt-2">Recommended: 1280 × 720 px (16:9), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
@@ -101,6 +102,7 @@
                                 </div>
                                 {{ html()->hidden('poster_url')->id('file_url2')->value($data->poster_url) }}
                                 {{ html()->hidden('remove_image')->id('remove_image_flag')->value(0) }}
+                                <small class="text-muted d-block mt-2">Recommended: 1000 × 1500 px (2:3), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
@@ -123,6 +125,7 @@
                                 </div>
                                 {{ html()->hidden('poster_tv_url')->id('file_urltv')->value($data->poster_tv_url) }}
                                 {{ html()->hidden('remove_image_tv')->id('remove_image_flag_tv')->value(0) }}
+                                <small class="text-muted d-block mt-2">Recommended: 1920 × 1080 px (16:9), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
 
