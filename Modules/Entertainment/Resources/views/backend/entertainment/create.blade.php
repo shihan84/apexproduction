@@ -1431,8 +1431,9 @@
                     formData.set('trailer_embedded', trailerEmbeddedField.value);
                 }
 
-                // Add TinyMCE content to formData
-                formData.append('description', tinymce.get('description').getContent());
+                const descriptionEditor = typeof tinymce !== 'undefined' ? tinymce.get('description') : null;
+                const descriptionField = document.getElementById('description');
+                formData.set('description', descriptionEditor ? descriptionEditor.getContent() : (descriptionField?.value || ''));
 
                 // Add CSRF token
                 formData.append('_token', '{{ csrf_token() }}');
@@ -1487,6 +1488,11 @@
                                 window.showErrorCountOnTabs(xhr.responseJSON.errors,
                                     movieTabFields);
                             }
+
+                            const validationMessages = Object.values(xhr.responseJSON.errors)
+                                .flat()
+                                .join(' ');
+                            $('#error_message').text(validationMessages);
 
                             Object.keys(xhr.responseJSON.errors).forEach(function(key) {
                                 $(`[name="${key}"]`).addClass('is-invalid');
