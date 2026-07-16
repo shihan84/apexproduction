@@ -1903,6 +1903,28 @@
 
                 enableQualitySection.classList.remove('d-none');
 
+                // Re-initialize select2 for elements inside the now-visible section
+                if ($.fn.select2) {
+                    $('#enable_quality_section .select2').each(function() {
+                        if ($(this).hasClass('select2-hidden-accessible')) {
+                            $(this).select2('destroy');
+                        }
+                        $(this).select2({
+                            width: '100%',
+                            language: {
+                                noResults: function() {
+                                    return "{{ __('messages.no_results_found') }}";
+                                }
+                            }
+                        });
+                    });
+                }
+
+                // Trigger initial state for each quality row
+                $('.video-inputs-container').each(function() {
+                    handleQualityTypeChange($(this));
+                });
+
             } else {
 
                 enableQualitySection.classList.add('d-none');
@@ -1987,6 +2009,11 @@
         }
 
         $(document).on('change', '.video_quality_type', function() {
+            var $container = $(this).closest('.video-inputs-container');
+            handleQualityTypeChange($container);
+        });
+
+        $(document).on('select2:select', '.video_quality_type', function(e) {
             var $container = $(this).closest('.video-inputs-container');
             handleQualityTypeChange($container);
         });
