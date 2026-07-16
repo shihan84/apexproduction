@@ -3,6 +3,7 @@
 namespace Modules\NotificationTemplate\database\seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Modules\Constant\Models\Constant;
 use Modules\NotificationTemplate\Models\NotificationTemplate;
@@ -231,7 +232,7 @@ class NotificationTemplateSeeder extends Seeder
 
 
 
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'change_password',
             'name' => 'change_password',
             'label' => 'Change Password',
@@ -241,7 +242,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Your password has been changed successfully.',
@@ -261,7 +262,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Admin password change notification sent.',
@@ -294,7 +295,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Admin password change notification sent.',
@@ -326,7 +327,7 @@ class NotificationTemplateSeeder extends Seeder
           ',
         ]);
 
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'forget_email_password',
             'name' => 'forget_email_password',
             'label' => 'Forget Email/Password',
@@ -336,7 +337,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Your password has been successfully changed.',
@@ -356,7 +357,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User password has been changed successfully.',
@@ -376,7 +377,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User password has been changed successfully.',
@@ -395,7 +396,7 @@ class NotificationTemplateSeeder extends Seeder
           ',
         ]);
 
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'tv_show_add',
             'name' => 'tv_show_add',
             'label' => 'TV Show Added',
@@ -405,7 +406,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'New TV show "[[ tvshow_name ]]" has been added to our collection!',
@@ -418,7 +419,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'TV show "[[ tvshow_name ]]" has been successfully added to the system.',
@@ -431,7 +432,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'TV show "[[ tvshow_name ]]" has been successfully added to the system.',
@@ -443,7 +444,7 @@ class NotificationTemplateSeeder extends Seeder
             'template_detail' => '<p>Dear [[ user_name ]],</p><p>The TV show "<strong>[[ tvshow_name ]]</strong>" has been successfully added to the content management system.</p><p>Content Details:</p><ul><li>Show Name: [[ name ]]</li><li>Added By: [[ logged_in_user_fullname ]]</li><li>Status: Active</li></ul><p>Please review and verify the content details.</p>',
         ]);
 
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'movie_add',
             'name' => 'movie_add',
             'label' => 'Movie Added',
@@ -453,7 +454,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'New movie "[[ movie_name ]]" is now available for streaming!',
@@ -466,7 +467,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Movie "[[ movie_name ]]" has been successfully added to the content system.',
@@ -479,7 +480,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Movie "[[ movie_name ]]" has been successfully added to the content system.',
@@ -491,7 +492,7 @@ class NotificationTemplateSeeder extends Seeder
             'template_detail' => '<p>Dear [[ user_name ]],</p><p>The movie "<strong>[[ movie_name ]]</strong>" has been successfully added to the content management system.</p><p>Content Details:</p><ul><li>Movie Title: [[ name ]]</li><li>Added By: [[ logged_in_user_fullname ]]</li><li>Status: Active</li><li>Available for streaming</li></ul><p>Please review the content details and metadata.</p>',
         ]);
 
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'episode_add',
             'name' => 'episode_add',
             'label' => 'Episode Added',
@@ -501,7 +502,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'New episode "[[ episode_name ]]" is now available!',
@@ -514,7 +515,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Episode "[[ episode_name ]]" has been successfully added to the system.',
@@ -527,7 +528,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Episode "[[ episode_name ]]" has been successfully added to the system.',
@@ -539,7 +540,7 @@ class NotificationTemplateSeeder extends Seeder
             'template_detail' => '<p>Dear [[ user_name ]],</p><p>The episode "<strong>[[ episode_name ]]</strong>" has been successfully added to the content management system.</p><p>Episode Details:</p><ul><li>Episode Name: [[ name ]]</li><li>Added By: [[ logged_in_user_fullname ]]</li><li>Status: Active</li><li>Available for streaming</li></ul><p>Please review the episode details and ensure proper metadata.</p>',
         ]);
 
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'season_add',
             'name' => 'season_add',
             'label' => 'Season Added',
@@ -549,7 +550,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'New season "[[ season_name ]]" is now available for streaming!',
@@ -562,7 +563,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Season "[[ season_name ]]" has been successfully added to the system.',
@@ -575,7 +576,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Season "[[ name ]]" has been successfully added to the system.',
@@ -587,7 +588,7 @@ class NotificationTemplateSeeder extends Seeder
             'template_detail' => '<p>Dear [[ user_name ]],</p><p>The season "<strong>[[ name ]]</strong>" has been successfully added to the content management system.</p><p>Season Details:</p><ul><li>Season Name: [[ name ]]</li><li>Added By: [[ logged_in_user_fullname ]]</li><li>Status: Active</li><li>Available for streaming</li></ul><p>Please review the season details and episode structure.</p>',
         ]);
 
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'new_subscription',
             'name' => 'new_subscription',
             'label' => 'New User Subscribed',
@@ -597,7 +598,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Welcome to our streaming platform! Your subscription is now active.',
@@ -610,7 +611,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'New user subscription: [[ user_name ]] has joined the platform.',
@@ -623,7 +624,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'New user subscription: [[ user_name ]] has joined the platform.',
@@ -634,7 +635,7 @@ class NotificationTemplateSeeder extends Seeder
             'notification_template_detail' => 'New user [[ user_name ]] subscribed - Plan: [[ subscription_plan ]]',
             'template_detail' => '<p>Dear [[ user_name ]],</p><p>A new user has subscribed to the platform.</p><p>Subscription Details:</p><ul><li>New User: [[ user_name ]]</li><li>Subscription Date: [[ start_date ]]</li><li>Plan Type: [[ subscription_plan ]]</li><li>Status: Active</li></ul><p>Please review the subscription details and welcome the new user.</p>',
         ]);
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'cancle_subscription',
             'name' => 'cancle_subscription',
             'label' => 'User Cancel Subscription',
@@ -644,7 +645,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Your subscription has been cancelled. We\'re sorry to see you go.',
@@ -657,7 +658,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User [[ user_name ]] has cancelled their subscription.',
@@ -670,7 +671,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User [[ user_name ]] has cancelled their subscription.',
@@ -681,7 +682,7 @@ class NotificationTemplateSeeder extends Seeder
             'notification_template_detail' => 'User [[ user_name ]] cancelled subscription',
             'template_detail' => '<p>Dear [[ user_name ]],</p><p>A user has cancelled their subscription.</p><p>Cancellation Details:</p><ul><li>User: [[ user_name ]]</li><li>Cancellation Date: [[ end_date ]]</li><li>Reason: [[ cancellation_reason ]]</li><li>Previous Plan: [[ subscription_plan ]]</li></ul><p>Please review and consider reaching out to understand their feedback.</p>',
         ]);
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'purchase_video',
             'name' => 'purchase_video',
             // Updated display label to match email subject
@@ -692,7 +693,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'You have successfully purchased [[ content_type ]] "[[ name ]]"',
@@ -711,7 +712,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User [[ user_name ]] has purchased [[ content_type ]] "[[ name ]]".',
@@ -736,7 +737,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User [[ user_name ]] has purchased [[ content_type ]] "[[ name ]]".',
@@ -759,7 +760,7 @@ class NotificationTemplateSeeder extends Seeder
                 <p>Please review the transaction details.</p>
             ',
         ]);
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'rent_video',
             'name' => 'rent_video',
             // Updated display label to match email subject
@@ -770,7 +771,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'You have successfully rent [[ content_type ]] "[[ name ]]"',
@@ -789,7 +790,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User [[ user_name ]] has rented [[ content_type ]] "[[ name ]]".',
@@ -814,7 +815,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User [[ user_name ]] has rented [[ content_type ]] "[[ name ]]".',
@@ -837,7 +838,7 @@ class NotificationTemplateSeeder extends Seeder
                 <p>Please review the rental transaction details.</p>
             ',
         ]);
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'rent_expiry_reminder',
             'name' => 'rent_expiry_reminder',
             'label' => 'Rental Is Expire Soon',
@@ -847,7 +848,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Reminder: Your access to [[ content_type ]] "[[ name ]]" will expire in [[ end_date ]].',
@@ -865,7 +866,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Rental expiry reminder sent to user [[ user_name ]] for [[ content_type ]] "[[ name ]]".',
@@ -889,7 +890,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Rental expiry reminder sent to user [[ user_name ]] for [[ content_type ]] "[[ name ]]".',
@@ -911,7 +912,7 @@ class NotificationTemplateSeeder extends Seeder
                 <p>Please monitor the rental status and ensure proper expiry handling.</p>
             ',
         ]);
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'purchase_expiry_reminder',
             'name' => 'purchase_expiry_reminder',
             'label' => 'One Time Purchase Is Expired Soon',
@@ -921,7 +922,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Reminder: Your access to purchased [[ type ]] "[[ name ]]" will expire in [[ end_date ]].',
@@ -938,7 +939,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Purchase expiry reminder sent to user [[ user_name ]] for [[ type ]] "[[ name ]]".',
@@ -963,7 +964,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Purchase expiry reminder sent to user [[ user_name ]] for [[ type ]] "[[ name ]]".',
@@ -987,7 +988,7 @@ class NotificationTemplateSeeder extends Seeder
             ',
         ]);
 
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'video_add',
             'name' => 'Video Added',
             'label' => 'Video Added',
@@ -997,7 +998,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'New video "[[ video_name ]]" is now available for streaming!',
@@ -1010,7 +1011,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Video "[[ video_name ]]" has been successfully added to the system.',
@@ -1023,7 +1024,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Video "[[ name ]]" has been successfully added to the system.',
@@ -1035,7 +1036,7 @@ class NotificationTemplateSeeder extends Seeder
             'template_detail' => '<p>Dear [[ user_name ]],</p><p>The video "<strong>[[ name ]]</strong>" has been successfully added to the content management system.</p><p>Video Details:</p><ul><li>Video Name: [[ name ]]</li><li>Added By: [[ logged_in_user_fullname ]]</li><li>Status: Active</li><li>Available for streaming</li></ul><p>Please review the video details and episode structure.</p>',
         ]);
 
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'subscription_expiry_reminder',
             'name' => 'subscription_expiry_reminder',
             'label' => 'Subscription Expiry Reminder',
@@ -1045,7 +1046,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Your subscription plan "[[ subscription_plan ]]" is expiring soon. Please renew to continue enjoying our services.',
@@ -1069,7 +1070,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Expiry Plan Notification Template
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'expiry_plan',
             'name' => 'expiry_plan',
             'label' => 'Expiry Plan',
@@ -1079,7 +1080,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Your subscription plan "[[ subscription_plan ]]" will expire in [[ days ]] day(s). Please renew to continue enjoying our services.',
@@ -1104,7 +1105,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Upcoming Notification Template
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'upcoming',
             'name' => 'upcoming',
             'label' => 'Upcoming',
@@ -1114,7 +1115,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Great news! "[[ name ]]" is releasing in [[ days ]] day(s). Don\'t miss it!',
@@ -1139,7 +1140,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Upcoming release: "[[ name ]]" will be launching in [[ days ]] day(s).',
@@ -1152,7 +1153,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Upcoming release: "[[ name ]]" will be launching in [[ days ]] day(s).',
@@ -1165,7 +1166,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Continue Watch Notification Template
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'continue_watch',
             'name' => 'continue_watch',
             'label' => 'Continue Watch',
@@ -1175,7 +1176,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Continue watching "[[ name ]]". Pick up where you left off!',
@@ -1199,7 +1200,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User reminder: Continue watching "[[ name ]]".',
@@ -1212,7 +1213,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Demo Admin type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'User reminder: Continue watching "[[ name ]]".',
@@ -1225,7 +1226,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // Parental Control OTP Notification Template
-        $template = NotificationTemplate::firstOrCreate([
+        $template = $this->template([
             'type' => 'parental_control_otp',
             'name' => 'parental_control_otp',
             'label' => 'Parental Control OTP',
@@ -1235,7 +1236,7 @@ class NotificationTemplateSeeder extends Seeder
         ]);
 
         // User type notification template mapping
-        $template->defaultNotificationTemplateMap()->firstOrCreate([
+        $this->templateContent($template, [
             'language' => 'en',
             'notification_link' => '',
             'notification_message' => 'Your OTP for parental control PIN change is [[ otp ]].',
@@ -1253,5 +1254,51 @@ class NotificationTemplateSeeder extends Seeder
             ',
         ]);
 
+    }
+
+    private function template(array $data)
+    {
+        $template = NotificationTemplate::withTrashed()->firstOrNew([
+            'type' => $data['type'],
+        ]);
+
+        if (! $template->exists || $template->trashed()) {
+            $template->fill($data);
+        }
+
+        if ($template->trashed()) {
+            $template->restore();
+        }
+
+        $template->save();
+
+        return $template;
+    }
+
+    private function templateContent(NotificationTemplate $template, array $data): void
+    {
+        $content = $template->defaultNotificationTemplateMap()
+            ->withTrashed()
+            ->where('user_type', $data['user_type'])
+            ->firstOrNew([
+                'language' => $data['language'],
+                'user_type' => $data['user_type'],
+            ]);
+
+        $contentData = Arr::except($data, ['language', 'user_type']);
+
+        if (! $content->exists || $content->trashed()) {
+            $content->fill($contentData);
+        } else {
+            $content->fill(Arr::where($contentData, function ($value, $key) use ($content) {
+                return blank($content->{$key});
+            }));
+        }
+
+        if ($content->trashed()) {
+            $content->restore();
+        }
+
+        $content->save();
     }
 }
