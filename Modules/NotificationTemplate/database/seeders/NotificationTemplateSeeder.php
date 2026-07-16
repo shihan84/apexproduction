@@ -227,10 +227,6 @@ class NotificationTemplateSeeder extends Seeder
         // Enable foreign key checks!
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        if (NotificationTemplate::count() > 0) {
-            return;
-        }
-
 
 
 
