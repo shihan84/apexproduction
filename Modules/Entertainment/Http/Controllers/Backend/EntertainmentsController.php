@@ -74,6 +74,11 @@ class EntertainmentsController extends Controller
         return view('entertainment::backend.entertainment.index', compact('module_action', 'filter', 'export_import', 'export_columns', 'export_url','keywords'));
     }
 
+    public function create()
+    {
+        return redirect()->route('backend.movies.create');
+    }
+
     public function bulk_action(Request $request)
     {
         $ids = explode(',', $request->rowIds);
@@ -248,7 +253,8 @@ public function store(EntertainmentRequest $request)
     // Cache::flush();
 
     // Send notification for new movie/TV show added only when release date is today or earlier
-    if (isset($data['status']) && $data['status'] == 1) {
+    $sendNotification = $request->input('send_notification', 0);
+    if ($sendNotification && isset($data['status']) && $data['status'] == 1) {
         $releaseDate = $entertainment->release_date ? \Carbon\Carbon::parse($entertainment->release_date)->startOfDay() : null;
         $today = now()->startOfDay();
 
@@ -615,6 +621,23 @@ public function update(EntertainmentRequest $request, $id)
     $type = $entertainment->type;
     $message = $entertainment->type == 'movie' ?
     trans('messages.update_form_movie') : trans('messages.update_form_tvshow');
+
+    // Send notification if toggle is ON and content is active
+    $sendNotification = $request->input('send_notification', 0);
+    if ($sendNotification && isset($request_data['status']) && $request_data['status'] == 1) {
+        $notificationType = $type == 'movie' ? 'movie_add' : 'tv_show_add';
+        $notificationData = [
+            'notification_type' => $notificationType,
+            'id' => $entertainment->id,
+            'release_date' => $entertainment->release_date,
+        ];
+        if ($type == 'movie') {
+            $notificationData['movie_name'] = $entertainment->name;
+        } else {
+            $notificationData['tvshow_name'] = $entertainment->name;
+        }
+        SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+    }
 
     // Check if request is AJAX
     if ($request->ajax()) {

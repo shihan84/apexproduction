@@ -145,6 +145,11 @@ class NotificationTemplateSeeder extends Seeder
             ],
             [
                 'type' => 'notification_type',
+                'value' => 'livetv_add',
+                'name' => 'Live TV Add',
+            ],
+            [
+                'type' => 'notification_type',
                 'value' => 'episode_add',
                 'name' => 'Episode Add',
             ],
@@ -490,6 +495,51 @@ class NotificationTemplateSeeder extends Seeder
             'notification_subject' => 'Content Added - Review Required',
             'notification_template_detail' => 'Movie "[[ movie_name ]]" added by [[ logged_in_user_fullname ]] - Content management update.',
             'template_detail' => '<p>Dear [[ user_name ]],</p><p>The movie "<strong>[[ movie_name ]]</strong>" has been successfully added to the content management system.</p><p>Content Details:</p><ul><li>Movie Title: [[ name ]]</li><li>Added By: [[ logged_in_user_fullname ]]</li><li>Status: Active</li><li>Available for streaming</li></ul><p>Please review the content details and metadata.</p>',
+        });
+
+        $template = $this->template([
+            'type' => 'livetv_add',
+            'name' => 'livetv_add',
+            'label' => 'Live TV Channel Added',
+            'status' => 1,
+            'to' => '["user"]',
+            'channels' => ['IS_MAIL' => '0', 'PUSH_NOTIFICATION' => '1', 'IS_CUSTOM_WEBHOOK' => '0'],
+        ]);
+
+        $this->templateContent($template, [
+            'language' => 'en',
+            'notification_link' => '',
+            'notification_message' => 'New Live TV channel "[[ name ]]" is now available!',
+            'status' => 1,
+            'user_type' => 'user',
+            'subject' => 'Live TV Channel Added!',
+            'notification_subject' => 'New Live TV Channel Available',
+            'notification_template_detail' => 'New Live TV channel "[[ name ]]" is now available!',
+            'template_detail' => '<p>Dear [[ user_name ]],</p><p>A new Live TV channel "<strong>[[ name ]]</strong>" is now available.</p>',
+        ]);
+
+        $this->templateContent($template, [
+            'language' => 'en',
+            'notification_link' => '',
+            'notification_message' => 'Live TV channel "[[ name ]]" added.',
+            'status' => 1,
+            'user_type' => 'admin',
+            'subject' => 'Live TV Channel Added!',
+            'notification_subject' => 'Content Added',
+            'notification_template_detail' => 'Live TV channel "[[ name ]]" added by [[ logged_in_user_fullname ]].',
+            'template_detail' => '<p>Dear [[ user_name ]],</p><p>Live TV channel "<strong>[[ name ]]</strong>" added.</p>',
+        ]);
+
+        $this->templateContent($template, [
+            'language' => 'en',
+            'notification_link' => '',
+            'notification_message' => 'Live TV channel "[[ name ]]" added.',
+            'status' => 1,
+            'user_type' => 'demo_admin',
+            'subject' => 'Live TV Channel Added!',
+            'notification_subject' => 'Content Added',
+            'notification_template_detail' => 'Live TV channel "[[ name ]]" added by [[ logged_in_user_fullname ]].',
+            'template_detail' => '<p>Dear [[ user_name ]],</p><p>Live TV channel "<strong>[[ name ]]</strong>" added.</p>',
         ]);
 
         $template = $this->template([

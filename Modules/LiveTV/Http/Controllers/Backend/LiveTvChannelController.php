@@ -17,6 +17,7 @@ use Modules\LiveTV\Http\Requests\TvChannelRequest;
 use Modules\LiveTV\Models\TvChannelStreamContentMapping;
 use Modules\LiveTV\Services\LiveTvChannelService;
 use Illuminate\Support\Facades\Cache;
+use Modules\NotificationTemplate\Jobs\SendBulkNotification;
 
 
 class LiveTvChannelController extends Controller
@@ -221,6 +222,16 @@ class LiveTvChannelController extends Controller
 
         if ($liveTvChannel) {
             $message = trans('messages.create_form_livetv', ['form' => 'Tv Channel']);
+
+            if ($request->input('send_notification', 0)) {
+                $notificationData = [
+                    'notification_type' => 'livetv_add',
+                    'id' => $liveTvChannel->id,
+                    'name' => $liveTvChannel->name,
+                ];
+                SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+            }
+
             return redirect()->route('backend.tv-channel.index')->with('success', $message);
         }
 
@@ -300,6 +311,15 @@ class LiveTvChannelController extends Controller
         }
 
         Cache::flush();
+
+        if ($request->input('send_notification', 0)) {
+            $notificationData = [
+                'notification_type' => 'livetv_add',
+                'id' => $liveTvChannel->id,
+                'name' => $liveTvChannel->name,
+            ];
+            SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+        }
 
         $message = trans('messages.update_form_livetv', ['form' => 'Tv Channel']);
         return redirect()->route('backend.tv-channel.index')->with('success', $message);
