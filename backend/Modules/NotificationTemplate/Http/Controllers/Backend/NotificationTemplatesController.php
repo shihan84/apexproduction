@@ -119,7 +119,7 @@ class NotificationTemplatesController extends Controller
             $data[$key] = [
                 'id' => $value->id,
                 'type' => $value->type,
-                'template' => $value->defaultNotificationTemplateMap->subject,
+                'template' => optional($value->defaultNotificationTemplateMap)->subject ?? '',
                 'is_default' => false,
             ];
 
@@ -182,7 +182,7 @@ class NotificationTemplatesController extends Controller
             ->orderColumns(['id'], '-:column $1');
 
 
-        return $datatable->rawColumns(array_merge(['label', 'action', 'status', 'check'], ))
+        return $datatable->rawColumns(['label', 'action', 'status', 'check'])
             ->toJson();
     }
 

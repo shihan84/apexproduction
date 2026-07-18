@@ -223,6 +223,17 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="col-md-6 col-lg-4">
+                                {{ html()->label('Send Push Notification', 'send_notification')->class('form-label') }}
+                                <div class="d-flex justify-content-between align-items-center form-control">
+                                    <span class="form-label mb-0 text-body">Notify app users</span>
+                                    <div class="form-check form-switch">
+                                        {{ html()->hidden('send_notification', 0) }}
+                                        {{ html()->checkbox('send_notification', 0)->class('form-check-input')->id('send_notification')->value(1) }}
+                                    </div>
+                                </div>
+                                <small class="text-muted">Toggle ON to send a push notification to all app users when this channel is saved.</small>
+                            </div>
                         </div>
                     </div>
                 </div>

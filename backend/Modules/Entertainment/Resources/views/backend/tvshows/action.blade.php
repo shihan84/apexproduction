@@ -13,6 +13,10 @@
             <i class="ph ph-eye align-middle"></i>
         </a>
 
+        <a href="javascript:void(0)" class="btn btn-primary-subtle btn-sm fs-4 send-notification-btn" data-url="{{ route('backend.entertainments.send_notification', $data->id) }}" data-bs-toggle="tooltip" title="Send Push Notification">
+            <i class="ph ph-bell-simple align-middle"></i>
+        </a>
+
         @hasPermission('delete_tvshows')
             <a href="{{ route('backend.entertainments.destroy', $data->id) }}"
                 id="delete-{{ $module_name }}-{{ $data->id }}" class="btn btn-secondary-subtle btn-sm fs-4"

@@ -80,6 +80,7 @@
                                 </div>
                                 {{ html()->hidden('thumbnail_url')->id('file_url1')->value($data->thumbnail_url) }}
                                 {{ html()->hidden('remove_image_thumbnail')->id('remove_image_flag_thumbnail')->value(0) }}
+                                <small class="text-muted d-block mt-2">Recommended: 1280 × 720 px (16:9), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
@@ -101,6 +102,7 @@
                                 </div>
                                 {{ html()->hidden('poster_url')->id('file_url2')->value($data->poster_url) }}
                                 {{ html()->hidden('remove_image')->id('remove_image_flag')->value(0) }}
+                                <small class="text-muted d-block mt-2">Recommended: 1000 × 1500 px (2:3), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
@@ -123,6 +125,7 @@
                                 </div>
                                 {{ html()->hidden('poster_tv_url')->id('file_urltv')->value($data->poster_tv_url) }}
                                 {{ html()->hidden('remove_image_tv')->id('remove_image_flag_tv')->value(0) }}
+                                <small class="text-muted d-block mt-2">Recommended: 1920 × 1080 px (16:9), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
 
@@ -331,6 +334,17 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="col-md-6 col-lg-4">
+                            {{ html()->label('Send Push Notification', 'send_notification')->class('form-label') }}
+                            <div class="d-flex justify-content-between align-items-center form-control">
+                                <span class="form-label mb-0 text-body">Notify app users</span>
+                                <div class="form-check form-switch">
+                                    {{ html()->hidden('send_notification', 0) }}
+                                    {{ html()->checkbox('send_notification', 0)->class('form-check-input')->id('send_notification')->value(1) }}
+                                </div>
+                            </div>
+                            <small class="text-muted">Toggle ON to send a push notification to all app users when this content is saved.</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -372,8 +386,8 @@
                         </div>
 
                         <div class="col-md-6 col-lg-4">
-                            {{ html()->label(__('movie.lbl_imdb_rating') . ' <span class="text-danger">*</span>', 'IMDb_rating')->class('form-label') }}
-                            {{ html()->text('IMDb_rating')->value(old('IMDb_rating', $data->IMDb_rating))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control')->required() }}
+                            {{ html()->label(__('movie.lbl_imdb_rating'), 'IMDb_rating')->class('form-label') }}
+                            {{ html()->text('IMDb_rating')->value(old('IMDb_rating', $data->IMDb_rating))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control') }}
 
                             @error('IMDb_rating')
                                 <span class="text-danger">{{ $message }}</span>
@@ -456,8 +470,8 @@
                 <div class="card-body">
                     <div class="row gy-3">
                         <div class="col-md-6">
-                            {{ html()->label(__('movie.lbl_actors') . '<span class="text-danger">*</span>', 'actors')->class('form-label') }}
-                            {{ html()->select('actors[]', $actors->pluck('name', 'id'), $data->actors)->class('form-control select2')->id('actors')->multiple()->attribute('required', 'required') }}
+                            {{ html()->label(__('movie.lbl_actors'), 'actors')->class('form-label') }}
+                            {{ html()->select('actors[]', $actors->pluck('name', 'id'), $data->actors)->class('form-control select2')->id('actors')->multiple() }}
                             @error('actors')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -465,8 +479,8 @@
                         </div>
 
                         <div class="col-md-6">
-                            {{ html()->label(__('movie.lbl_directors') . '<span class="text-danger">*</span>', 'directors')->class('form-label') }}
-                            {{ html()->select('directors[]', $directors->pluck('name', 'id'), $data->directors)->class('form-control select2')->id('directors')->multiple()->attribute('required', 'required') }}
+                            {{ html()->label(__('movie.lbl_directors'), 'directors')->class('form-label') }}
+                            {{ html()->select('directors[]', $directors->pluck('name', 'id'), $data->directors)->class('form-control select2')->id('directors')->multiple() }}
                             @error('directors')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -489,7 +503,7 @@
                                     'video_upload_type',
                                     $upload_url_type->pluck('name', 'value')->prepend(__('placeholder.lbl_select_video_type'), ''),
                                     old('video_upload_type', $data->video_upload_type ?? ''),
-                                )->class('form-control select2')->id('video_upload_type')->required() }}
+                                )->class('form-control select2')->id('video_upload_type') }}
                             @error('video_upload_type')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -1491,6 +1505,8 @@
                     seoImage.value = '';
                 }
             });
+
+            seoCheckbox?.dispatchEvent(new Event('change'));
         });
     </script>
 
@@ -1817,6 +1833,11 @@
                 handleQualityTypeChange($container);
             });
 
+            $(document).on('select2:select', '.video_quality_type', function(e) {
+                var $container = $(this).closest('.video-inputs-container');
+                handleQualityTypeChange($container);
+            });
+
             // Initial setup for existing containers
             $('.video-inputs-container').each(function() {
                 handleQualityTypeChange($(this));
@@ -2102,6 +2123,28 @@
 
                 enableQualitySection.classList.remove('d-none');
 
+                // Re-initialize select2 for elements inside the now-visible section
+                if ($.fn.select2) {
+                    $('#enable_quality_section .select2').each(function() {
+                        if ($(this).hasClass('select2-hidden-accessible')) {
+                            $(this).select2('destroy');
+                        }
+                        $(this).select2({
+                            width: '100%',
+                            language: {
+                                noResults: function() {
+                                    return "{{ __('messages.no_results_found') }}";
+                                }
+                            }
+                        });
+                    });
+                }
+
+                // Trigger initial state for each quality row
+                $('.video-inputs-container').each(function() {
+                    handleQualityTypeChange($(this));
+                });
+
             } else {
 
                 enableQualitySection.classList.add('d-none');
@@ -2205,6 +2248,9 @@
                 var selectedtypeValue = $(this).val();
                 handleVideoUrlTypeChange(selectedtypeValue);
             });
+            $('#video_upload_type').on('select2:select', function(e) {
+                handleVideoUrlTypeChange($(this).val());
+            });
 
             // Real-time validation while typing
             var videourl = document.querySelector('input[name="video_url_input"]');
@@ -2238,6 +2284,10 @@
             handleQualityTypeChange($container);
         });
 
+        $(document).on('select2:select', '.video_quality_type', function(e) {
+            var $container = $(this).closest('.video-inputs-container');
+            handleQualityTypeChange($container);
+        });
 
 
         $(document).ready(function() {
@@ -2598,6 +2648,16 @@
             // Get form data
             var formData = new FormData(this);
 
+            // Ensure video_upload_type and video_url_input are captured (select2 sync)
+            const videoUploadTypeSelect = document.getElementById('video_upload_type');
+            if (videoUploadTypeSelect) {
+                formData.set('video_upload_type', videoUploadTypeSelect.value);
+            }
+            const videoUrlInput = document.getElementById('video_url_input');
+            if (videoUrlInput) {
+                formData.set('video_url_input', videoUrlInput.value);
+            }
+
             // 1. Validate Video URL manually to ensure class is added
             if (typeof validateVideoUrlInput === 'function') {
                 validateVideoUrlInput();
@@ -2636,9 +2696,9 @@
                  return false; 
             }
 
-            if (typeof tinymce !== 'undefined' && tinymce.get('description')) {
-                formData.append('description', tinymce.get('description').getContent());
-            }
+            const descriptionEditor = typeof tinymce !== 'undefined' ? tinymce.get('description') : null;
+            const descriptionField = document.getElementById('description');
+            formData.set('description', descriptionEditor ? descriptionEditor.getContent() : (descriptionField?.value || ''));
 
             formData.append('_token', '{{ csrf_token() }}');
 
@@ -2678,6 +2738,11 @@
                         if (window.showErrorCountOnTabs) {
                             window.showErrorCountOnTabs(xhr.responseJSON.errors, movieTabFields);
                         }
+
+                        const validationMessages = Object.values(xhr.responseJSON.errors)
+                            .flat()
+                            .join(' ');
+                        $('#error_message').text(validationMessages);
 
                         Object.keys(xhr.responseJSON.errors).forEach(function(key) {
                             $(`[name="${key}"]`).addClass('is-invalid');
@@ -2883,6 +2948,11 @@
                             return "{{ __('messages.no_results_found') }}";
                         }
                     }
+                });
+
+                // Bind change handler AFTER select2 init
+                $('#video_upload_type').on('change select2:select', function() {
+                    handleVideoUrlTypeChange($(this).val());
                 });
             }
         });

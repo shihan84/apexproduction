@@ -151,6 +151,9 @@
                                 <a href="{{ route('backend.shorts.edit', $short) }}" class="btn btn-sm btn-outline-warning">
                                     <i class="ph ph-pencil"></i>
                                 </a>
+                                <a href="javascript:void(0)" class="btn btn-sm btn-outline-primary send-notification-btn" data-url="{{ route('backend.shorts.send_notification', $short->id) }}" title="Send Push Notification">
+                                    <i class="ph ph-bell-simple"></i>
+                                </a>
                                 <form action="{{ route('backend.shorts.destroy', $short) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')

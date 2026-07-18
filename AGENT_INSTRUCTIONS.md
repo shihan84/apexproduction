@@ -9,6 +9,10 @@ Read this file first every session. Update Progress Tracker and Chat Summary.
 - **Backend repo:** `shihan84/apexproduction` (branch: `clean-xcode-cloud`)
 - **Mobile repo:** `shihan84/apex-mobile-app-xcode-cloud` (branch: `android`)
 - **Server:** Hostinger `u254324758@82.112.232.137:65002`
+- **SSH password:** `Saad321safa@`
+- **Database:** `u254324758_apexprimetv`
+- **Database user:** `u254324758_apexprimetv`
+- **Database password:** `ZLtHD760h+H`
 - **Admin panel:** https://apexprimetv.com/admin/login
 - **Production backend path:** `/home/u254324758/domains/apexprimetv.com/public_html`
 - **PHP:** `/opt/alt/php84/usr/bin/php`

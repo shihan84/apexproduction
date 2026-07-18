@@ -7,14 +7,14 @@
     }
 @endphp
 
-{{ Form::model($data,['route' => $route]) }}
+{{ html()->form($method, route($route))->class('requires-validation')->open() }}
+    @csrf
     @method($method)
-
 
     <div class="form-group">
         <label class="form-label">{{trans('permission-role.role_label_title')}} <span class="text-danger">*</span></label>
-        {{ Form::text('title', old('title'), ['class' => 'form-control','id' => 'role-title', 'placeholder' => 'Role Title', 'required']) }}
+        {{ html()->text('title', old('title', $data->title ?? ''))->class('form-control')->id('role-title')->placeholder('Role Title')->required() }}
     </div>
-    {{ Form::submit( __('messages.save'), ['class'=>'btn btn-primary']) }}
+    {{ html()->submit(__('messages.save'))->class('btn btn-primary') }}
     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">{{ __('messages.close') }}</button>
-{{ Form::close() }}
+{{ html()->form()->close() }}

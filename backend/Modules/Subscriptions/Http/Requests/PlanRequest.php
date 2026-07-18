@@ -21,7 +21,7 @@ class PlanRequest extends FormRequest
                 'name' => ['required'],
                 'duration' => ['required'],
                 'description' => ['required'],
-                'duration_value' => ['required', 'numeric', 'min:1',  Rule::when($this->duration === 'month', ['max:11'])],
+                'duration_value' => ['required', 'numeric', 'min:1',  Rule::when($this->duration === 'month', ['max:12'])],
                 'price' => ['required', 'numeric', 'min:1'],
             ];
 

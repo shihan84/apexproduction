@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\API\AuthController;
 use App\Http\Controllers\Backend\API\DashboardController;
 use App\Http\Controllers\Backend\API\NotificationsController;
 use App\Http\Controllers\Backend\API\InvoiceController;
-use App\Http\Controllers\API\DeviceTokenController;
+use App\Http\Controllers\Api\DeviceTokenController;
 
 use App\Http\Controllers\Backend\API\SettingController as APISettingController;
 use Modules\Frontend\Http\Controllers\PerviewPaymentController;

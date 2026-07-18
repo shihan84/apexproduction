@@ -15,13 +15,17 @@ class MusicCategory extends BaseModel
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
-        'is_active',
+        'status',
         'user_id',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'status' => 'boolean',
     ];
 
     public function user()

@@ -416,7 +416,7 @@
                         </div>
                         <div class="col-md-6 col-lg-4">
                             {{ html()->label(__('movie.lbl_imdb_rating') . ' <span class="text-danger">*</span>', 'IMDb_rating')->class('form-label') }}
-                            {{ html()->text('IMDb_rating')->attribute('value', old('IMDb_rating'))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control')->required() }}
+                            {{ html()->number('IMDb_rating')->attribute('step', '0.1')->attribute('min', '1')->attribute('max', '10')->attribute('value', old('IMDb_rating'))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control')->required() }}
 
                             @error('IMDb_rating')
                                 <span class="text-danger">{{ $message }}</span>

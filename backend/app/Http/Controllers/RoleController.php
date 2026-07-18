@@ -30,9 +30,13 @@ class RoleController extends Controller
     public function create(Request $request)
     {
         $data = new Role;
-        $view = view('permission-role.form-role', ['data' => $data])->render();
 
-        return response()->json(['data' => $view, 'status' => true]);
+        if ($request->ajax() || $request->wantsJson()) {
+            $view = view('permission-role.form-role', ['data' => $data])->render();
+            return response()->json(['data' => $view, 'status' => true]);
+        }
+
+        return view('permission-role.create', ['data' => $data, 'type' => 'role']);
     }
 
     /**

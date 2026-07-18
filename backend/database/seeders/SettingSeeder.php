@@ -1158,8 +1158,7 @@ class SettingSeeder extends Seeder
         }
     
 
-    if (env('IS_DUMMY_DATA')) {
-        foreach ($data as $setting) {
+    foreach ($data as $setting) {
             \Log::info('Processing setting: ' . ($setting['name'] ?? 'unknown'));
             if (isset($setting['name']) && $setting['name'] === 'mini_logo') {
                 \Log::info('Mini logo found: ' . ($setting['val'] ?? 'no value'));
@@ -1194,9 +1193,9 @@ class SettingSeeder extends Seeder
                 }
             }
            
-            $setting = Setting::create($setting);
+            unset($setting['id']);
+            $setting = Setting::updateOrCreate(['name' => $setting['name']], $setting);
         }
-    }
     }
     
 

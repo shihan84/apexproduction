@@ -16,6 +16,14 @@ class PermissionRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('title')) {
+            $name = strtolower(str_replace(' ', '_', preg_replace('/[^a-zA-Z0-9_.]/', '', $this->title)));
+            $this->merge(['name' => $name]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,15 +38,15 @@ class PermissionRequest extends FormRequest
         switch ($method) {
             case 'post':
                 $rules = [
+                    'title' => 'required|max:20',
                     'name' => 'required|max:20|unique:permissions,name',
-                    'title' => 'required|max:20|unique:permissions,title',
                 ];
                 break;
             case 'patch':
             case 'put':
                 $rules = [
-                    'name' => 'required|max:20|unique:permissions,name',
-                    'title' => 'required|max:20|unique:permissions,title,'.$permission_id,
+                    'title' => 'required|max:20',
+                    'name' => 'required|max:20|unique:permissions,name,'.$permission_id,
                 ];
                 break;
         }

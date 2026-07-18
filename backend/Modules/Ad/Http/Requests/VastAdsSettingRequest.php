@@ -15,14 +15,14 @@ class VastAdsSettingRequest extends FormRequest
             'type' => ['required'],
             'url' => ['required'],
             'target_type' => ['required'],
-            'target_selection' => ['required'],
+            'target_selection' => ['nullable'],
             'status' => ['required'],
             'start_date' => ['required', 'date', 'date_format:Y-m-d'],
             'end_date' => [
                 'required',
                 'date',
                 'date_format:Y-m-d',
-                'after:start_date'
+                'after_or_equal:start_date'
             ],
         ];
     }

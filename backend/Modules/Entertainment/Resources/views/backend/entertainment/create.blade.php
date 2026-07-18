@@ -100,6 +100,7 @@
                                         style="{{ old('thumbnail_url', isset($data) ? $data->thumbnail_url : '') ? '' : 'display:none;' }}" />
                                 </div>
                                 {{ html()->hidden('thumbnail_url')->id('thumbnail_url')->value(old('thumbnail_url', isset($data) ? $data->thumbnail_url : '')) }}
+                                <small class="text-muted d-block mt-2">Recommended: 1280 × 720 px (16:9), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
                         <div class="col-md-4 col-lg-4">
@@ -119,6 +120,7 @@
                                         style="{{ old('poster_url', isset($data) ? $data->poster_url : '') ? '' : 'display:none;' }}" />
 
                                 </div>
+                                <small class="text-muted d-block mt-2">Recommended: 1000 × 1500 px (2:3), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
                         <div class="col-md-4 col-lg-4">
@@ -138,6 +140,7 @@
                                         style="{{ old('poster_tv_url', isset($data) ? $data->poster_tv_url : '') ? '' : 'display:none;' }}" />
 
                                 </div>
+                                <small class="text-muted d-block mt-2">Recommended: 1920 × 1080 px (16:9), JPG or PNG, up to 2 MB.</small>
                             </div>
                         </div>
 
@@ -342,6 +345,17 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="col-md-6 col-lg-4">
+                            {{ html()->label('Send Push Notification', 'send_notification')->class('form-label') }}
+                            <div class="d-flex justify-content-between align-items-center form-control">
+                                <span class="form-label mb-0 text-body">Notify app users</span>
+                                <div class="form-check form-switch">
+                                    {{ html()->hidden('send_notification', 0) }}
+                                    {{ html()->checkbox('send_notification', old('send_notification', 0))->class('form-check-input')->id('send_notification')->value(1) }}
+                                </div>
+                            </div>
+                            <small class="text-muted">Toggle ON to send a push notification to all app users when this content is saved.</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -383,8 +397,8 @@
 
 
                         <div class="col-md-6 col-lg-4">
-                            {{ html()->label(__('movie.lbl_imdb_rating') . ' <span class="text-danger">*</span>', 'IMDb_rating')->class('form-label') }}
-                            {{ html()->text('IMDb_rating')->attribute('value', old('IMDb_rating'))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control')->required() }}
+                            {{ html()->label(__('movie.lbl_imdb_rating'), 'IMDb_rating')->class('form-label') }}
+                            {{ html()->input('number', 'IMDb_rating', old('IMDb_rating'))->placeholder(__('movie.lbl_imdb_rating'))->class('form-control')->attribute('step', '0.1')->attribute('min', '1')->attribute('max', '10') }}
 
                             @error('IMDb_rating')
                                 <span class="text-danger">{{ $message }}</span>
@@ -450,7 +464,7 @@
                                 {{ html()->label(__('messages.on'), 'download_status')->class('form-label mb-0 text-body') }}
                                 <div class="form-check form-switch">
                                     {{ html()->hidden('download_status', 0) }}
-                                    {{ html()->checkbox('download_status', old('download_status', 1))->class('form-check-input')->id('download_status')->value(1) }}
+                                    {{ html()->checkbox('download_status', old('download_status', 0))->class('form-check-input')->id('download_status')->value(1) }}
                                 </div>
                             </div>
                             @error('download_status')
@@ -471,16 +485,16 @@
                 <div class="card-body">
                     <div class="row gy-3">
                         <div class="col-md-6">
-                            {{ html()->label(__('movie.lbl_actors') . '<span class="text-danger">*</span>', 'actors')->class('form-label') }}
-                            {{ html()->select('actors[]', $actors->pluck('name', 'id'), old('actors'))->class('form-control select2')->id('actors')->multiple()->attribute('required', 'required') }}
+                            {{ html()->label(__('movie.lbl_actors'), 'actors')->class('form-label') }}
+                            {{ html()->select('actors[]', $actors->pluck('name', 'id'), old('actors'))->class('form-control select2')->id('actors')->multiple() }}
                             @error('actors')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                             <div class="invalid-feedback" id="name-error">{{ __('messages.actors_field_required') }}</div>
                         </div>
                         <div class="col-md-6">
-                            {{ html()->label(__('movie.lbl_directors') . '<span class="text-danger">*</span>', 'directors')->class('form-label') }}
-                            {{ html()->select('directors[]', $directors->pluck('name', 'id'), old('directors'))->class('form-control select2')->id('directors')->multiple()->attribute('required', 'required') }}
+                            {{ html()->label(__('movie.lbl_directors'), 'directors')->class('form-label') }}
+                            {{ html()->select('directors[]', $directors->pluck('name', 'id'), old('directors'))->class('form-control select2')->id('directors')->multiple() }}
                             @error('directors')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -499,12 +513,12 @@
                 <div class="card-body">
                     <div class="row gy-3">
                         <div class="col-md-6">
-                            {{ html()->label(__('movie.lbl_video_upload_type') . '<span class="text-danger">*</span>', 'video_upload_type')->class('form-label') }}
+                            {{ html()->label(__('movie.lbl_video_upload_type'), 'video_upload_type')->class('form-label') }}
                             {{ html()->select(
                                     'video_upload_type',
                                     $upload_url_type->pluck('name', 'value')->prepend(__('placeholder.lbl_select_video_type'), ''),
                                     old('video_upload_type', ''),
-                                )->class('form-control select2')->id('video_upload_type')->required() }}
+                                )->class('form-control select2')->id('video_upload_type') }}
                             @error('video_upload_type')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -785,7 +799,7 @@
                                         <input type="text" name="meta_title" id="meta_title"
                                             class="form-control @error('meta_title') is-invalid @enderror"
                                             value="{{ old('meta_title', $seo->meta_title ?? '') }}" maxlength="100"
-                                            placeholder="{{ __('placeholder.lbl_meta_title') }}" required>
+                                            placeholder="{{ __('placeholder.lbl_meta_title') }}">
 
                                         <div class="invalid-feedback" id="meta_title_error"
                                             style="display: {{ $errors->has('meta_title') ? 'block' : 'none' }};">
@@ -802,7 +816,7 @@
                                             id="google_site_verification"
                                             class="form-control @error('google_site_verification') is-invalid @enderror"
                                             value="{{ old('google_site_verification', $seo->google_site_verification ?? '') }}"
-                                            placeholder="{{ __('placeholder.lbl_google_site_verification') }}" required>
+                                            placeholder="{{ __('placeholder.lbl_google_site_verification') }}">
                                         <div class="invalid-feedback" id="embed-error">{{ __('messages.google_site_verification_required') }}</div>
                                     </div>
                                 </div>
@@ -829,7 +843,7 @@
                                         <input type="text" name="canonical_url" id="canonical_url"
                                             class="form-control @error('canonical_url') is-invalid @enderror"
                                             value="{{ old('canonical_url', $seo->canonical_url ?? '') }}"
-                                            placeholder="{{ __('placeholder.lbl_canonical_url') }}" required>
+                                            placeholder="{{ __('placeholder.lbl_canonical_url') }}">
                                         <div class="invalid-feedback" id="embed-error">{{ __('messages.canonical_url_required') }}</div>
                                     </div>
                                 </div>
@@ -1196,6 +1210,7 @@
                 }
             });
 
+            seoCheckbox?.dispatchEvent(new Event('change'));
         });
     </script>
 
@@ -1427,8 +1442,19 @@
                     formData.set('trailer_embedded', trailerEmbeddedField.value);
                 }
 
-                // Add TinyMCE content to formData
-                formData.append('description', tinymce.get('description').getContent());
+                // Ensure video_upload_type and video_url_input are captured (select2 sync)
+                const videoUploadTypeSelect = document.getElementById('video_upload_type');
+                if (videoUploadTypeSelect) {
+                    formData.set('video_upload_type', videoUploadTypeSelect.value);
+                }
+                const videoUrlInput = document.getElementById('video_url_input');
+                if (videoUrlInput) {
+                    formData.set('video_url_input', videoUrlInput.value);
+                }
+
+                const descriptionEditor = typeof tinymce !== 'undefined' ? tinymce.get('description') : null;
+                const descriptionField = document.getElementById('description');
+                formData.set('description', descriptionEditor ? descriptionEditor.getContent() : (descriptionField?.value || ''));
 
                 // Add CSRF token
                 formData.append('_token', '{{ csrf_token() }}');
@@ -1483,6 +1509,11 @@
                                 window.showErrorCountOnTabs(xhr.responseJSON.errors,
                                     movieTabFields);
                             }
+
+                            const validationMessages = Object.values(xhr.responseJSON.errors)
+                                .flat()
+                                .join(' ');
+                            $('#error_message').text(validationMessages);
 
                             Object.keys(xhr.responseJSON.errors).forEach(function(key) {
                                 $(`[name="${key}"]`).addClass('is-invalid');
@@ -1883,6 +1914,28 @@
 
                 enableQualitySection.classList.remove('d-none');
 
+                // Re-initialize select2 for elements inside the now-visible section
+                if ($.fn.select2) {
+                    $('#enable_quality_section .select2').each(function() {
+                        if ($(this).hasClass('select2-hidden-accessible')) {
+                            $(this).select2('destroy');
+                        }
+                        $(this).select2({
+                            width: '100%',
+                            language: {
+                                noResults: function() {
+                                    return "{{ __('messages.no_results_found') }}";
+                                }
+                            }
+                        });
+                    });
+                }
+
+                // Trigger initial state for each quality row
+                $('.video-inputs-container').each(function() {
+                    handleQualityTypeChange($(this));
+                });
+
             } else {
 
                 enableQualitySection.classList.add('d-none');
@@ -1935,21 +1988,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle initial state
             const videoUploadType = document.getElementById('video_upload_type');
             if (videoUploadType) {
                 handleVideoUrlTypeChange(videoUploadType.value);
-
-                // Add change event listener
-                videoUploadType.addEventListener('change', function() {
-                    handleVideoUrlTypeChange(this.value);
-                });
-
-                // Also handle select2 change event
-                $('#video_upload_type').on('select2:select', function(e) {
-                    handleVideoUrlTypeChange(e.target.value);
-                });
             }
+        });
+
+        $(document).on('select2:select change', '#video_upload_type', function(e) {
+            handleVideoUrlTypeChange($(this).val());
         });
 
         function handleQualityTypeChange($container) {
@@ -1967,6 +2013,11 @@
         }
 
         $(document).on('change', '.video_quality_type', function() {
+            var $container = $(this).closest('.video-inputs-container');
+            handleQualityTypeChange($container);
+        });
+
+        $(document).on('select2:select', '.video_quality_type', function(e) {
             var $container = $(this).closest('.video-inputs-container');
             handleQualityTypeChange($container);
         });
@@ -2823,6 +2874,11 @@
                             return "{{ __('messages.no_results_found') }}";
                         }
                     }
+                });
+
+                // Bind change handler AFTER select2 init
+                $('#video_upload_type').on('change select2:select', function() {
+                    handleVideoUrlTypeChange($(this).val());
                 });
             }
         });

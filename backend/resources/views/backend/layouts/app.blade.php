@@ -758,6 +758,33 @@
             .catch(error => console.error('Error:', error));
     </script>
 
+    <script>
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.send-notification-btn');
+        if (!btn) return;
+        e.preventDefault();
+        const url = btn.getAttribute('data-url');
+        if (!url) return;
+        btn.style.pointerEvents = 'none';
+        btn.style.opacity = '0.5';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json'
+            }
+        }).then(r => r.json()).then(data => {
+            alert(data.message || 'Notification sent!');
+            btn.style.pointerEvents = '';
+            btn.style.opacity = '';
+        }).catch(err => {
+            alert('Failed to send notification.');
+            btn.style.pointerEvents = '';
+            btn.style.opacity = '';
+        });
+    });
+    </script>
+
 </body>
 
 </html>

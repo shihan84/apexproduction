@@ -140,7 +140,7 @@ class SeasonsController extends Controller
 
         $plan=Plan::where('status',1)->get();
 
-        $tvshows=Entertainment::Where('type','tvshow')->where('status', 1)->whereNull('deleted_at')->orderBy('id','desc')->get();
+        $tvshows=Entertainment::Where('type','tvshow')->whereNull('deleted_at')->orderBy('id','desc')->get();
 
         $imported_tvshow = Entertainment::where('type', 'tvshow')
         ->where('status', 1)

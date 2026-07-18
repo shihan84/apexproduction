@@ -14,12 +14,12 @@ class EpisodeRequest extends FormRequest
         $seasonId = $this->input('season_id');
         $rules = [
             'name' => ['required', Rule::unique('episodes', 'name')->ignore($id)],
-            'entertainment_id'=> ['required'],
+            'entertainment_id'=> ['nullable'],
             'content_rating'=>'required|string',
             'description' => 'required|string',
             'access' => 'required',
             'IMDb_rating' => 'required|numeric|min:1|max:10',
-            'season_id'=> ['required'],
+            'season_id'=> ['nullable'],
             'episode_number' => [
                 'nullable',
                 'numeric',

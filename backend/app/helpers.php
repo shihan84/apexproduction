@@ -147,7 +147,7 @@ function sendNotification($data)
                     break;
                 case 'user':
                     // If notification type is movie_add, tv_show_add, upcoming, or continue_watch, send to all users
-                    if (in_array($data['notification_type'], ['movie_add', 'tv_show_add','episode_add','season_add','video_add', 'upcoming'])) {
+                    if (in_array($data['notification_type'], ['movie_add', 'tv_show_add','episode_add','season_add','video_add', 'livetv_add', 'short_add', 'upcoming'])) {
                         \App\Models\User::where('user_type','user')->chunk(500, function ($users) use ($data) {
                             $chunkCount = 0;
                             foreach ($users as $user) {
@@ -501,8 +501,8 @@ if (!function_exists('setting')) {
 function app_name()
 {
         $value = App\Models\Setting::where('name','app_name')->select('val')->first();
-        $app_name = $value->val;
-        return is_null($app_name) ? : $app_name;
+        $app_name = $value?->val;
+        return is_null($app_name) ? 'ApexPrime Tv' : $app_name;
 }
 
 
@@ -1464,12 +1464,17 @@ function getThumbnail(string $name, string $type): ?string
             $url = \Modules\Video\Models\Video::where('name', $name)->value('poster_url');
             break;
 
+        case 'livetv':
+            $url = \Modules\LiveTV\Models\LiveTvChannel::where('name', $name)->value('poster_url');
+            break;
+
         default:
             return url('default-image/Default-Image.jpg');
     }
 
     $folder = match ($type) {
         'tv_show' => 'tvshow',
+        'livetv' => 'livetv',
         default => $type,
     };
 

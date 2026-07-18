@@ -76,7 +76,7 @@ Route::group(['prefix' => 'app', 'as' => 'backend.', 'middleware' => ['auth','ad
         Route::post('information-update', [SettingsController::class, 'userProfileUpdate'])->name('information-update');
         Route::post('change-password', [SettingsController::class, 'changePassword'])->name('change_password');
     });
-    Route::resource("setting", SettingsController::class);
+    Route::resource("setting", SettingsController::class)->except(['create']);
 
     route::get('appconfig',[SettingsController::class,'appConfig'])->name('AppConfig.index');
     Route::get('/dataload', [SettingsController::class, 'dataload'])->name('dataload');

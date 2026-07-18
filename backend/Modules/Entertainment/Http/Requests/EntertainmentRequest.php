@@ -19,9 +19,9 @@ class EntertainmentRequest extends FormRequest
             'language' => ['required'],
             'genres' => ['required'],
             'content_rating' => 'required|string',
-            'actors' => ['required'],
-            'directors' => ['required'],
-            'IMDb_rating' => 'required|numeric|min:1|max:10',
+            'actors' => ['nullable'],
+            'directors' => ['nullable'],
+            'IMDb_rating' => 'nullable|numeric|min:1|max:10',
             'description' => ['required', 'string'],
         ];
 
@@ -75,7 +75,6 @@ class EntertainmentRequest extends FormRequest
 
         if ($this->input('type') == 'movie') {
             $rules['duration'] = 'required';
-            $rules['video_upload_type'] = 'required';
         }
 
         // Validate quality-wise video URLs based on video_quality_type

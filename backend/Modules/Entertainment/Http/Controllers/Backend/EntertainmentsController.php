@@ -74,6 +74,11 @@ class EntertainmentsController extends Controller
         return view('entertainment::backend.entertainment.index', compact('module_action', 'filter', 'export_import', 'export_columns', 'export_url','keywords'));
     }
 
+    public function create()
+    {
+        return redirect()->route('backend.movies.create');
+    }
+
     public function bulk_action(Request $request)
     {
         $ids = explode(',', $request->rowIds);
@@ -247,46 +252,22 @@ public function store(EntertainmentRequest $request)
 
     // Cache::flush();
 
-    // Send notification for new movie/TV show added only when release date is today or earlier
-    if (isset($data['status']) && $data['status'] == 1) {
-        $releaseDate = $entertainment->release_date ? \Carbon\Carbon::parse($entertainment->release_date)->startOfDay() : null;
-        $today = now()->startOfDay();
-
-        if (!$releaseDate || $releaseDate->lessThanOrEqualTo($today)) {
-            $notificationType = $entertainment->type == 'movie' ? 'movie_add' : 'tv_show_add';
-            $notificationData = [
-                'notification_type' => $notificationType,
-                'id' => $entertainment->id,
-                'release_date' => $entertainment->release_date,
-            ];
-            if ($entertainment->type == 'movie') {
-                $notificationData['movie_name'] = $entertainment->name;
-            } else {
-                $notificationData['tvshow_name'] = $entertainment->name;
-            }
-            SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+    // Send notification when toggle is ON
+    $sendNotification = $request->input('send_notification', 0);
+    if ($sendNotification) {
+        $notificationType = $entertainment->type == 'movie' ? 'movie_add' : 'tv_show_add';
+        $notificationData = [
+            'notification_type' => $notificationType,
+            'id' => $entertainment->id,
+            'release_date' => $entertainment->release_date,
+            'posterimage' => setBaseUrlWithFileName($entertainment->poster_url, 'image', $entertainment->type == 'movie' ? 'movie' : 'tvshow'),
+        ];
+        if ($entertainment->type == 'movie') {
+            $notificationData['movie_name'] = $entertainment->name;
+        } else {
+            $notificationData['tvshow_name'] = $entertainment->name;
         }
-
-        // Upcoming notification when release date is in the configured upcoming window
-        $upcomingDays = (int) (setting('upcoming') ?? 0);
-        $upcomingThreshold = $today->copy()->addDays($upcomingDays)->endOfDay();
-        $isUpcomingWindow = $releaseDate && $releaseDate->greaterThan($today) && $releaseDate->lessThanOrEqualTo($upcomingThreshold);
-
-        if ($isUpcomingWindow) {
-            $daysRemaining = $today->diffInDays($releaseDate, false);
-            $upcomingData = [
-                'notification_type' => 'upcoming',
-                'id' => $entertainment->id,
-                'name' => $entertainment->name,
-                'content_type' => $entertainment->type,
-                'release_date' => $entertainment->release_date,
-                'description' => $entertainment->description,
-                'days' => $daysRemaining,
-                'days_remaining' => $daysRemaining,
-                'posterimage' => $entertainment->poster_url ?? null,
-            ];
-            SendBulkNotification::dispatch($upcomingData)->onQueue('notifications');
-        }
+        SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
     }
 
 
@@ -616,6 +597,24 @@ public function update(EntertainmentRequest $request, $id)
     $message = $entertainment->type == 'movie' ?
     trans('messages.update_form_movie') : trans('messages.update_form_tvshow');
 
+    // Send notification if toggle is ON
+    $sendNotification = $request->input('send_notification', 0);
+    if ($sendNotification) {
+        $notificationType = $type == 'movie' ? 'movie_add' : 'tv_show_add';
+        $notificationData = [
+            'notification_type' => $notificationType,
+            'id' => $entertainment->id,
+            'release_date' => $entertainment->release_date,
+            'posterimage' => setBaseUrlWithFileName($entertainment->poster_url, 'image', $type == 'movie' ? 'movie' : 'tvshow'),
+        ];
+        if ($type == 'movie') {
+            $notificationData['movie_name'] = $entertainment->name;
+        } else {
+            $notificationData['tvshow_name'] = $entertainment->name;
+        }
+        SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+    }
+
     // Check if request is AJAX
     if ($request->ajax()) {
         $redirectUrl = $type == 'movie' ?
@@ -843,6 +842,28 @@ public function update(EntertainmentRequest $request, $id)
         return view('frontend::comingsoon-detail', compact('data'));
     }
 
+    public function sendNotification($id)
+    {
+        $entertainment = Entertainment::findOrFail($id);
+        $notificationType = $entertainment->type == 'movie' ? 'movie_add' : 'tv_show_add';
+        $notificationData = [
+            'notification_type' => $notificationType,
+            'id' => $entertainment->id,
+            'release_date' => $entertainment->release_date,
+            'posterimage' => setBaseUrlWithFileName($entertainment->poster_url, 'image', $entertainment->type == 'movie' ? 'movie' : 'tvshow'),
+        ];
+        if ($entertainment->type == 'movie') {
+            $notificationData['movie_name'] = $entertainment->name;
+        } else {
+            $notificationData['tvshow_name'] = $entertainment->name;
+        }
+        SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification dispatched successfully!',
+        ]);
+    }
 
 
 }

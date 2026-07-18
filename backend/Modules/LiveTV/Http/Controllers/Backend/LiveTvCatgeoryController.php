@@ -92,14 +92,12 @@ class LiveTvCatgeoryController extends Controller
         $query = LiveTvCategory::query()->withTrashed();
         $filter = $request->filter;
 
-        if (isset($filter)) {
-            if (isset($filter['column_status'])) {
-                $query->where('status', $filter['column_status']);
-            }
+        if (!empty($filter['column_status'])) {
+            $query->where('status', $filter['column_status']);
+        }
 
-            if (isset($filter['category'])) {
-                $query->where('id', $filter['category']);
-            }
+        if (!empty($filter['category'])) {
+            $query->where('id', $filter['category']);
         }
 
         $datatable = $datatable->eloquent($query)
@@ -172,7 +170,7 @@ class LiveTvCatgeoryController extends Controller
     public function store(TvCategoryRequest $request)
     {
         $data = $request->all();
-        $data['file_url'] = extractFileNameFromUrl($data['file_url'],'livetv');
+        $data['file_url'] = extractFileNameFromUrl($data['file_url'] ?? '','livetv');
 
         $data = LiveTvCategory::create($data);
 
@@ -210,7 +208,7 @@ class LiveTvCatgeoryController extends Controller
     public function update(TvCategoryRequest $request, $id)
     {
         $data = $request->all();
-        $data['file_url'] = extractFileNameFromUrl($data['file_url'],'livetv');
+        $data['file_url'] = extractFileNameFromUrl($data['file_url'] ?? '','livetv');
 
         $tvCategory = LiveTvCategory::where('id',$id)->first();
 

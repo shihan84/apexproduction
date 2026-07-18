@@ -16,10 +16,13 @@ class MusicAlbum extends BaseModel
     protected $fillable = [
         'title',
         'description',
-        'artist',
+        'artist_name',
         'release_date',
         'cover_art_url',
+        'genre',
         'status',
+        'is_featured',
+        'is_trending',
         'user_id',
         'category_id',
     ];
@@ -27,6 +30,8 @@ class MusicAlbum extends BaseModel
     protected $casts = [
         'release_date' => 'date',
         'status' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_trending' => 'boolean',
     ];
 
     public function user()

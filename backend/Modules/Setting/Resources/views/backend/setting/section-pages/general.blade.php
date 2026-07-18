@@ -106,6 +106,31 @@
     </div>
     <div class="row ">
 
+        <!-- Logo Upload -->
+        <div class="form-group mb-3 col-md-12">
+            <label for="logo" class="form-label">{{ __('messages.logo') }}</label>
+            <div class="row align-items-center">
+                <div class="col-lg-2">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <img id="logoViewer" src="{{ isset($data['logo']) && $data['logo'] != null ? $data['logo'] : asset('img/logo/logo.png') }}"
+                                class="img-fluid" alt="logo" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="hidden" id="logo" name="logo" value="{{ isset($data['logo']) && $data['logo'] != null ? $data['logo'] : '' }}">
+                        <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#exampleModal" data-image-container="logoViewer" data-hidden-input="logo" data-page-type="logos">
+                            {{ __('messages.upload') }}
+                        </button>
+                        <button type="button" class="btn btn-dark mb-5"
+                            id="removeLogoButton">{{ __('messages.remove') }}</button>
+                    </div>
+                    <span class="text-danger" id="error_logo"></span>
+                </div>
+            </div>
+        </div>
 
         <!-- Mini Logo Upload -->
         <div class="form-group mb-3 col-md-6">
@@ -232,7 +257,8 @@
                         const darkLogo = document.getElementById('dark_logo');
                         const favicon = document.getElementById('favicon');
                         const loaderGif = document.getElementById('loader_gif');
-                        
+                        const logo = document.getElementById('logo');
+
                         if (miniLogo && miniLogo.value) document.getElementById('miniLogoViewer').src = miniLogo.value;
                         if (darkLogo && darkLogo.value) document.getElementById('darkLogoViewer').src = darkLogo.value;
                         if (favicon && favicon.value) {
@@ -245,6 +271,7 @@
                             const loaderGifRemove = document.getElementById('loader_gif_remove');
                             if (loaderGifRemove) loaderGifRemove.value = '0';
                         }
+                        if (logo && logo.value) document.getElementById('logoViewer').src = logo.value;
                     });
                 }
 
@@ -278,6 +305,20 @@
                     document.getElementById('error_dark_logo').innerText = '';
                 });
 
+                document.getElementById('removeLogoButton').addEventListener('click', function() {
+                    const logoViewer = document.getElementById('logoViewer');
+                    const defaultLogo = "{{ asset('img/logo/logo.png') }}";
+
+                    // Reset the logo image to the default
+                    logoViewer.src = defaultLogo;
+
+                    // Reset the hidden input to the default
+                    const logoInput = document.getElementById('logo');
+                    logoInput.value = defaultLogo;
+
+                    // Clear any validation errors
+                    document.getElementById('error_logo').innerText = '';
+                });
 
                 document.getElementById('removeFaviconButton').addEventListener('click', function() {
                     const faviconViewer = document.getElementById('faviconViewer');

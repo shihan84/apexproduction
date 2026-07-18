@@ -69,6 +69,7 @@ Route::group(['prefix' => 'app', 'as' => 'backend.', 'middleware' => ['auth','ad
       Route::post('restore/{id}', [LiveTvChannelController::class, 'restore'])->name('restore');
       Route::delete('force-delete/{id}', [LiveTvChannelController::class, 'forceDelete'])->name('force_delete');
       Route::post('update-status/{id}', [LiveTvChannelController::class, 'update_status'])->name('update_status');
+      Route::post('send-notification/{id}', [LiveTvChannelController::class, 'sendNotification'])->name('send_notification');
     });
     Route::resource("tv-channel", LiveTvChannelController::class);
 });

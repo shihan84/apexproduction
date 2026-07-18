@@ -12,63 +12,35 @@ class Short extends BaseModel
 
     protected $table = 'shorts';
 
-    protected $fillable = [
-        'title',
-        'description',
-        'slug',
-        'content_type',
-        'aspect_ratio',
-        'video_upload_type',
-        'video_url',
-        'thumbnail_url',
-        'duration',
-        'width',
-        'height',
-        'language',
-        'allow_comments',
-        'allow_download',
-        'is_private',
-        'view_count',
-        'like_count',
-        'share_count',
-        'comment_count',
-        'content_source',
-        'external_metadata',
-        'user_id',
-        'category_id',
-        'tags',
-        'is_trending',
-        'is_featured',
-        'status',
-        'youtube_id',
-        'youtube_url',
-        'youtube_embed_url',
-        'channel_id',
-        'channel_title',
-        'is_youtube',
-        'youtube_published_at',
-        'created_by',
-        'updated_by',
-        'deleted_by',
+    protected $guarded = [
+        'id',
+        'updated_at',
+        'created_at',
+        'deleted_at',
+        '_token',
+        '_method',
     ];
 
     protected $casts = [
         'tags' => 'array',
-        'external_metadata' => 'json',
-        'allow_comments' => 'boolean',
-        'allow_download' => 'boolean',
-        'is_private' => 'boolean',
-        'is_trending' => 'boolean',
-        'is_featured' => 'boolean',
-        'is_youtube' => 'boolean',
         'status' => 'boolean',
-        'view_count' => 'integer',
-        'like_count' => 'integer',
-        'share_count' => 'integer',
-        'comment_count' => 'integer',
+        'is_explicit' => 'boolean',
+        'is_featured' => 'boolean',
+        'is_trending' => 'boolean',
+        'is_premium' => 'boolean',
+        'is_verified' => 'boolean',
+        'is_monetized' => 'boolean',
+        'allow_comments' => 'boolean',
+        'allow_likes' => 'boolean',
+        'allow_download' => 'boolean',
+        'allow_shares' => 'boolean',
+        'allow_duets' => 'boolean',
+        'allow_stitches' => 'boolean',
+        'duration' => 'integer',
         'width' => 'integer',
         'height' => 'integer',
-        'youtube_published_at' => 'datetime',
+        'published_at' => 'datetime',
+        'scheduled_at' => 'datetime',
     ];
 
     // Relationships
@@ -110,7 +82,7 @@ class Short extends BaseModel
 
     public function scopePublic($query)
     {
-        return $query->where('is_private', false);
+        return $query->where('status', true);
     }
 
     public function scopeTrending($query)
@@ -130,12 +102,12 @@ class Short extends BaseModel
 
     public function scopeByContentType($query, $type)
     {
-        return $query->where('content_type', $type);
+        return $query->where('source_type', $type);
     }
 
     public function scopeBySource($query, $source)
     {
-        return $query->where('content_source', $source);
+        return $query->where('source_type', $source);
     }
 
     // Methods
@@ -166,7 +138,7 @@ class Short extends BaseModel
 
     public function getVideoUrlAttribute($value)
     {
-        return $value ?: '';
+        return $this->file_url ?: '';
     }
 
     public function getFormattedDurationAttribute()
