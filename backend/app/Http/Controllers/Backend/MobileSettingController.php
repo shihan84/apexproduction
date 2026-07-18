@@ -215,12 +215,7 @@ class MobileSettingController extends Controller
         $value = null;
         switch ($slug) {
             case 'top-10':
-                $topEntertainmentIds = EntertainmentView::groupBy('entertainment_id')
-                    ->select('entertainment_id', DB::raw('count(*) as total'))
-                    ->orderBy('total', 'desc')
-                    ->take(10)
-                    ->pluck('entertainment_id');
-                $value = Entertainment::whereIn('id', $topEntertainmentIds)->released()->where('status',1)->whereNull('deleted_at')->get();
+                $value = Entertainment::released()->where('status',1)->whereNull('deleted_at')->orderBy('name')->get();
 
                 if (!empty($selectedIds)) {
                     $selected_values = Entertainment::whereIn('id', $selectedIds)->whereNull('deleted_at')->get();
@@ -229,9 +224,9 @@ class MobileSettingController extends Controller
             case 'latest-movies':
                   $value = Entertainment::where('type', 'movie')
                              ->released()
+                             ->where('status',1)
                              ->whereNull('deleted_at')
                              ->orderBy('release_date', 'desc')
-                             ->take(10)
                              ->get();
                 if (!empty($selectedIds)) {
                     $selected_values = Entertainment::whereIn('id', $selectedIds)->released()->where('status',1)->whereNull('deleted_at')->get();
@@ -245,14 +240,14 @@ class MobileSettingController extends Controller
                 }
                 break;
             case 'popular-movies':
-                $value = Entertainment::where('type', 'movie')->released()->where('IMDb_rating', '>', 5)->whereNull('deleted_at')->orderBy('IMDb_rating', 'desc')->take(10)->get();
+                $value = Entertainment::where('type', 'movie')->released()->where('status',1)->whereNull('deleted_at')->orderBy('name')->get();
 
                 if (!empty($selectedIds)) {
                     $selected_values = Entertainment::whereIn('id', $selectedIds)->released()->where('status',1)->whereNull('deleted_at')->get();
                 }
                 break;
             case 'popular-tvshows':
-                $value = Entertainment::where('type', 'tvshow')->where('IMDb_rating', '>', 5)->whereNull('deleted_at')->orderBy('IMDb_rating', 'desc')->take(20)->get();
+                $value = Entertainment::where('type', 'tvshow')->released()->where('status',1)->whereNull('deleted_at')->orderBy('name')->get();
 
                 if (!empty($selectedIds)) {
                     $selected_values = Entertainment::whereIn('id', $selectedIds)->released()->where('status',1)->whereNull('deleted_at')->get();
