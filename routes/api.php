@@ -117,7 +117,7 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
                 $top10Movies = DB::table('entertainments')
                     ->whereIn('id', $top10Ids)->where('status', 1)->whereNull('deleted_at')
                     ->orderByRaw("FIELD(entertainments.id, $ph)", $top10Ids)
-                    ->take(10)->get(['id','name','type','poster_url','thumbnail_url','description','release_date','tmdb_id','imdb_rating']);
+                    ->take(10)->get(['id','name','type','poster_url','thumbnail_url','description','release_date','tmdb_id','imdb_rating','movie_access','plan_id','is_restricted']);
             } else { $top10Movies = collect(); }
             
             // Get latest movies from MobileSetting
@@ -126,7 +126,7 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
             if (!empty($latestIds)) {
                 $latestMovies = DB::table('entertainments')
                     ->whereIn('id', $latestIds)->where('status', 1)->whereNull('deleted_at')
-                    ->take(10)->get(['id','name','poster_url','thumbnail_url','description','release_date','tmdb_id']);
+                    ->take(10)->get(['id','name','type','poster_url','thumbnail_url','description','release_date','tmdb_id','movie_access','plan_id','is_restricted']);
             } else { $latestMovies = collect(); }
             
             // Get latest TV shows
@@ -135,17 +135,17 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
                 ->where('status', 1)
                 ->orderBy('created_at', 'desc')
                 ->take(10)
-                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id']);
+                ->get(['id','name','type','poster_url','thumbnail_url','description','release_date','tmdb_id','movie_access','plan_id','is_restricted']);
             
             // Get popular movies from MobileSetting
             $pmS = \App\Models\MobileSetting::where('slug', 'popular-movies')->first();
             $pmIds = $pmS ? json_decode($pmS->value, true) : [];
-            $popularMovies = !empty($pmIds) ? DB::table('entertainments')->whereIn('id', $pmIds)->where('status', 1)->whereNull('deleted_at')->take(10)->get(['id','name','poster_url','thumbnail_url','description','release_date','tmdb_id','imdb_rating']) : collect();
+            $popularMovies = !empty($pmIds) ? DB::table('entertainments')->whereIn('id', $pmIds)->where('status', 1)->whereNull('deleted_at')->take(10)->get(['id','name','type','poster_url','thumbnail_url','description','release_date','tmdb_id','imdb_rating','movie_access','plan_id','is_restricted']) : collect();
             
             // Get popular TV shows from MobileSetting
             $ptS = \App\Models\MobileSetting::where('slug', 'popular-tvshows')->first();
             $ptIds = $ptS ? json_decode($ptS->value, true) : [];
-            $popularTvShows = !empty($ptIds) ? DB::table('entertainments')->whereIn('id', $ptIds)->where('status', 1)->whereNull('deleted_at')->take(10)->get(['id','name','poster_url','thumbnail_url','description','release_date','tmdb_id','imdb_rating']) : collect();
+            $popularTvShows = !empty($ptIds) ? DB::table('entertainments')->whereIn('id', $ptIds)->where('status', 1)->whereNull('deleted_at')->take(10)->get(['id','name','type','poster_url','thumbnail_url','description','release_date','tmdb_id','imdb_rating','movie_access','plan_id','is_restricted']) : collect();
             
             // Get top LiveTV channels from mobile settings
             $channelSetting = \App\Models\MobileSetting::where('slug', 'top-channels')->first();
@@ -161,80 +161,105 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
                     'id' => $ch->id, 'name' => $ch->name, 'type' => 'livetv',
                     'poster_image' => setBaseUrlWithFileName($ch->poster_url, 'image', 'livetv'),
                     'poster_tv_image' => setBaseUrlWithFileName($ch->poster_tv_url, 'image', 'livetv'),
-                    'details' => ['name' => $ch->name, 'type' => 'livetv', 'access' => $ch->access ?? 'free', 'is_device_supported' => 0, 'has_content_access' => 1, 'required_plan_level' => 0, 'is_restricted' => 0],
+                    'details' => ['id' => $ch->id, 'name' => $ch->name, 'type' => 'livetv', 'access' => $ch->access ?? 'free', 'is_device_supported' => 0, 'has_content_access' => 1, 'required_plan_level' => 0, 'is_restricted' => 0],
                 ];
             });
 
-            // Format top 10 with proper image URLs
+            // Format top 10 with proper image URLs and details wrapper
             $formattedTop10 = $top10Movies->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'name' => $item->name,
-                    'type' => $item->type,
                     'poster_image' => setBaseUrlWithFileName($item->poster_url, 'image', $item->type),
-                    'thumbnail_image' => setBaseUrlWithFileName($item->thumbnail_url, 'image', $item->type),
-                    'description' => $item->description,
-                    'release_date' => $item->release_date,
-                    'tmdb_id' => $item->tmdb_id,
-                    'imdb_rating' => $item->imdb_rating
+                    'details' => [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                        'type' => $item->type,
+                        'release_date' => $item->release_date,
+                        'access' => $item->movie_access ?? 'free',
+                        'is_device_supported' => 0,
+                        'has_content_access' => 1,
+                        'required_plan_level' => 0,
+                        'is_restricted' => $item->is_restricted ?? 0,
+                        'imdb_rating' => $item->imdb_rating ?? '',
+                    ],
                 ];
             });
             
-            // Format movies with proper image URLs
+            // Format latest movies with details wrapper
             $formattedMovies = $latestMovies->map(function ($movie) {
                 return [
                     'id' => $movie->id,
-                    'name' => $movie->name,
-                    'type' => 'movie',
-                    'poster_image' => setBaseUrlWithFileName($movie->poster_url, 'image', 'movie'),
-                    'thumbnail_image' => setBaseUrlWithFileName($movie->thumbnail_url, 'image', 'movie'),
-                    'description' => $movie->description,
-                    'release_date' => $movie->release_date,
-                    'tmdb_id' => $movie->tmdb_id
+                    'poster_image' => setBaseUrlWithFileName($movie->poster_url, 'image', $movie->type),
+                    'details' => [
+                        'id' => $movie->id,
+                        'name' => $movie->name,
+                        'type' => $movie->type,
+                        'release_date' => $movie->release_date,
+                        'access' => $movie->movie_access ?? 'free',
+                        'is_device_supported' => 0,
+                        'has_content_access' => 1,
+                        'required_plan_level' => 0,
+                        'is_restricted' => $movie->is_restricted ?? 0,
+                    ],
                 ];
             });
             
-            // Format TV shows with proper image URLs
+            // Format latest TV shows with details wrapper
             $formattedTvShows = $latestTvShows->map(function ($show) {
                 return [
                     'id' => $show->id,
-                    'name' => $show->name,
-                    'type' => 'tvshow',
-                    'poster_image' => setBaseUrlWithFileName($show->poster_url, 'image', 'tvshow'),
-                    'thumbnail_image' => setBaseUrlWithFileName($show->thumbnail_url, 'image', 'tvshow'),
-                    'description' => $show->description,
-                    'release_date' => $show->release_date,
-                    'tmdb_id' => $show->tmdb_id
+                    'poster_image' => setBaseUrlWithFileName($show->poster_url, 'image', $show->type),
+                    'details' => [
+                        'id' => $show->id,
+                        'name' => $show->name,
+                        'type' => $show->type,
+                        'release_date' => $show->release_date,
+                        'access' => $show->movie_access ?? 'free',
+                        'is_device_supported' => 0,
+                        'has_content_access' => 1,
+                        'required_plan_level' => 0,
+                        'is_restricted' => $show->is_restricted ?? 0,
+                    ],
                 ];
             });
             
-            // Format popular movies
+            // Format popular movies with details wrapper
             $formattedPopularMovies = $popularMovies->map(function ($movie) {
                 return [
                     'id' => $movie->id,
-                    'name' => $movie->name,
-                    'type' => 'movie',
-                    'poster_image' => setBaseUrlWithFileName($movie->poster_url, 'image', 'movie'),
-                    'thumbnail_image' => setBaseUrlWithFileName($movie->thumbnail_url, 'image', 'movie'),
-                    'description' => $movie->description,
-                    'release_date' => $movie->release_date,
-                    'tmdb_id' => $movie->tmdb_id,
-                    'imdb_rating' => $movie->imdb_rating
+                    'poster_image' => setBaseUrlWithFileName($movie->poster_url, 'image', $movie->type),
+                    'details' => [
+                        'id' => $movie->id,
+                        'name' => $movie->name,
+                        'type' => $movie->type,
+                        'release_date' => $movie->release_date,
+                        'access' => $movie->movie_access ?? 'free',
+                        'is_device_supported' => 0,
+                        'has_content_access' => 1,
+                        'required_plan_level' => 0,
+                        'is_restricted' => $movie->is_restricted ?? 0,
+                        'imdb_rating' => $movie->imdb_rating ?? '',
+                    ],
                 ];
             });
             
-            // Format popular TV shows
+            // Format popular TV shows with details wrapper
             $formattedPopularTvShows = $popularTvShows->map(function ($show) {
                 return [
                     'id' => $show->id,
-                    'name' => $show->name,
-                    'type' => 'tvshow',
-                    'poster_image' => setBaseUrlWithFileName($show->poster_url, 'image', 'tvshow'),
-                    'thumbnail_image' => setBaseUrlWithFileName($show->thumbnail_url, 'image', 'tvshow'),
-                    'description' => $show->description,
-                    'release_date' => $show->release_date,
-                    'tmdb_id' => $show->tmdb_id,
-                    'imdb_rating' => $show->imdb_rating
+                    'poster_image' => setBaseUrlWithFileName($show->poster_url, 'image', $show->type),
+                    'details' => [
+                        'id' => $show->id,
+                        'name' => $show->name,
+                        'type' => $show->type,
+                        'release_date' => $show->release_date,
+                        'access' => $show->movie_access ?? 'free',
+                        'is_device_supported' => 0,
+                        'has_content_access' => 1,
+                        'required_plan_level' => 0,
+                        'is_restricted' => $show->is_restricted ?? 0,
+                        'imdb_rating' => $show->imdb_rating ?? '',
+                    ],
                 ];
             });
             
