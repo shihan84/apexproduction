@@ -472,7 +472,9 @@ class Entertainment extends BaseModel
             $query->where('is_restricted', 0);
         }
 
-        return $query->latest('id')->get();
+        $orderedIds = is_array($popularMovieIdsArray) ? $popularMovieIdsArray : [$popularMovieIdsArray];
+        $placeholders = implode(',', array_fill(0, count($orderedIds), '?'));
+        return $query->orderByRaw("FIELD(entertainments.id, $placeholders)", $orderedIds)->get();
     }
 
 
@@ -591,7 +593,9 @@ class Entertainment extends BaseModel
             $query->where('is_restricted', 0);
         }
 
-        return $query->latest('id')->get();
+        $orderedIds = is_array($popular_tvshowIdsArray) ? $popular_tvshowIdsArray : [$popular_tvshowIdsArray];
+        $placeholders = implode(',', array_fill(0, count($orderedIds), '?'));
+        return $query->orderByRaw("FIELD(entertainments.id, $placeholders)", $orderedIds)->get();
     }
 
 
@@ -730,7 +734,9 @@ public static function get_top_movie($topMovieIds)
         $query->where('is_restricted', 0);
     }
 
-    return $query->latest('id')->get();
+    $orderedIds = is_array($topMovieIds) ? $topMovieIds : [$topMovieIds];
+    $placeholders = implode(',', array_fill(0, count($orderedIds), '?'));
+    return $query->orderByRaw("FIELD(entertainments.id, $placeholders)", $orderedIds)->get();
 }
 
 public static function get_more_items($episodeId, $genre_ids)

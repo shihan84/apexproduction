@@ -96,6 +96,13 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            @if ($mobile_setting->slug == 'top-10')
+                            <div class="mb-3">
+                                <label class="form-label">Ranked Order (drag to reorder)</label>
+                                <ul class="list-group ranked-list" id="ranked_list_{{ $mobile_setting->id }}" data-setting-id="{{ $mobile_setting->id }}">
+                                </ul>
+                            </div>
+                            @endif
                             <div class="text-end">
                                 {{ html()->submit(trans('messages.save'))->class('btn btn-md btn-primary float-right') }}
                             </div>
@@ -668,6 +675,28 @@
                                 dropdown.val(null).trigger('change');
                             }
                         });
+
+                        // Build ranked list for top-10
+                        var rankedList = $('#ranked_list_' + mobileSettingId);
+                        if (rankedList.length) {
+                            var allItems = {};
+                            if (data.selected) {
+                                $.each(data.selected, function(key, value) {
+                                    allItems[value.id] = value.name;
+                                });
+                            }
+                            if (data.available) {
+                                $.each(data.available, function(key, value) {
+                                    allItems[value.id] = value.name;
+                                });
+                            }
+                            updateRankedList(rankedList, dropdown, allItems);
+
+                            // Update ranked list when selection changes
+                            dropdown.off('change.ranked').on('change.ranked', function() {
+                                updateRankedList(rankedList, dropdown, allItems);
+                            });
+                        }
                     },
                     error: function(xhr, status, error) {
                         console.error('Failed to fetch dropdown values:', error);
@@ -902,6 +931,50 @@
                         $(this).val(null).trigger('change');
                     }
                 });
+            }
+        });
+
+        function updateRankedList(rankedList, dropdown, allItems) {
+            var selectedIds = dropdown.val() || [];
+            rankedList.empty();
+            if (selectedIds.length === 0) {
+                rankedList.append('<li class="list-group-item text-muted small">Select items above to assign ranks</li>');
+                return;
+            }
+            $.each(selectedIds, function(index, id) {
+                var name = allItems[id] || ('Item ' + id);
+                rankedList.append('<li class="list-group-item d-flex align-items-center gap-2 ranked-item" data-id="' + id + '">' +
+                    '<span class="badge bg-primary rounded-pill rank-number">' + (index + 1) + '</span>' +
+                    '<span class="flex-grow-1">' + name + '</span>' +
+                    '<i class="ph ph-dots-six-vertical text-muted" style="cursor:grab"></i></li>');
+            });
+            rankedList.sortable({
+                items: '.ranked-item',
+                handle: '.ph-dots-six-vertical',
+                update: function() {
+                    var newOrder = rankedList.find('.ranked-item').map(function() { return $(this).data('id'); }).get();
+                    var selectedOpts = dropdown.find('option:selected').detach();
+                    var unselectedOpts = dropdown.find('option:not(:selected)').detach();
+                    dropdown.empty();
+                    $.each(newOrder, function(i, id) {
+                        var opt = selectedOpts.filter('[value="' + id + '"]');
+                        if (opt.length) dropdown.append(opt);
+                    });
+                    $.each(unselectedOpts, function(i, opt) { dropdown.append(opt); });
+                    rankedList.find('.ranked-item').each(function(idx) {
+                        $(this).find('.rank-number').text(idx + 1);
+                    });
+                }
+            });
+        }
+
+        $(document).on('submit', 'form[action*="mobile-setting"]', function(e) {
+            var rankedList = $(this).find('.ranked-list');
+            if (rankedList.length) {
+                var orderedIds = rankedList.find('.ranked-item').map(function() { return $(this).data('id'); }).get();
+                if (orderedIds.length > 0) {
+                    $(this).find('select[name="dashboard_select[]"]').val(orderedIds);
+                }
             }
         });
     </script>

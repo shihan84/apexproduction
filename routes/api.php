@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\API\AuthController;
 use App\Http\Controllers\Backend\API\DashboardController;
 use App\Http\Controllers\Backend\API\NotificationsController;
 use App\Http\Controllers\Backend\API\InvoiceController;
-use App\Http\Controllers\API\DeviceTokenController;
+use App\Http\Controllers\Api\DeviceTokenController;
 
 use App\Http\Controllers\Backend\API\SettingController as APISettingController;
 use Modules\Frontend\Http\Controllers\PerviewPaymentController;
@@ -109,22 +109,25 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
     Route::get('content-details', [EntertainmentsController::class, 'contentDetailsV3']);
     Route::get('dashboard-detail', function () {
         try {
-            // Get top 10 movies by rating
-            $top10Movies = DB::table('entertainments')
-                ->whereIn('type', ['movie', 'tvshow'])
-                ->where('status', 1)
-                ->whereNotNull('imdb_rating')
-                ->orderBy('imdb_rating', 'desc')
-                ->take(10)
-                ->get(['id', 'name', 'type', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id', 'imdb_rating']);
+            // Get top 10 from admin-selected MobileSetting (preserving order)
+            $top10Setting = \App\Models\MobileSetting::where('slug', 'top-10')->first();
+            $top10Ids = $top10Setting ? json_decode($top10Setting->value, true) : [];
+            if (!empty($top10Ids)) {
+                $ph = implode(',', array_fill(0, count($top10Ids), '?'));
+                $top10Movies = DB::table('entertainments')
+                    ->whereIn('id', $top10Ids)->where('status', 1)->whereNull('deleted_at')
+                    ->orderByRaw("FIELD(entertainments.id, $ph)", $top10Ids)
+                    ->take(10)->get(['id','name','type','poster_url','thumbnail_url','description','release_date','tmdb_id','imdb_rating']);
+            } else { $top10Movies = collect(); }
             
-            // Get latest movies
-            $latestMovies = DB::table('entertainments')
-                ->where('type', 'movie')
-                ->where('status', 1)
-                ->orderBy('created_at', 'desc')
-                ->take(10)
-                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id']);
+            // Get latest movies from MobileSetting
+            $latestSetting = \App\Models\MobileSetting::where('slug', 'latest-movies')->first();
+            $latestIds = $latestSetting ? json_decode($latestSetting->value, true) : [];
+            if (!empty($latestIds)) {
+                $latestMovies = DB::table('entertainments')
+                    ->whereIn('id', $latestIds)->where('status', 1)->whereNull('deleted_at')
+                    ->take(10)->get(['id','name','poster_url','thumbnail_url','description','release_date','tmdb_id']);
+            } else { $latestMovies = collect(); }
             
             // Get latest TV shows
             $latestTvShows = DB::table('entertainments')
@@ -134,24 +137,34 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
                 ->take(10)
                 ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id']);
             
-            // Get popular movies (by rating)
-            $popularMovies = DB::table('entertainments')
-                ->where('type', 'movie')
-                ->where('status', 1)
-                ->whereNotNull('imdb_rating')
-                ->orderBy('imdb_rating', 'desc')
-                ->take(10)
-                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id', 'imdb_rating']);
+            // Get popular movies from MobileSetting
+            $pmS = \App\Models\MobileSetting::where('slug', 'popular-movies')->first();
+            $pmIds = $pmS ? json_decode($pmS->value, true) : [];
+            $popularMovies = !empty($pmIds) ? DB::table('entertainments')->whereIn('id', $pmIds)->where('status', 1)->whereNull('deleted_at')->take(10)->get(['id','name','poster_url','thumbnail_url','description','release_date','tmdb_id','imdb_rating']) : collect();
             
-            // Get popular TV shows (by rating)
-            $popularTvShows = DB::table('entertainments')
-                ->where('type', 'tvshow')
-                ->where('status', 1)
-                ->whereNotNull('imdb_rating')
-                ->orderBy('imdb_rating', 'desc')
-                ->take(10)
-                ->get(['id', 'name', 'poster_url', 'thumbnail_url', 'description', 'release_date', 'tmdb_id', 'imdb_rating']);
+            // Get popular TV shows from MobileSetting
+            $ptS = \App\Models\MobileSetting::where('slug', 'popular-tvshows')->first();
+            $ptIds = $ptS ? json_decode($ptS->value, true) : [];
+            $popularTvShows = !empty($ptIds) ? DB::table('entertainments')->whereIn('id', $ptIds)->where('status', 1)->whereNull('deleted_at')->take(10)->get(['id','name','poster_url','thumbnail_url','description','release_date','tmdb_id','imdb_rating']) : collect();
             
+            // Get top LiveTV channels from mobile settings
+            $channelSetting = \App\Models\MobileSetting::where('slug', 'top-channels')->first();
+            $channelIds = $channelSetting ? json_decode($channelSetting->value, true) : [];
+            $topChannels = collect();
+            if (!empty($channelIds)) {
+                $topChannels = \Modules\LiveTV\Models\LiveTvChannel::whereIn('id', $channelIds)
+                    ->where('status', 1)->whereNull('deleted_at')
+                    ->get(['id', 'name', 'slug', 'poster_url', 'poster_tv_url', 'access']);
+            }
+            $formattedTopChannels = $topChannels->map(function ($ch) {
+                return [
+                    'id' => $ch->id, 'name' => $ch->name, 'type' => 'livetv',
+                    'poster_image' => setBaseUrlWithFileName($ch->poster_url, 'image', 'livetv'),
+                    'poster_tv_image' => setBaseUrlWithFileName($ch->poster_tv_url, 'image', 'livetv'),
+                    'details' => ['name' => $ch->name, 'type' => 'livetv', 'access' => $ch->access ?? 'free', 'is_device_supported' => 0, 'has_content_access' => 1, 'required_plan_level' => 0, 'is_restricted' => 0],
+                ];
+            });
+
             // Format top 10 with proper image URLs
             $formattedTop10 = $top10Movies->map(function ($item) {
                 return [
@@ -260,6 +273,13 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
                         'name' => 'Popular TV Shows',
                         'data' => $formattedPopularTvShows->toArray(),
                         'total' => $formattedPopularTvShows->count(),
+                        'current_page' => 1,
+                        'per_page' => 10
+                    ],
+                    'top_channel' => [
+                        'name' => $channelSetting->name ?? 'Top Channels',
+                        'data' => $formattedTopChannels->toArray(),
+                        'total' => $formattedTopChannels->count(),
                         'current_page' => 1,
                         'per_page' => 10
                     ],
