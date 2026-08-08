@@ -41,5 +41,5 @@ Route::group(['prefix' => 'app', 'as' => 'backend.', 'middleware' => ['auth','ad
 
         Route::get('get_file_data', [LanguagesController::class, 'get_file_data'])->name('get_file_data');
     });
-    Route::resource('languages', LanguagesController::class);
+    Route::post('languages', [LanguagesController::class, 'store'])->name('languages.store');
 });

@@ -696,7 +696,7 @@ class SubscriptionController extends Controller
     {
         $module_title = __('messages.new_subscription');
         $plans = Plan::where('status',1)->get();
-        $users = User::role('user')->where('status',1)->get();
+        $users = User::where('status',1)->get();
         $fixedTax = Tax::active()->where('type', 'fixed')->sum('value');
         $percentageTax = Tax::active()->where('type', 'percentage')->sum('value');
         return view('subscriptions::backend.subscriptions.create', compact('module_title','plans','users','fixedTax','percentageTax'));

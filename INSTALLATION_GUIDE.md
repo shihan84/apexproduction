@@ -364,7 +364,7 @@ APP_URL=https://yourdomain.com
 # Asset Configuration
 MIX_ASSET_URL=https://yourdomain.com
 MIX_APP_URL=${APP_URL}
-MIX_PUBLIC_PATH=/streamit
+MIX_PUBLIC_PATH=/ApexPrimeTv
 
 # Feature Flags
 IS_FAKE_DATA=false

@@ -32,7 +32,7 @@
 ## 🎯 Ready for Use
 
 **Login**: https://apexprimetv.com/admin/login
-- Email: admin@streamit.com
+- Email: admin@ApexPrimeTv.com
 - Password: password
 
 **Features Available**:

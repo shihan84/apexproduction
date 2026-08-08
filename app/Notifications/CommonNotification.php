@@ -216,7 +216,7 @@ class CommonNotification extends Notification implements ShouldQueue
         if (!isset($msg) && $msg == '' ) {
             $msg =  $this->subject;
         }
-        $type = 'streamit';
+        $type = 'ApexPrimeTv';
         if (isset($this->notification->notification_subject) && $this->notification->notification_subject !== '') {
             $type = $this->notification->notification_subject;
         }

@@ -12,6 +12,10 @@
             <i class="ph ph-eye align-middle"></i>
         </a>
 
+        <a href="javascript:void(0)" class="btn btn-primary-subtle btn-sm fs-4 send-notification-btn" data-url="{{ route('backend.entertainments.send_notification', $data->id) }}" data-bs-toggle="tooltip" title="Send Push Notification">
+            <i class="ph ph-bell-simple align-middle"></i>
+        </a>
+
         <!-- @if (!empty($data) && $data->download_status == 1)
             <a class="btn btn-indigo-subtle btn-sm fs-4"
                 href="{{ route('backend.entertainments.download-option', $data->id) }}" data-bs-toggle="tooltip"

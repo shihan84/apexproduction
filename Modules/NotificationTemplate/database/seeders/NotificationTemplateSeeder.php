@@ -150,6 +150,11 @@ class NotificationTemplateSeeder extends Seeder
             ],
             [
                 'type' => 'notification_type',
+                'value' => 'short_add',
+                'name' => 'Short Add',
+            ],
+            [
+                'type' => 'notification_type',
                 'value' => 'episode_add',
                 'name' => 'Episode Add',
             ],
@@ -541,6 +546,10 @@ class NotificationTemplateSeeder extends Seeder
             'notification_template_detail' => 'Live TV channel "[[ name ]]" added by [[ logged_in_user_fullname ]].',
             'template_detail' => '<p>Dear [[ user_name ]],</p><p>Live TV channel "<strong>[[ name ]]</strong>" added.</p>',
         ]);
+
+        $template = $this->template(['type' => 'short_add', 'name' => 'short_add', 'label' => 'Short Video Added', 'status' => 1, 'to' => '["user"]', 'channels' => ['IS_MAIL' => '0', 'PUSH_NOTIFICATION' => '1', 'IS_CUSTOM_WEBHOOK' => '0']]);
+        $this->templateContent($template, ['language' => 'en', 'notification_link' => '', 'notification_message' => 'New short video "[[ name ]]" is now available!', 'status' => 1, 'user_type' => 'user', 'subject' => 'New Short Video!', 'notification_subject' => 'New Short Video Available', 'notification_template_detail' => 'New short video "[[ name ]]" is now available!', 'template_detail' => '<p>Dear [[ user_name ]],</p><p>A new short video is now available.</p>']);
+        $this->templateContent($template, ['language' => 'en', 'notification_link' => '', 'notification_message' => 'Short video "[[ name ]]" added.', 'status' => 1, 'user_type' => 'admin', 'subject' => 'Short Video Added!', 'notification_subject' => 'Content Added', 'notification_template_detail' => 'Short video "[[ name ]]" added.', 'template_detail' => '<p>Dear [[ user_name ]],</p><p>Short video added.</p>']);
 
         $template = $this->template([
             'type' => 'episode_add',

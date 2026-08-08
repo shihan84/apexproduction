@@ -353,8 +353,8 @@ class EpisodesController extends Controller
         $releaseDate = $episode->release_date ? \Carbon\Carbon::parse($episode->release_date)->startOfDay() : null;
         $today = now()->startOfDay();
     
-        $tvshow_name = Entertainment::where('id', $data['entertainment_id'])->select('name')->first()->name ?? null;
-        $season_name = Season::where('id', $data['season_id'])->select('name')->first()->name ?? null;
+        $tvshow_name = Entertainment::where('id', $data['entertainment_id'] ?? null)->first()?->name ?? null;
+        $season_name = Season::where('id', $data['season_id'] ?? null)->first()?->name ?? null;
     
         if (!$releaseDate || $releaseDate->lessThanOrEqualTo($today)) {
             $notificationData = [
@@ -363,7 +363,7 @@ class EpisodesController extends Controller
                 'episode_name' => $episode->name,
                 'tvshow_name' => $tvshow_name,
                 'season_name' => $season_name,
-                'tv_show_id'=> (int)$data['entertainment_id'],
+                'tv_show_id'=> (int)($data['entertainment_id'] ?? 0),
                 'release_date' => $episode->release_date,
             ];
             SendBulkNotification::dispatch($notificationData)->onQueue('notifications');

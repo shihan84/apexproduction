@@ -36,6 +36,7 @@ Route::group(['prefix' => 'app', 'as' => 'backend.', 'middleware' => ['auth','ad
         Route::delete('/{short}', [Modules\Shorts\Http\Controllers\Backend\ShortsController::class, 'destroy'])->name('destroy');
         Route::get('/trending', [Modules\Shorts\Http\Controllers\Backend\ShortsController::class, 'trending'])->name('trending');
         Route::get('/{short}/analytics', [Modules\Shorts\Http\Controllers\Backend\ShortsController::class, 'analytics'])->name('analytics');
+        Route::post('/send-notification/{id}', [Modules\Shorts\Http\Controllers\Backend\ShortsController::class, 'sendNotification'])->name('send_notification');
     });
 
     /*

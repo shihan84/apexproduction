@@ -5,6 +5,7 @@ namespace Modules\Shorts\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Modules\Shorts\Models\Short;
 use Modules\Shorts\Models\ShortCategory;
+use Modules\NotificationTemplate\Jobs\SendBulkNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +27,7 @@ class ShortsController extends Controller
                 return $query->where('category_id', $categoryId);
             })
             ->when($request->content_type, function ($query, $contentType) {
-                return $query->where('content_type', $contentType);
+                return $query->where('source_type', $contentType);
             })
             ->when($request->status !== null, function ($query, $status) {
                 return $query->where('status', $status);
@@ -56,69 +57,67 @@ class ShortsController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'content_type' => 'required|in:short,reel',
-            'aspect_ratio' => 'required|in:9:16,16:9,1:1',
-            'video_upload_type' => 'required|in:upload,youtube,vimeo,tiktok',
-            'video_url' => 'required_if:video_upload_type,youtube,vimeo,tiktok|url',
-            'video_file' => 'required_if:video_upload_type,upload|mimes:mp4,mov,avi|max:512000', // 500MB
-            'thumbnail_file' => 'nullable|mimes:jpg,jpeg,png|max:10240', // 10MB
+            'content_type' => 'required|in:upload,youtube,vimeo,external',
+            'aspect_ratio' => 'nullable|in:9:16,16:9,1:1',
+            'video_url' => 'required|url',
             'thumbnail_url' => 'nullable|url',
-            'duration' => 'nullable|integer|min:1|max:300', // Max 5 minutes
-            'language' => 'nullable|string|max:10',
+            'duration' => 'nullable|integer|min:1|max:300',
+            'width' => 'nullable|integer|min:1',
+            'height' => 'nullable|integer|min:1',
             'allow_comments' => 'boolean',
             'allow_download' => 'boolean',
-            'is_private' => 'boolean',
             'category_id' => 'nullable|exists:shorts_categories,id',
-            'tags' => 'nullable|array|max:10',
-            'tags.*' => 'string|max:50',
+            'tags' => 'nullable|string|max:1000',
             'is_trending' => 'boolean',
             'is_featured' => 'boolean',
             'status' => 'boolean',
         ]);
 
-        $data = $request->except(['video_file', 'thumbnail_file', 'tags']);
+        $data = $request->only([
+            'title', 'description', 'category_id', 'duration', 'width', 'height',
+            'thumbnail_url', 'allow_comments', 'allow_download', 'is_trending',
+            'is_featured', 'status', 'video_url',
+        ]);
         $data['slug'] = Str::slug($request->title);
         $data['user_id'] = auth()->id();
         $data['created_by'] = auth()->id();
+        $data['source_type'] = $request->content_type;
+        $data['file_url'] = $request->video_url;
+        $data['aspect_ratio'] = $request->aspect_ratio ?: '9:16';
+        $data['frame_rate'] = '30';
+        $data['file_format'] = 'mp4';
+        $data['content_rating'] = 'G';
+        $data['allow_likes'] = 1;
+        $data['allow_shares'] = 1;
+        $data['allow_duets'] = 1;
+        $data['allow_stitches'] = 1;
+        $data['view_count'] = 0;
+        $data['like_count'] = 0;
+        $data['share_count'] = 0;
+        $data['comment_count'] = 0;
+        $data['download_count'] = 0;
+        $data['duet_count'] = 0;
+        $data['stitch_count'] = 0;
+        $data['rating_count'] = 0;
+        $data['revenue'] = 0;
+        $data['is_monetized'] = 0;
+        $data['is_verified'] = 0;
+        $data['published_at'] = now();
+        $data['uuid'] = (string) Str::uuid();
+        $data['creator_name'] = auth()->user()->name ?? 'Admin';
+        $data['creator_handle'] = auth()->user()->username ?? 'admin';
 
-        // Handle video upload
-        if ($request->video_upload_type === 'upload' && $request->hasFile('video_file')) {
-            $video = $request->file('video_file');
-            $videoPath = $video->store('shorts/videos', 'public');
-            $data['video_url'] = Storage::url($videoPath);
-            $data['content_source'] = 'upload';
-        } elseif ($request->video_upload_type === 'youtube') {
-            $data['content_source'] = 'youtube';
-            // Extract YouTube video ID and metadata
-            $videoId = $this->extractYouTubeId($request->video_url);
-            $data['external_metadata'] = [
-                'youtube_id' => $videoId,
-                'original_url' => $request->video_url,
-            ];
-        } elseif ($request->video_upload_type === 'vimeo') {
-            $data['content_source'] = 'vimeo';
-            $data['external_metadata'] = [
-                'vimeo_url' => $request->video_url,
-            ];
-        } elseif ($request->video_upload_type === 'tiktok') {
-            $data['content_source'] = 'tiktok';
-            $data['external_metadata'] = [
-                'tiktok_url' => $request->video_url,
-            ];
+        if ($request->content_type === 'youtube') {
+            $data['youtube_url'] = $request->video_url;
+            $data['youtube_id'] = $this->extractYouTubeId($request->video_url);
+        } elseif ($request->content_type === 'external') {
+            $data['external_url'] = $request->video_url;
+        } elseif ($request->content_type === 'vimeo') {
+            $data['vimeo_id'] = $this->extractVimeoId($request->video_url);
         }
 
-        // Handle thumbnail upload
-        if ($request->hasFile('thumbnail_file')) {
-            $thumbnail = $request->file('thumbnail_file');
-            $thumbnailPath = $thumbnail->store('shorts/thumbnails', 'public');
-            $data['thumbnail_url'] = Storage::url($thumbnailPath);
-        } elseif ($request->thumbnail_url) {
-            $data['thumbnail_url'] = $request->thumbnail_url;
-        }
-
-        // Handle tags
-        if ($request->has('tags')) {
-            $data['tags'] = json_encode($request->tags);
+        if ($request->filled('tags')) {
+            $data['tags'] = array_values(array_filter(array_map('trim', explode(',', $request->tags))));
         }
 
         $short = Short::create($data);
@@ -154,48 +153,57 @@ class ShortsController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'content_type' => 'required|in:short,reel',
-            'aspect_ratio' => 'required|in:9:16,16:9,1:1',
-            'video_upload_type' => 'required|in:upload,youtube,vimeo,tiktok',
-            'video_url' => 'required_if:video_upload_type,youtube,vimeo,tiktok|url',
-            'video_file' => 'nullable|mimes:mp4,mov,avi|max:512000',
-            'thumbnail_file' => 'nullable|mimes:jpg,jpeg,png|max:10240',
+            'content_type' => 'required|in:upload,youtube,vimeo,external',
+            'aspect_ratio' => 'nullable|in:9:16,16:9,1:1',
+            'video_url' => 'required|url',
             'thumbnail_url' => 'nullable|url',
             'duration' => 'nullable|integer|min:1|max:300',
-            'language' => 'nullable|string|max:10',
+            'width' => 'nullable|integer|min:1',
+            'height' => 'nullable|integer|min:1',
             'allow_comments' => 'boolean',
             'allow_download' => 'boolean',
-            'is_private' => 'boolean',
             'category_id' => 'nullable|exists:shorts_categories,id',
-            'tags' => 'nullable|array|max:10',
-            'tags.*' => 'string|max:50',
+            'tags' => 'nullable|string|max:1000',
             'is_trending' => 'boolean',
             'is_featured' => 'boolean',
             'status' => 'boolean',
         ]);
 
-        $data = $request->except(['video_file', 'thumbnail_file', 'tags']);
+        $data = $request->only([
+            'title', 'description', 'category_id', 'duration', 'width', 'height',
+            'thumbnail_url', 'allow_comments', 'allow_download', 'is_trending',
+            'is_featured', 'status', 'video_url',
+        ]);
         $data['slug'] = Str::slug($request->title);
+        $data['source_type'] = $request->content_type;
+        $data['file_url'] = $request->video_url;
+        $data['aspect_ratio'] = $request->aspect_ratio ?: '9:16';
         $data['updated_by'] = auth()->id();
 
-        // Handle video upload
-        if ($request->video_upload_type === 'upload' && $request->hasFile('video_file')) {
-            $video = $request->file('video_file');
-            $videoPath = $video->store('shorts/videos', 'public');
-            $data['video_url'] = Storage::url($videoPath);
-            $data['content_source'] = 'upload';
+        if ($request->content_type === 'youtube') {
+            $data['youtube_url'] = $request->video_url;
+            $data['youtube_id'] = $this->extractYouTubeId($request->video_url);
+            $data['external_url'] = null;
+            $data['vimeo_id'] = null;
+        } elseif ($request->content_type === 'external') {
+            $data['external_url'] = $request->video_url;
+            $data['youtube_url'] = null;
+            $data['youtube_id'] = null;
+            $data['vimeo_id'] = null;
+        } elseif ($request->content_type === 'vimeo') {
+            $data['vimeo_id'] = $this->extractVimeoId($request->video_url);
+            $data['youtube_url'] = null;
+            $data['youtube_id'] = null;
+            $data['external_url'] = null;
+        } else {
+            $data['youtube_url'] = null;
+            $data['youtube_id'] = null;
+            $data['external_url'] = null;
+            $data['vimeo_id'] = null;
         }
 
-        // Handle thumbnail upload
-        if ($request->hasFile('thumbnail_file')) {
-            $thumbnail = $request->file('thumbnail_file');
-            $thumbnailPath = $thumbnail->store('shorts/thumbnails', 'public');
-            $data['thumbnail_url'] = Storage::url($thumbnailPath);
-        }
-
-        // Handle tags
-        if ($request->has('tags')) {
-            $data['tags'] = json_encode($request->tags);
+        if ($request->filled('tags')) {
+            $data['tags'] = array_values(array_filter(array_map('trim', explode(',', $request->tags))));
         }
 
         $short->update($data);
@@ -251,11 +259,37 @@ class ShortsController extends Controller
     }
 
     /**
+     * Extract Vimeo video ID from URL
+     */
+    private function extractVimeoId($url)
+    {
+        preg_match('/vimeo\.com\/(\d+)/', $url, $matches);
+        return $matches[1] ?? null;
+    }
+
+    /**
      * Extract YouTube video ID from URL
      */
     private function extractYouTubeId($url)
     {
         preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/', $url, $matches);
         return $matches[1] ?? null;
+    }
+
+    public function sendNotification($id)
+    {
+        $short = Short::findOrFail($id);
+        $notificationData = [
+            'notification_type' => 'short_add',
+            'id' => $short->id,
+            'name' => $short->title,
+            'posterimage' => $short->thumbnail_url,
+        ];
+        SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification dispatched successfully!',
+        ]);
     }
 }

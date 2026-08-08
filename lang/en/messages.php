@@ -122,7 +122,7 @@ return [
     'user_details_successfull' => 'User details retrieved successfully!',
     'delete_account' => 'Your account has been scheduled for deletion.',
     'data_not_available' => 'Data Not avaible',
-    'unknown_user' => 'Streamit User',
+    'unknown_user' => 'ApexPrime Tv User',
     'myprofile' => 'My Profile',
     'logout' => 'Logout',
     'change_language' => 'Change Language',
@@ -1916,7 +1916,7 @@ return [
     'image_is_required' => 'Image is required.',
     'parental_lock' => 'Parental Lock',
 
-    'by_signing_you_agree_to_streamit' => 'By signing, you agree to ',
+    'by_signing_you_agree_to_ApexPrimeTv' => 'By signing, you agree to ',
     'terms_and_conditions' => 'Terms & Conditions',
     'of_all_services_and' => 'of all services and',
     'privacy_policy' => 'Privacy Policy',

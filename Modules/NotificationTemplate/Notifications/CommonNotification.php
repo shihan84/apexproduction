@@ -259,6 +259,9 @@ class CommonNotification extends Notification implements ShouldQueue
                 case 'livetv_add':
                     $thumbnailImage = getThumbnail($innerData['name'] ?? null, 'livetv');
                     break;
+                case 'short_add':
+                    $thumbnailImage = $innerData['posterimage'] ?? $innerData['thumbnail_url'] ?? null;
+                    break;
                 case 'purchase_video':
                 case 'rent_video':
                 case 'one_time_purchase_content':

@@ -6,12 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        // Create music_albums table
+        if (!Schema::hasTable('artists')) {
+            Schema::create('artists', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->nullable();
+                $table->string('slug')->unique()->nullable();
+                $table->text('bio')->nullable();
+                $table->text('image_url')->nullable();
+                $table->boolean('status')->default(true);
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
+
         if (!Schema::hasTable('music_albums')) {
             Schema::create('music_albums', function (Blueprint $table) {
                 $table->id();
@@ -26,7 +35,7 @@ return new class extends Migration
                 $table->boolean('is_featured')->default(false);
                 $table->boolean('is_trending')->default(false);
                 $table->boolean('status')->default(true);
-                $table->unsignedBigInteger('user_id')->nullable(); // Artist
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->unsignedBigInteger('category_id')->nullable();
                 $table->integer('created_by')->unsigned()->nullable();
                 $table->integer('updated_by')->unsigned()->nullable();
@@ -35,7 +44,6 @@ return new class extends Migration
             });
         }
 
-        // Create music_categories table
         if (!Schema::hasTable('music_categories')) {
             Schema::create('music_categories', function (Blueprint $table) {
                 $table->id();
@@ -51,7 +59,6 @@ return new class extends Migration
             });
         }
 
-        // Create music_playlists table
         if (!Schema::hasTable('music_playlists')) {
             Schema::create('music_playlists', function (Blueprint $table) {
                 $table->id();
@@ -61,7 +68,7 @@ return new class extends Migration
                 $table->text('cover_art_url')->nullable();
                 $table->boolean('is_public')->default(false);
                 $table->boolean('is_featured')->default(false);
-                $table->unsignedBigInteger('user_id')->nullable(); // Creator
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->integer('created_by')->unsigned()->nullable();
                 $table->integer('updated_by')->unsigned()->nullable();
                 $table->timestamps();
@@ -69,41 +76,37 @@ return new class extends Migration
             });
         }
 
-        // Create music_playlist_track table (pivot)
-        if (!Schema::hasTable('music_playlist_track')) {
-            Schema::create('music_playlist_track', function (Blueprint $table) {
-                $table->unsignedBigInteger('playlist_id');
-                $table->unsignedBigInteger('track_id');
-                $table->integer('position')->default(0);
-                $table->timestamps();
-
-                $table->foreign('playlist_id')->references('id')->on('music_playlists')->onDelete('cascade');
-                $table->foreign('track_id')->references('id')->on('music_tracks')->onDelete('cascade');
-                $table->primary(['playlist_id', 'track_id']);
-            });
-        }
-
-        // Create music_engagement table for social features
-        if (!Schema::hasTable('music_engagement')) {
-            Schema::create('music_engagement', function (Blueprint $table) {
-                $table->id();
-                $table->unsignedBigInteger('track_id');
-                $table->unsignedBigInteger('user_id');
-                $table->enum('engagement_type', ['like', 'play', 'download']);
-                $table->timestamps();
-
-                $table->foreign('track_id')->references('id')->on('music_tracks')->onDelete('cascade');
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-                
-                // Prevent duplicate likes
-                $table->unique(['track_id', 'user_id', 'engagement_type'], 'unique_music_engagement');
-            });
-        }
-
-        // Add foreign keys to existing music_tracks table
         if (Schema::hasTable('music_tracks')) {
+            if (!Schema::hasTable('music_playlist_track')) {
+                Schema::create('music_playlist_track', function (Blueprint $table) {
+                    $table->unsignedBigInteger('playlist_id');
+                    $table->unsignedBigInteger('track_id');
+                    $table->integer('position')->default(0);
+                    $table->timestamps();
+
+                    $table->foreign('playlist_id')->references('id')->on('music_playlists')->onDelete('cascade');
+                    $table->foreign('track_id')->references('id')->on('music_tracks')->onDelete('cascade');
+                    $table->primary(['playlist_id', 'track_id']);
+                });
+            }
+
+            if (!Schema::hasTable('music_engagement')) {
+                Schema::create('music_engagement', function (Blueprint $table) {
+                    $table->id();
+                    $table->unsignedBigInteger('track_id');
+                    $table->unsignedBigInteger('user_id');
+                    $table->enum('engagement_type', ['like', 'play', 'download']);
+                    $table->timestamps();
+                    $table->softDeletes();
+
+                    $table->foreign('track_id')->references('id')->on('music_tracks')->onDelete('cascade');
+                    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+                    $table->unique(['track_id', 'user_id', 'engagement_type'], 'unique_music_engagement');
+                });
+            }
+
             Schema::table('music_tracks', function (Blueprint $table) {
-                // Add missing columns if they don't exist
                 if (!Schema::hasColumn('music_tracks', 'category_id')) {
                     $table->unsignedBigInteger('category_id')->nullable();
                 }
@@ -120,22 +123,19 @@ return new class extends Migration
                     $table->boolean('is_trending')->default(false);
                 }
 
-                // Add foreign keys
                 $table->foreign('category_id')->references('id')->on('music_categories')->onDelete('set null');
                 $table->foreign('album_id')->references('id')->on('music_albums')->onDelete('set null');
             });
         }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('music_playlist_track');
-        Schema::dropIfExists('music_playlists');
         Schema::dropIfExists('music_engagement');
+        Schema::dropIfExists('music_playlists');
         Schema::dropIfExists('music_albums');
         Schema::dropIfExists('music_categories');
+        Schema::dropIfExists('artists');
     }
 };

@@ -14,7 +14,7 @@ class ShortCategoriesController extends Controller
      */
     public function index()
     {
-        $categories = ShortCategory::with(['user'])
+        $categories = ShortCategory::with(['createdUser'])
             ->latest()
             ->paginate(20);
 
@@ -40,7 +40,6 @@ class ShortCategoriesController extends Controller
             'status' => 'boolean',
         ]);
 
-        $validated['user_id'] = auth()->id();
         $validated['slug'] = Str::slug($validated['name']);
 
         ShortCategory::create($validated);

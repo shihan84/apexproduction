@@ -37,7 +37,7 @@ class EpisodeService
        $episode = $this->episodeRepository->create($data);
 
        if(env('ACTIVE_STORAGE') == 'bunny'){
-        $pullBase = rtrim(env('BUNNY_PULL_ZONE', 'https://streamit-demo.b-cdn.net'), '/');
+        $pullBase = rtrim(env('BUNNY_PULL_ZONE', 'https://ApexPrimeTv-demo.b-cdn.net'), '/');
 
         if (($data['video_upload_type'] ?? null) == 'Local' && !empty($data['video_url_input'])) {
             $filename = basename(parse_url($data['video_url_input'], PHP_URL_PATH));
@@ -80,7 +80,7 @@ class EpisodeService
         $updated =  $this->episodeRepository->update($id, $data);
 
         if(env('ACTIVE_STORAGE') == 'bunny'){
-            $pullBase = rtrim(env('BUNNY_PULL_ZONE', 'https://streamit-demo.b-cdn.net'), '/');
+            $pullBase = rtrim(env('BUNNY_PULL_ZONE', 'https://ApexPrimeTv-demo.b-cdn.net'), '/');
 
             if (($data['video_upload_type'] ?? null) == 'Local' && !empty($data['video_url_input'])) {
                 $filename = basename(parse_url($data['video_url_input'], PHP_URL_PATH));

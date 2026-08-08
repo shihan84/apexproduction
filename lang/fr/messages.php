@@ -109,7 +109,7 @@ return [
   'user_details_successfull' => 'Détails de l\'utilisateur récupérés avec succès',
   'delete_account' => 'Votre compte a été programmé pour suppression.',
   'data_not_available' => 'Données non disponibles',
-  'unknown_user' => 'Utilisateur Streamit',
+  'unknown_user' => 'Utilisateur ApexPrime Tv',
   'myprofile' => 'Mon profil',
   'logout' => 'Déconnexion',
   'change_language' => 'Changer de langue',
@@ -1566,7 +1566,7 @@ return [
   'image_is_required' => 'L\'image est requise.',
   'parental_lock' => 'Contrôle parental',
 
-  'by_signing_you_agree_to_streamit' => 'En signant, vous acceptez ',
+  'by_signing_you_agree_to_ApexPrimeTv' => 'En signant, vous acceptez ',
   'terms_and_conditions' => 'Termes et conditions',
   'of_all_services_and' => 'de tous les services et',
   'privacy_policy' => 'Politique de confidentialité',

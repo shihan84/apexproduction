@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PermissionRequest;
+use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
@@ -21,13 +22,16 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $data = new Permission;
 
-        $view = view('permission-role.form-permission', ['data' => $data])->render();
+        if ($request->ajax() || $request->wantsJson()) {
+            $view = view('permission-role.form-permission', ['data' => $data])->render();
+            return response()->json(['data' => $view, 'status' => true]);
+        }
 
-        return response()->json(['data' => $view, 'status' => true]);
+        return view('permission-role.create', ['data' => $data, 'type' => 'permission']);
     }
 
     /**

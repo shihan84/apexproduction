@@ -166,5 +166,5 @@ Modules/Music/
 | Field | Value |
 |---|---|
 | URL | https://apexprimetv.com/admin/login |
-| Email | admin@streamit.com |
+| Email | admin@ApexPrimeTv.com |
 | Password | password |

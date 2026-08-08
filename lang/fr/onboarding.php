@@ -15,6 +15,6 @@ return [
     'lbl_role'=>'Rôle',
     'lbl_import'=>'Importer depuis le rôle',
     'lbl_onboarding_title'=>'ex. Films, émissions et plus au même endroit',
-    'lbl_onboarding_description'=>'ex. Explorez, regardez et profitez de vos films et séries préférés au même endroit. Votre voyage de divertissement commence ici avec Streamit.',
+    'lbl_onboarding_description'=>'ex. Explorez, regardez et profitez de vos films et séries préférés au même endroit. Votre voyage de divertissement commence ici avec ApexPrime Tv.',
 ];
 

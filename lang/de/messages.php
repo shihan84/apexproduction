@@ -109,7 +109,7 @@ return [
   'user_details_successfull' => 'Benutzerdetails erfolgreich abgerufen',
   'delete_account' => 'Ihr Konto wurde zur Löschung vorgesehen.',
   'data_not_available' => 'Daten nicht verfügbar',
-  'unknown_user' => 'Streamit-Nutzer',
+  'unknown_user' => 'ApexPrime Tv-Nutzer',
   'myprofile' => 'Mein Profil',
   'logout' => 'Abmelden',
   'change_language' => 'Sprache ändern',
@@ -1570,7 +1570,7 @@ return [
   'image_is_required' => 'Bild ist erforderlich.',
   'parental_lock' => 'Kindersicherung',
 
-  'by_signing_you_agree_to_streamit' => 'Mit Ihrer Unterschrift stimmen Sie zu ',
+  'by_signing_you_agree_to_ApexPrimeTv' => 'Mit Ihrer Unterschrift stimmen Sie zu ',
   'terms_and_conditions' => 'Allgemeine Geschäftsbedingungen',
   'of_all_services_and' => 'aller Dienste und',
   'privacy_policy' => 'Datenschutzrichtlinie',

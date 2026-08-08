@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-md-6">
                     {{ html()->label(__('tax.lbl_value') . ' <span class="text-danger">*</span>', 'value')->class('form-label') }}
-                    {{ html()->text('value')->attribute('value', old('value'))->placeholder(__('tax.lbl_value'))->class('form-control')->required() }}
+                    {{ html()->input('number', 'value', old('value'))->placeholder(__('tax.lbl_value'))->class('form-control')->attribute('step', '0.01')->required() }}
                     @error('value')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

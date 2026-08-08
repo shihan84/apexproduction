@@ -538,6 +538,15 @@
             d.filter = { ...d.filter, ...advanceFilter() };
           }
         },
+        error: function (xhr, error, thrown) {
+          console.error('DataTable AJAX error:', xhr, error, thrown)
+          let message = window.localMessagesUpdate?.messages?.something_wrong || 'Failed to load data. Please try again.'
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            message = xhr.responseJSON.message
+          }
+          $('#datatable_processing').hide()
+          $('#datatable tbody').html('<tr><td colspan="100%" class="text-center text-danger py-4">' + message + '</td></tr>')
+        }
       },
       drawCallback: function () {
         if (typeof window.laravel !== 'undefined') {

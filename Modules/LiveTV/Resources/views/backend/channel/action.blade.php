@@ -5,6 +5,10 @@
 
       @endhasPermission
   
+      <a href="javascript:void(0)" class="btn btn-primary-subtle btn-sm fs-4 send-notification-btn" data-url="{{ route('backend.tv-channel.send_notification', $data->id) }}" data-bs-toggle="tooltip" title="Send Push Notification">
+        <i class="ph ph-bell-simple align-middle"></i>
+      </a>
+
       @hasPermission('delete_tvchannel')
       <!-- Soft Delete (Trash) -->
       <a href="{{ route('backend.tv-channel.destroy', $data->id) }}" id="delete-locations-{{ $data->id }}" class="btn btn-secondary-subtle btn-sm fs-4" data-type="ajax" data-method="DELETE" data-token="{{ csrf_token() }}" data-bs-toggle="tooltip" title="{{ __('messages.delete') }}" data-confirm="{{ __('messages.are_you_sure?') }}">

@@ -61,7 +61,7 @@ Route::group(['prefix' => 'app', ['middleware' => ['auth','admin']]], function (
             Route::post('update-status/{id}', [ModuleController::class, 'update_status'])->name('update_status');
         });
 
-        Route::resource('module', ModuleController::class);
+        Route::resource('module', ModuleController::class)->except('create');
 
         /*
           *
@@ -143,7 +143,7 @@ Route::group(['prefix' => 'app', ['middleware' => ['auth','admin']]], function (
         Route::get('data-configuration', [App\Http\Controllers\Backend\API\SettingController::class, 'Configuraton']);
 
 
-        Route::resource("mobile-setting", MobileSettingController::class);
+        Route::resource("mobile-setting", MobileSettingController::class)->except('create');
         Route::group(['prefix' => 'mobile-setting', 'as' => 'mobile-setting.'], function () {
             Route::get('get-dropdown-value/{id}', [MobileSettingController::class, 'getDropdownValue'])->name('get-dropdown-value');
 

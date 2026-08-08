@@ -99,7 +99,7 @@ class AdsController extends Controller
 
       public function create()
     {
-      return view('ad::backend.ad.create');
+      return redirect()->route('backend.customads.create');
     }
 
     public function store(AdRequest $request)

@@ -362,4 +362,21 @@ class LiveTvChannelController extends Controller
         $message = trans('messages.permanent_delete_form_livetv', ['form' =>  'Tv Channel']);
         return response()->json(['message' => $message, 'status' => $forceDeleted], 200);
     }
+
+    public function sendNotification($id)
+    {
+        $liveTvChannel = \Modules\LiveTV\Models\LiveTvChannel::findOrFail($id);
+        $notificationData = [
+            'notification_type' => 'livetv_add',
+            'id' => $liveTvChannel->id,
+            'name' => $liveTvChannel->name,
+            'posterimage' => setBaseUrlWithFileName($liveTvChannel->poster_url, 'image', 'livetv'),
+        ];
+        SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification dispatched successfully!',
+        ]);
+    }
 }

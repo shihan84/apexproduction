@@ -150,6 +150,21 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Send Push Notification</label>
+                                        <div class="d-flex justify-content-between align-items-center form-control">
+                                            <span class="mb-0">Notify app users</span>
+                                            <div class="form-check form-switch">
+                                                <input type="hidden" name="send_notification" value="0">
+                                                <input class="form-check-input" type="checkbox" 
+                                                       id="send_notification" name="send_notification" value="1"
+                                                       {{ old('send_notification') ? 'checked' : '' }}>
+                                            </div>
+                                        </div>
+                                        <small class="form-text text-muted">Toggle ON to send a push notification to all app users.</small>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row">

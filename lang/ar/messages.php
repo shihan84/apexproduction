@@ -110,7 +110,7 @@ return [
   'user_details_successfull' => 'تم استرداد تفاصيل المستخدم بنجاح',
   'delete_account' => 'تم جدولة حذف حسابك.',
   'data_not_available' => 'البيانات غير متاحة',
-  'unknown_user' => 'مستخدم Streamit',
+  'unknown_user' => 'مستخدم ApexPrime Tv',
   'myprofile' => 'ملفي الشخصي',
   'logout' => 'تسجيل الخروج',
   'change_language' => 'تغيير اللغة',
@@ -1566,7 +1566,7 @@ return [
   'image_is_required' => 'صورة مطلوبة.',
   'parental_lock' => 'قفل الأبوين',
 
-  'by_signing_you_agree_to_streamit' => 'من خلال التوقيع، فإنك توافق على ',
+  'by_signing_you_agree_to_ApexPrimeTv' => 'من خلال التوقيع، فإنك توافق على ',
   'terms_and_conditions' => 'الشروط والأحكام',
   'of_all_services_and' => 'لجميع الخدمات و',
   'privacy_policy' => 'سياسة الخصوصية',

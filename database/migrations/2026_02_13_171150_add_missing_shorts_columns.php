@@ -6,50 +6,49 @@ use Illuminate\Support\Facades\Schema;
 
 class AddMissingShortsColumns extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        if (!Schema::hasTable('shorts')) {
+            return;
+        }
+
         Schema::table('shorts', function (Blueprint $table) {
-            // Video dimensions for aspect ratio validation
-            $table->integer('width')->nullable()->after('duration');
-            $table->integer('height')->nullable()->after('width');
-            
-            // YouTube integration columns
-            $table->string('youtube_id')->nullable()->after('thumbnail_url');
-            $table->text('youtube_url')->nullable()->after('youtube_id');
-            $table->text('youtube_embed_url')->nullable()->after('youtube_url');
-            $table->string('channel_id')->nullable()->after('youtube_embed_url');
-            $table->string('channel_title')->nullable()->after('channel_id');
-            $table->boolean('is_youtube')->default(false)->after('channel_title');
-            $table->timestamp('youtube_published_at')->nullable()->after('is_youtube');
-            
-            // Audio metadata columns
-            $table->integer('file_size')->nullable()->after('duration');
-            $table->string('format')->nullable()->after('file_size');
-            $table->integer('bitrate')->nullable()->after('format');
+            $columns = [
+                'width' => fn() => $table->integer('width')->nullable()->after('duration'),
+                'height' => fn() => $table->integer('height')->nullable()->after('width'),
+                'youtube_id' => fn() => $table->string('youtube_id')->nullable()->after('thumbnail_url'),
+                'youtube_url' => fn() => $table->text('youtube_url')->nullable()->after('youtube_id'),
+                'youtube_embed_url' => fn() => $table->text('youtube_embed_url')->nullable()->after('youtube_url'),
+                'channel_id' => fn() => $table->string('channel_id')->nullable()->after('youtube_embed_url'),
+                'channel_title' => fn() => $table->string('channel_title')->nullable()->after('channel_id'),
+                'is_youtube' => fn() => $table->boolean('is_youtube')->default(false)->after('channel_title'),
+                'youtube_published_at' => fn() => $table->timestamp('youtube_published_at')->nullable()->after('is_youtube'),
+                'file_size' => fn() => $table->integer('file_size')->nullable()->after('duration'),
+                'format' => fn() => $table->string('format')->nullable()->after('file_size'),
+                'bitrate' => fn() => $table->integer('bitrate')->nullable()->after('format'),
+            ];
+
+            foreach ($columns as $name => $callback) {
+                if (!Schema::hasColumn('shorts', $name)) {
+                    $callback();
+                }
+            }
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        if (!Schema::hasTable('shorts')) {
+            return;
+        }
+
         Schema::table('shorts', function (Blueprint $table) {
-            $table->dropColumn('width');
-            $table->dropColumn('height');
-            $table->dropColumn('youtube_id');
-            $table->dropColumn('youtube_url');
-            $table->dropColumn('youtube_embed_url');
-            $table->dropColumn('channel_id');
-            $table->dropColumn('channel_title');
-            $table->dropColumn('is_youtube');
-            $table->dropColumn('youtube_published_at');
-            $table->dropColumn('file_size');
-            $table->dropColumn('format');
-            $table->dropColumn('bitrate');
+            $columns = ['width', 'height', 'youtube_id', 'youtube_url', 'youtube_embed_url', 'channel_id', 'channel_title', 'is_youtube', 'youtube_published_at', 'file_size', 'format', 'bitrate'];
+            foreach ($columns as $name) {
+                if (Schema::hasColumn('shorts', $name)) {
+                    $table->dropColumn($name);
+                }
+            }
         });
     }
 }

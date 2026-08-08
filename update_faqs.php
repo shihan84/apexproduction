@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\DB;
 echo "=== Updating FAQs for Apex Prime TV ===\n\n";
 
 // Company and App details
-$oldCompany = 'Iqonic Design';
+$oldCompany = 'Varchaswaa Design';
 $newCompany = 'Varchaswaa International Pvt Ltd';
-$oldApp = 'Streamit Laravel';
+$oldApp = 'ApexPrime Tv Laravel';
 $newApp = 'Apex Prime TV';
-$oldEmail = 'hello@iqonic.design';
+$oldEmail = 'hello@varchaswaa.design';
 $newEmail = 'support@apexprimetv.com';
 
 // Check if FAQs table exists

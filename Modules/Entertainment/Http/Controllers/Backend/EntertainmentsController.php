@@ -842,6 +842,28 @@ public function update(EntertainmentRequest $request, $id)
         return view('frontend::comingsoon-detail', compact('data'));
     }
 
+    public function sendNotification($id)
+    {
+        $entertainment = Entertainment::findOrFail($id);
+        $notificationType = $entertainment->type == 'movie' ? 'movie_add' : 'tv_show_add';
+        $notificationData = [
+            'notification_type' => $notificationType,
+            'id' => $entertainment->id,
+            'release_date' => $entertainment->release_date,
+            'posterimage' => setBaseUrlWithFileName($entertainment->poster_url, 'image', $entertainment->type == 'movie' ? 'movie' : 'tvshow'),
+        ];
+        if ($entertainment->type == 'movie') {
+            $notificationData['movie_name'] = $entertainment->name;
+        } else {
+            $notificationData['tvshow_name'] = $entertainment->name;
+        }
+        SendBulkNotification::dispatch($notificationData)->onQueue('notifications');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification dispatched successfully!',
+        ]);
+    }
 
 
 }

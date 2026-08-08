@@ -55,6 +55,7 @@ Route::group(['prefix' => 'app', 'as' => 'backend.', 'middleware' => ['auth','ad
       Route::get('download-option/{id}', [EntertainmentsController::class, 'downloadOption'])->name('download-option');
       Route::Post('store-downloads/{id}', [EntertainmentsController::class, 'storeDownloads'])->name('store-downloads');
       Route::get('details/{id}', [EntertainmentsController::class, 'details'])->name("details");
+      Route::post('send-notification/{id}', [EntertainmentsController::class, 'sendNotification'])->name('send_notification');
     });
     Route::resource("entertainments", EntertainmentsController::class);
 
@@ -87,7 +88,7 @@ Route::group(['prefix' => 'app', 'as' => 'backend.', 'middleware' => ['auth','ad
       Route::post('bulk-action', [ReviewController::class, 'bulk_action'])->name('bulk_action');
       Route::get("index_data", [ReviewController::class, 'index_data'])->name("index_data");
     });
-    Route::resource("reviews", ReviewController::class);
+    Route::resource("reviews", ReviewController::class)->except(['create', 'show', 'edit', 'update', 'store']);
 
     /*
      * Common Import Routes for all entertainment types

@@ -18,15 +18,15 @@ function setBaseUrlWithFileName($url = '')
 
     switch ($activeDisk) {
         case 'local':
-            $filePath = public_path("storage/streamit-laravel/$fileName");
+            $filePath = public_path("storage/ApexPrimeTv-laravel/$fileName");
             if (file_exists($filePath)) {
-                return asset("storage/streamit-laravel/$fileName");
+                return asset("storage/ApexPrimeTv-laravel/$fileName");
             }
             break;
 
         default:
             $baseUrl = env('DO_SPACES_URL');
-            $filePath = "$baseUrl/streamit-laravel/$fileName";
+            $filePath = "$baseUrl/ApexPrimeTv-laravel/$fileName";
 
             if (checkImageExists($filePath)) {
                 return $filePath;

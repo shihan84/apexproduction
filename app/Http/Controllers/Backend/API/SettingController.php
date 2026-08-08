@@ -193,6 +193,9 @@ class SettingController extends Controller
         $response['is_login'] = 0;
         $response['is_casting_available'] = isset($VideoCast) ? ($VideoCast['status'] ?? 0) : 0;
         $response['is_download_available'] = isset($downloadOption) ? ($downloadOption['status'] ?? 0) : 0;
+        $response['enable_demo_login'] = isset($settings['demo_login']) ? (int)$settings['demo_login'] : 0;
+        $response['demo_email'] = isset($settings['demo_login_email']) ? $settings['demo_login_email'] : 'alikhan6677665@gmail.com';
+        $response['demo_password'] = isset($settings['demo_login_password']) ? $settings['demo_login_password'] : '87654321';
         $response['enable_in_app'] = isset($settings['iap_payment_method']) ? intval($settings['iap_payment_method']) : 0;
         $response['entitlement_id'] = isset($settings['iap_entitlement_id']) ? $settings['iap_entitlement_id'] : null;
         $response['apple_api_key'] = isset($settings['iap_apple_api_key']) ? $settings['iap_apple_api_key'] : null;
@@ -331,6 +334,8 @@ class SettingController extends Controller
         $response['mobile_app'] = isset($settings['mobile_app']) ? $mobileAppVersion['mobile_app_versions'] ?? null : null;
         $response['tv_app'] = isset($settings['tv_app']) ? $response['tv_app_versions'] ?? null : null;
         $response['enable_demo_login'] = isset($settings['demo_login']) ? (int)$settings['demo_login'] : 0;
+        $response['demo_email'] = isset($settings['demo_login_email']) ? $settings['demo_login_email'] : 'alikhan6677665@gmail.com';
+        $response['demo_password'] = isset($settings['demo_login_password']) ? $settings['demo_login_password'] : '87654321';
         $response['video_forward_seek_seconds'] = isset($settings['forward_seconds']) ? (int)$settings['forward_seconds'] : 0;
         $response['video_backward_seek_seconds'] = isset($settings['backward_seconds']) ? (int)$settings['backward_seconds'] : 0;
         $response['date_format'] = isset($settings['default_date_format']) ? $settings['default_date_format'] : 'Y-m-d';

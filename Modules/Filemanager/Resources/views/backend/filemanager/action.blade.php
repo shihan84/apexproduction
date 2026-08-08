@@ -1,8 +1,4 @@
 <div class="d-flex gap-2 align-items-center justify-content-end">
-  @hasPermission('edit_filemanagers')
-       <a  class="btn btn-primary" href="{{ route('backend.media-library.edit', $data->id) }}"> <i class="ph ph-pencil-simple-line align-middle"></i></a>
-
-  @endhasPermission
   @if(!$data->trashed())
   @hasPermission('delete_filemanagers')
   <!-- Soft Delete (Trash) -->

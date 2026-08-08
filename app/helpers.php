@@ -147,7 +147,7 @@ function sendNotification($data)
                     break;
                 case 'user':
                     // If notification type is movie_add, tv_show_add, upcoming, or continue_watch, send to all users
-                    if (in_array($data['notification_type'], ['movie_add', 'tv_show_add','episode_add','season_add','video_add', 'livetv_add', 'upcoming'])) {
+                    if (in_array($data['notification_type'], ['movie_add', 'tv_show_add','episode_add','season_add','video_add', 'livetv_add', 'short_add', 'upcoming'])) {
                         \App\Models\User::where('user_type','user')->chunk(500, function ($users) use ($data) {
                             $chunkCount = 0;
                             foreach ($users as $user) {

@@ -82,7 +82,7 @@ class AuthController extends Controller
     $demoLoginEnabled = setting('demo_login', 0);
     if ($demoLoginEnabled != 1) {
         // Block known demo/super admin seeded credentials
-        if (request('email') === 'demo@streamit.com') {
+        if (request('email') === 'demo@ApexPrimeTv.com') {
             return response()->json(['status' => false, 'message' => __('messages.demo_login_disabled')], 403);
         }
 
@@ -652,13 +652,13 @@ class AuthController extends Controller
            $filename = $file->getClientOriginalName();
 
            if ($activeDisk == 'local') {
-            $destinationPath = 'streamit-laravel';
+            $destinationPath = 'ApexPrimeTv-laravel';
             $filePath = $file->storeAs($destinationPath, $filename, 'public');
             $file_url = '/storage/' . $filePath;
 
         } else {
 
-            $folderPath = 'streamit-laravel/' .  $filename ;
+            $folderPath = 'ApexPrimeTv-laravel/' .  $filename ;
             Storage::disk( $activeDisk )->put($folderPath, file_get_contents($file));
             $baseUrl = env('DO_SPACES_URL');
             $file_url = $baseUrl . '/' . $folderPath;
