@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\V1\RecommendationController;
 */
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 Route::get('user-detail', [AuthController::class, 'userDetails']);
 
@@ -156,6 +157,20 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
                     ->where('status', 1)->whereNull('deleted_at')
                     ->get(['id', 'name', 'slug', 'poster_url', 'poster_tv_url', 'access']);
             }
+
+            $today = Carbon::now()->toDateString();
+            $customAds = \Modules\Ad\Models\CustomAdsSetting::
+                        where('status', 1)
+                        ->where('placement', 'home_page')
+                        ->whereDate('start_date', '<=', $today)
+                        ->whereDate('end_date', '>=', $today)
+                        ->get(['type','media','redirect_url'])->map(function($ad) {
+                            return [
+                                'type' => $ad->type,
+                                'url' => $ad->media ? setBaseUrlWithFileName($ad->media,$ad->type,'ads') : null,
+                                'redirect_url' => $ad->redirect_url,
+                            ];
+                        });
             $formattedTopChannels = $topChannels->map(function ($ch) {
                 return [
                     'id' => $ch->id, 'name' => $ch->name, 'type' => 'livetv',
@@ -312,7 +327,7 @@ Route::prefix('v3')->middleware(['throttle:api'])->group(function () {
                     'based_on_last_watch' => [],
                     'based_on_likes' => [],
                     'based_on_views' => [],
-                    'custom_ads' => [],
+                    'custom_ads' => $customAds->toArray(),
                     'banner' => [
                         'data' => [],
                         'total' => 0
