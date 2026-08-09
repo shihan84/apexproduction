@@ -115,6 +115,11 @@
                             'placement',
                             [
                                 'home_page' => __('messages.home_page'),
+                                'home_page_1' => __('messages.home_page') . ' 1',
+                                'home_page_2' => __('messages.home_page') . ' 2',
+                                'home_page_3' => __('messages.home_page') . ' 3',
+                                'home_page_4' => __('messages.home_page') . ' 4',
+                                'home_page_5' => __('messages.home_page') . ' 5',
                                 'player' => __('messages.player'),
                                 'banner' => __('messages.banner'),
                                 'app_open' => __('messages.app_open'),

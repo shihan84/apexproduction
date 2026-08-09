@@ -1207,14 +1207,18 @@ public function getTrandingData(Request $request){
             // $is_advertisement_enabled = MobileSetting::where('slug', 'advertisement')->first();
             $customAds = CustomAdsSetting::
                         where('status', 1)
-                        ->where('placement', 'home_page')
+                        ->where(function ($query) {
+                            $query->where('placement', 'home_page')
+                                  ->orWhere('placement', 'like', 'home_page_%');
+                        })
                         ->whereDate('start_date', '<=', $today)
                         ->whereDate('end_date', '>=', $today)
-                        ->get(['type','media','redirect_url'])->map(function($ad) {
+                        ->get(['type','media','redirect_url','placement'])->map(function($ad) {
                             return [
                                 'type' => $ad->type,
                                 'url' => $ad->media ? setBaseUrlWithFileName($ad->media,$ad->type,'ads') : null,
                                 'redirect_url' => $ad->redirect_url,
+                                'placement' => $ad->placement ?: 'home_page',
                             ];
                         });
 

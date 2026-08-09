@@ -86,6 +86,11 @@
                 <select name="placement" id="placement" class="form-control select2" data-filter="select">
                     <option value="">{{ __('messages.all') }}</option>
                     <option value="home_page">{{ __('messages.home_page') }}</option>
+                    <option value="home_page_1">{{ __('messages.home_page') }} 1</option>
+                    <option value="home_page_2">{{ __('messages.home_page') }} 2</option>
+                    <option value="home_page_3">{{ __('messages.home_page') }} 3</option>
+                    <option value="home_page_4">{{ __('messages.home_page') }} 4</option>
+                    <option value="home_page_5">{{ __('messages.home_page') }} 5</option>
                     <option value="player">{{ __('messages.player') }}</option>
                     <option value="banner">{{ __('messages.banner') }}</option>
                     <option value="app_open">{{ __('messages.app_open') }}</option>
