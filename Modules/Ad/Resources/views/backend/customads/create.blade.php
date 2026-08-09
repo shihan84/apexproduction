@@ -117,6 +117,7 @@
                                 'home_page' => __('messages.home_page'),
                                 'player' => __('messages.player'),
                                 'banner' => __('messages.banner'),
+                                'app_open' => __('messages.app_open'),
                             ],
                             old('placement'),
                         )->class('form-control select2')->placeholder(__('messages.select_placement')) }}
@@ -473,7 +474,7 @@
             // Add this block for placement-based show/hide and validation
             function toggleTargetFields() {
                 var placement = $('#placement').val();
-                if (placement === 'home_page') {
+                if (placement === 'home_page' || placement === 'app_open') {
                     $('.target-fields-wrapper').hide();
                     // Remove required rules
                     $('#target_content_type').rules('remove', 'required');

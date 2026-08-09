@@ -695,6 +695,7 @@ return [
     'header' => 'Header',
     'sidebar' => 'Sidebar',
     'before_login' => 'Before Login',
+    'app_open' => 'App Open',
     'invalid_url' => 'Please Enter Vaid URL',
     'select_all' => 'Select All',
     'banner' => 'Banner',

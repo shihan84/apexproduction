@@ -135,6 +135,7 @@
                                 'home_page' => __('messages.home_page'),
                                 'player' => __('messages.player'),
                                 'banner' => __('messages.banner'),
+                                'app_open' => __('messages.app_open'),
                             ],
                             old('placement', $data->placement ?? null),
                         )->class('form-control select2') }}
@@ -641,7 +642,7 @@
                 var targetCategories = $('#target_categories');
                 var targetContentTypeWrapper = targetContentType.closest('.col-md-6.col-lg-4');
                 var targetCategoriesWrapper = targetCategories.closest('.col-md-6.col-lg-4');
-                if (placement === 'home_page') {
+                if (placement === 'home_page' || placement === 'app_open') {
                     targetContentTypeWrapper.hide();
                     targetCategoriesWrapper.hide();
                     // Remove required rules

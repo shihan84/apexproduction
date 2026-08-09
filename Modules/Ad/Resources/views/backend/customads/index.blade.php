@@ -88,6 +88,7 @@
                     <option value="home_page">{{ __('messages.home_page') }}</option>
                     <option value="player">{{ __('messages.player') }}</option>
                     <option value="banner">{{ __('messages.banner') }}</option>
+                    <option value="app_open">{{ __('messages.app_open') }}</option>
                 </select>
             </div>
 

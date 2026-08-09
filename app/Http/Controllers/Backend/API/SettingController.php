@@ -11,6 +11,8 @@ use App\Models\MobileSetting;
 use Modules\Subscriptions\Models\Subscription;
 use App\Models\Device;
 use Modules\Subscriptions\Models\PlanLimitation;
+use Modules\Ad\Models\CustomAdsSetting;
+use Carbon\Carbon;
 
 class SettingController extends Controller
 {
@@ -206,6 +208,23 @@ class SettingController extends Controller
         $response['mobile_app'] = isset($settings['mobile_app']) ? $mobileAppVersion['mobile_app_versions'] ?? null : null;
         $response['tv_app'] = isset($settings['tv_app']) ? $response['tv_app_versions'] ?? null : null;
 
+        // Active app-open custom ad
+        $today = Carbon::now()->toDateString();
+        $appOpenAd = CustomAdsSetting::where('status', 1)
+            ->where('placement', 'app_open')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->first(['type', 'media', 'redirect_url', 'duration', 'skip_enabled', 'skip_after']);
+
+        $response['app_open_ad'] = $appOpenAd ? [
+            'type' => $appOpenAd->type,
+            'url' => $appOpenAd->media ? setBaseUrlWithFileName($appOpenAd->media, $appOpenAd->type, 'ads') : null,
+            'redirect_url' => $appOpenAd->redirect_url,
+            'duration' => $appOpenAd->duration,
+            'skip_enabled' => $appOpenAd->skip_enabled,
+            'skip_after' => $appOpenAd->skip_after,
+        ] : null;
+
 
         if ($request->has('device_id') && $request->device_id != null && $request->has('user_id') && $request->user_id) {
             $device = Device::where('user_id', $request->user_id)
@@ -341,6 +360,23 @@ class SettingController extends Controller
         $response['date_format'] = isset($settings['default_date_format']) ? $settings['default_date_format'] : 'Y-m-d';
         $response['time_format'] = isset($settings['default_time_format']) ? $settings['default_time_format'] : 'H:i:s';
         $response['default_timezone'] = isset($settings['default_time_zone']) ? $settings['default_time_zone'] : 'UTC';
+
+        // Active app-open custom ad
+        $appOpenAd = CustomAdsSetting::where('status', 1)
+            ->where('placement', 'app_open')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->first(['type', 'media', 'redirect_url', 'duration', 'skip_enabled', 'skip_after']);
+
+        $response['app_open_ad'] = $appOpenAd ? [
+            'type' => $appOpenAd->type,
+            'url' => $appOpenAd->media ? setBaseUrlWithFileName($appOpenAd->media, $appOpenAd->type, 'ads') : null,
+            'redirect_url' => $appOpenAd->redirect_url,
+            'duration' => $appOpenAd->duration,
+            'skip_enabled' => $appOpenAd->skip_enabled,
+            'skip_after' => $appOpenAd->skip_after,
+        ] : null;
+
         if ($request->has('device_id') && $request->device_id != null && $request->has('user_id') && $request->user_id) {
             $device = Device::where('user_id', $request->user_id)
                 ->where('device_id', $request->device_id)
