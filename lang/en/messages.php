@@ -686,6 +686,7 @@ return [
     'video' => 'Video',
     'movie' => 'Movie',
     'tvshow' => 'TV Show',
+    'livetv' => 'Live TV',
     'mobile' => 'Mobile',
     'mail' => 'Mail',
     'channel' => 'Live TV',

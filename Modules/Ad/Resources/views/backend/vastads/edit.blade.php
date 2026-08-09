@@ -133,6 +133,7 @@
                                 'video' => __('messages.video'),
                                 'movie' => __('messages.movie'),
                                 'tvshow' => __('messages.tvshow'),
+                                'livetv' => __('messages.livetv'),
                             ], old('target_type', $data->target_type ?? ''))
                             ->class('form-control select2')
                             ->id('target_type')}}

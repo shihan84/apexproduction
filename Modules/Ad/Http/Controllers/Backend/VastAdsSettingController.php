@@ -15,6 +15,7 @@ use Modules\Ad\Models\VastAdsSetting;
 use Modules\Video\Models\Video;
 use Modules\Entertainment\Models\Entertainment;
 use Modules\Episode\Models\Episode;
+use Modules\LiveTV\Models\LiveTvChannel;
 use Illuminate\Support\Facades\Log;
 
 class VastAdsSettingController extends Controller
@@ -374,6 +375,10 @@ class VastAdsSettingController extends Controller
                 ->where('episodes.trailer_url_type', '!=', 'Vimeo')
                 ->where('episodes.video_upload_type', '!=', 'Vimeo')
                 ->get();
+                break;
+
+            case 'livetv':
+                $items = LiveTvChannel::select('id', 'name as text')->where('status', 1)->get();
                 break;
 
             default:

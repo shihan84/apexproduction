@@ -103,7 +103,7 @@
                     <option value="video">{{ __('messages.video') }}</option>
                     <option value="movie">{{ __('messages.movie') }}</option>
                     <option value="tvshow">{{ __('messages.tvshow') }}</option>
-                    {{-- <option value="channel">{{ __('messages.channel') }}</option> --}}
+                    <option value="livetv">{{ __('messages.livetv') }}</option>
                 </select>
             </div>
 

@@ -31,6 +31,15 @@ class LiveTvChannelDetailsResourceV3 extends JsonResource
             ],
             'video_qualities'=> $this->video_qualities,
             'suggested_content' => LiveTvChannelResourceV3::collection($this->moreItems),
+            'ads_data' => [
+                'custom_ads' => [],
+                'vast_ads' => $this->vast_ads ?? [
+                    'pre_role_ad_url' => [],
+                    'mid_role_ad_url' => [],
+                    'post_role_ad_url' => [],
+                    'overlay_ad_url' => [],
+                ],
+            ],
         ];
     }
 }

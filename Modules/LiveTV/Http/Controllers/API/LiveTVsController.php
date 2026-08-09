@@ -15,6 +15,8 @@ use Modules\LiveTV\Transformers\LiveTvChannelResourceV3;
 use Modules\LiveTV\Transformers\LiveTvChannelDetailsResource;
 use Modules\LiveTV\Transformers\LiveTvChannelDetailsResourceV3;
 use Modules\Subscriptions\Models\Subscription;
+use Modules\Ad\Models\VastAdsSetting;
+use Carbon\Carbon;
 
 class LiveTVsController extends Controller
 {
@@ -130,6 +132,31 @@ class LiveTVsController extends Controller
             });
 
             $channelData['moreItems'] = $moreItems;
+
+            // Fetch active VAST ads for this live TV channel
+            $today = Carbon::now()->toDateString();
+            $vastAds = VastAdsSetting::where('status', 1)
+                ->where('is_enable', 1)
+                ->whereDate('start_date', '<=', $today)
+                ->whereDate('end_date', '>=', $today)
+                ->where(function ($query) use ($channelId) {
+                    $query->where(function ($q) use ($channelId) {
+                        $q->where('target_type', 'livetv')
+                          ->whereJsonContains('target_selection', (int) $channelId);
+                    })->orWhere(function ($q) {
+                        $q->where('target_type', 'all')
+                          ->orWhereNull('target_type');
+                    });
+                })
+                ->get(['type', 'url']);
+
+            $channelData['vast_ads'] = [
+                'pre_role_ad_url'  => $vastAds->where('type', 'pre-roll')->pluck('url')->values()->toArray(),
+                'mid_role_ad_url'  => $vastAds->where('type', 'mid-roll')->pluck('url')->values()->toArray(),
+                'post_role_ad_url' => $vastAds->where('type', 'post-roll')->pluck('url')->values()->toArray(),
+                'overlay_ad_url'   => $vastAds->where('type', 'overlay')->pluck('url')->values()->toArray(),
+            ];
+
             $responseData = new LiveTvChannelDetailsResourceV3($channelData);
             return $responseData;
         });
