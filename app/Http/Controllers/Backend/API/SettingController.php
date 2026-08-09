@@ -362,6 +362,7 @@ class SettingController extends Controller
         $response['default_timezone'] = isset($settings['default_time_zone']) ? $settings['default_time_zone'] : 'UTC';
 
         // Active app-open custom ad
+        $today = Carbon::now()->toDateString();
         $appOpenAd = CustomAdsSetting::where('status', 1)
             ->where('placement', 'app_open')
             ->whereDate('start_date', '<=', $today)
